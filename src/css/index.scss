@@ -1,0 +1,31 @@
+@import "./_variables";
+@import "./sidebar";
+@import "./feed";
+@import "./widget";
+@import "./tweetBox";
+@import "./post";
+@import "./animations";
+
+* {
+  margin: 0% !important;
+}
+
+html {
+  scroll-behavior: smooth !important;
+  transition: all 10s ease-in-out;
+}
+
+body {
+  max-height: 100vh !important;
+  transition: all 10s ease-in-out;
+}
+
+.app {
+  display: flex !important;
+  height: 100vh !important;
+}
+
+.signin_link {
+  cursor: pointer;
+  text-decoration: underline;
+}
