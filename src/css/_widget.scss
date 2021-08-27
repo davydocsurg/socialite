@@ -1,5 +1,14 @@
 .widgets {
   flex: 0.3 !important;
+  overflow-y: scroll !important;
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 
   &__input {
     display: flex;
@@ -9,6 +18,9 @@
     border-radius: 20px;
     margin-top: 10px;
     margin-left: 20px;
+    position: sticky !important;
+    z-index: 100;
+    top: 0;
   }
 
   &__input > input {

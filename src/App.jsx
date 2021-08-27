@@ -38,10 +38,12 @@ function App() {
 
   const location = useLocation();
 
+  let oddLocations = ["/home", "/notifications"];
+
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
-        {!location.pathname.match("/home") ? (
+        {!location.pathname.match({ oddLocations }) ? (
           <ThemeSwitcherComponent useOs={true} themeChanger={toggleDarkMode} />
         ) : null}
         {/* return (

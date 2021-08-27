@@ -11,7 +11,7 @@ export const Guard = ({
     {...rest}
     render={(props) =>
       localStorage.getItem(Token) ? (
-        <Component {...props} />
+        <Component {...props} /> && console.log(Token)
       ) : (
         <Redirect
           to={{ pathname: routeRedirect, state: { from: props.location } }}

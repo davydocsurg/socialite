@@ -4,26 +4,53 @@
       -ms-flex: 0.2 !important;
           flex: 0.2 !important;
   margin-top: 20px !important;
-  padding-left: 20px;
+  padding-left: 0.2px !important;
   padding-right: 20px;
 }
 
 .sidebar__twitterIcon {
   color: #50b7f5;
   font-size: 30px !important;
-  margin-left: 20px !important;
-  margin-bottom: 20px !important;
+  margin-left: 2px !important;
+  margin-bottom: 13px !important;
 }
 
 .sidebar__tweet {
   background-color: #50b7f5 !important;
   border: none !important;
   color: #e9e8de !important;
-  font-weight: 900 !important;
+  font-weight: 800 !important;
   text-transform: inherit !important;
   border-radius: 30px !important;
-  height: 50px !important;
-  margin-top: 20px !important;
+  height: 45px !important;
+  margin-top: 10px !important;
+}
+
+.sidebar__signout {
+  background-color: #eb3535 !important;
+  border: none !important;
+  color: #e9e8de !important;
+  font-weight: 800 !important;
+  text-transform: inherit !important;
+  border-radius: 30px !important;
+  height: 45px !important;
+  margin-top: 130px !important;
+  margin-bottom: 0 !important;
+}
+
+.side_text {
+  text-decoration: none !important;
+  color: #181717 !important;
+}
+
+.side_text:hover {
+  color: #50b7f5 !important;
+}
+
+.side_text:focus {
+  text-decoration: none !important;
+  border: none !important;
+  color: #50b7f5;
 }
 
 .sidebarOption {
@@ -34,7 +61,11 @@
       -ms-flex-align: center !important;
           align-items: center !important;
   cursor: pointer !important;
-  padding: 20px !important;
+  padding-left: 5px !important;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  padding-right: 0px;
+  padding-left: 5px;
 }
 
 .sidebarOption:hover {
@@ -45,10 +76,15 @@
   transition: color 100ms ease-out;
 }
 
+.sidebarOption:hover .side_text:hover {
+  color: #50b7f5 !important;
+}
+
 .sidebarOption > h2 {
-  font-weight: 800;
+  font-weight: 600;
   font-size: 20px;
-  margin-right: 20px;
+  margin-right: 0px;
+  padding-left: 10px;
 }
 
 .sidebarOption--active {
@@ -91,6 +127,16 @@
   -webkit-box-flex: 0.3 !important;
       -ms-flex: 0.3 !important;
           flex: 0.3 !important;
+  overflow-y: scroll !important;
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.widgets::-webkit-scrollbar {
+  display: none;
 }
 
 .widgets__input {
@@ -105,6 +151,10 @@
   border-radius: 20px;
   margin-top: 10px;
   margin-left: 20px;
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  z-index: 100;
+  top: 0;
 }
 
 .widgets__input > input {
@@ -338,20 +388,16 @@
   }
 }
 
-* {
-  margin: 0% !important;
-}
-
 html {
   scroll-behavior: smooth !important;
-  -webkit-transition: all 10s ease-in-out;
-  transition: all 10s ease-in-out;
+  -webkit-transition: all 1s ease-in-out;
+  transition: all 1s ease-in-out;
 }
 
 body {
   max-height: 100vh !important;
-  -webkit-transition: all 10s ease-in-out;
-  transition: all 10s ease-in-out;
+  -webkit-transition: all 1s ease-in-out;
+  transition: all 1s ease-in-out;
 }
 
 .app {
@@ -364,5 +410,9 @@ body {
 .signin_link {
   cursor: pointer;
   text-decoration: underline;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
 }
 /*# sourceMappingURL=index.css.map */

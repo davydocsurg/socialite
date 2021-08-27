@@ -20,6 +20,9 @@ import { Alert, AlertTitle } from "@material-ui/lab";
 import IconButton from "@material-ui/core/IconButton";
 import Collapse from "@material-ui/core/Collapse";
 import CloseIcon from "@material-ui/icons/Close";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import InputAdornment from "@material-ui/core/InputAdornment";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -73,6 +76,21 @@ export default function SignIn() {
       password: "",
     },
   });
+
+  const [showPassword, setShowPassword] = useState({
+    showPassword: false,
+  });
+
+  const handleClickShowPassword = () => {
+    setShowPassword({
+      ...showPassword,
+      showPassword: !showPassword.showPassword,
+    });
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   useEffect(() => {
     setOpen();
@@ -205,8 +223,23 @@ export default function SignIn() {
             fullWidth
             name="password"
             label="Password"
-            type="password"
+            type={showPassword.showPassword ? "text" : "password"}
             id="password"
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {/* {showPassword.showPassword ? ( */}
+                  <Visibility />
+                  {/* ) : ( */}
+                  <VisibilityOff />
+                  {/* )} */}
+                </IconButton>
+              </InputAdornment>
+            }
             autoComplete="current-password"
           />
           <FormControlLabel

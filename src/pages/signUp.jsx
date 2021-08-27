@@ -73,6 +73,8 @@ export default function SignUp() {
     password_confirmation: "",
   });
 
+  // setState()
+
   // errors
   const [errors, setErrors] = useState({
     errorMsg: {
@@ -127,6 +129,7 @@ export default function SignUp() {
         ) {
           // localStorage.setItem("user-token", res.data.access_token);
           history.push("/signin");
+          // LoginAfterRegistration();
           // console.log(res.data.message);
           setOpen(false);
           setShowSuccess(true);
@@ -150,6 +153,17 @@ export default function SignUp() {
     // }
     // dispatch(SignUpAction(fields));
   };
+
+  // const LoginAfterRegistration = () => {
+  //   axios
+  //     .post("http://localhost:8000/api/signin", [fields.email, fields.password])
+  //     .then((res) => {
+  //       console.log(res);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   // const checkPasswordMatch = (password, password_confirmation) => {
   //   return password !== password_confirmation ? true : false;

@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, Switch, Route, Redirect } from "react-router-dom";
+import {
+  useLocation,
+  Switch,
+  Route,
+  Redirect,
+  useHistory,
+  useRouteMatch,
+} from "react-router-dom";
 // import { TransitionGroup, CSSTransition } from "react-transition-group";
 import SignIn from "../pages/signIn";
 import SignUp from "../pages/signUp";
@@ -7,7 +14,6 @@ import Home from "../pages/home";
 // import "../css/anime.css";
 import PrivateRoute from "../PrivateRoute";
 import { Guard } from "../Guard";
-import { useHistory } from "react-router-dom";
 
 const Routes = () => {
   let location = useLocation();
@@ -38,22 +44,24 @@ const Routes = () => {
   //   }
   // };
 
+  let { path, url } = useRouteMatch();
+
   return (
     // <TransitionGroup>
     // <CSSTransition key={location.key} classNames="fade" timeout={300}>
     <Switch location={location}>
       {/* <Route
-            exact
-            path="/"
-            render={(props) => <Redirect to={{ pathname: "/signin" }} />}
-          />*/}
+        exact
+        path="/"
+        render={(props) => <Redirect to={{ pathname: "/signin" }} />}
+      /> */}
       <Redirect exact from="/" to="/signin" />
 
       <Route exact path="/">
         {token !== null && token !== "" ? (
           <Redirect exact to="/home" />
         ) : (
-          <Redirect exact to="/" />
+          <Redirect exact to={`${url}`} />
         )}
       </Route>
 
@@ -72,12 +80,12 @@ const Routes = () => {
       <Route exact path="/signup" component={SignUp}></Route>
       <Route exact path="/home" component={Home}></Route>
 
-      <Guard
-        path="/home"
+      {/* <Guard
+        path="/"
         token="user-token"
-        routeRedirect="/signin"
+        routeRedirect="/home"
         component={PrivateRoute}
-      />
+      /> */}
     </Switch>
     //   </CSSTransition>
     // </TransitionGroup>
