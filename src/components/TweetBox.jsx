@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Avatar, Button } from "@material-ui/core";
-import tweepProf from ".././assets/images/avatar.png";
 import { TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import HttpService from "../services/HttpServices";
@@ -28,10 +27,16 @@ function TweetBox() {
   };
 
   // tweets
+  // const [tweet, setTweet] = useState({
+  //   tweet_text: "",
+  //   tweet_photo: "",
+  // });
+
   const [tweet, setTweet] = useState({
     tweet_text: "",
-    tweet_photo: "",
   });
+
+  const [files, setFiles] = useState("");
 
   // auth user
   const [authUser, setAuthUser] = useState({
@@ -56,6 +61,10 @@ function TweetBox() {
       ...tweetErrors,
       tweetErrorMsg: {},
     });
+  };
+
+  const uploadFile = (e) => {
+    setFiles({ ...files, [e.target.id]: e.target.files[0] });
   };
 
   useEffect(() => {
@@ -166,7 +175,7 @@ function TweetBox() {
           helperText={tweetErrors.tweetErrorMsg.tweet_photo}
           error={tweetErrors.tweetErrorMsg.tweet_photo ? true : false}
           id="tweet_photo"
-          onChange={handleChange}
+          onChange={uploadFile}
           className="tweetBox__imageInput"
           placeholder="Optional: Enter image URL"
           type="file"

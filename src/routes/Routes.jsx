@@ -14,35 +14,28 @@ import Home from "../pages/home";
 // import "../css/anime.css";
 import PrivateRoute from "../PrivateRoute";
 import { Guard } from "../Guard";
+import AuthRoutes from "../utils/AuthRoutes";
+import jwtDecode from "jwt-decode";
 
 const Routes = () => {
   let location = useLocation();
   let history = useHistory();
   const token = localStorage.getItem("user-token");
-  // const isSignedIn = token !== null && token !== "";
-  // if (token) {
-  //   history.push("/home");
-  // } else {
-  //   history.push("/signin");
-  // }
+  let authenticated;
 
-  // useEffect(() => {
-  //   checkAuth();
-  //   return () => {};
-  // }, []);
+  // decode token
+  // const token = localStorage.user_token
+  if (token) {
+    const decodedToken = jwtDecode(token);
+    // console.log(decodedToken);
 
-  // const [isLoggedIn, setIsLoggedIn] = useState({
-  //   isLoggedIn: false,
-  // });
-
-  // const checkAuth = () => {
-  //   if (token !== null && token !== "") {
-  //     setIsLoggedIn({
-  //       ...isLoggedIn,
-  //       isLoggedIn: true,
-  //     });
-  //   }
-  // };
+    if (decodedToken.exp * 1000 < Date.now()) {
+      window.location.href = "/signin";
+      authenticated = false;
+    } else {
+      authenticated = true;
+    }
+  }
 
   let { path, url } = useRouteMatch();
 
@@ -50,42 +43,21 @@ const Routes = () => {
     // <TransitionGroup>
     // <CSSTransition key={location.key} classNames="fade" timeout={300}>
     <Switch location={location}>
-      {/* <Route
-        exact
-        path="/"
-        render={(props) => <Redirect to={{ pathname: "/signin" }} />}
-      /> */}
       <Redirect exact from="/" to="/signin" />
 
-      <Route exact path="/">
-        {token !== null && token !== "" ? (
-          <Redirect exact to="/home" />
-        ) : (
-          <Redirect exact to={`${url}`} />
-        )}
-      </Route>
-
-      {/* redirect if unauthenticated */}
-
-      {/* <Route exact path="/home">
-            {token == null && token === "" ? (
-              <Redirect exact to="/" />
-            ) : (
-              // <Redirect exact to="/signin" />
-              <Home></Home>
-            )}
-          </Route> */}
-
-      <Route exact path="/signin" component={SignIn}></Route>
-      <Route exact path="/signup" component={SignUp}></Route>
+      <AuthRoutes
+        authenticated={authenticated}
+        exact
+        path="/signin"
+        component={SignIn}
+      ></AuthRoutes>
+      <AuthRoutes
+        authenticated={authenticated}
+        exact
+        path="/signup"
+        component={SignUp}
+      ></AuthRoutes>
       <Route exact path="/home" component={Home}></Route>
-
-      {/* <Guard
-        path="/"
-        token="user-token"
-        routeRedirect="/home"
-        component={PrivateRoute}
-      /> */}
     </Switch>
     //   </CSSTransition>
     // </TransitionGroup>

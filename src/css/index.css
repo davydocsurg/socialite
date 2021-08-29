@@ -1,5 +1,5 @@
 .sidebar {
-  border-right: 1px solid #e9e8de;
+  border-right: 1px solid #e2e2dc;
   -webkit-box-flex: 0.2 !important;
       -ms-flex: 0.2 !important;
           flex: 0.2 !important;
@@ -71,7 +71,7 @@
 .sidebarOption:hover {
   background-color: #e8f5fe;
   border-radius: 30px;
-  color: #50b7f5;
+  color: #50b7f5 !important;
   -webkit-transition: color 100ms ease-out;
   transition: color 100ms ease-out;
 }
@@ -95,7 +95,7 @@
   -webkit-box-flex: 0.5 !important;
       -ms-flex: 0.5 !important;
           flex: 0.5 !important;
-  border-right: 1px solid #e9e8de;
+  border-right: 1px solid #e2e2dc;
   overflow-y: scroll !important;
   /* Hide scrollbar for IE, Edge and Firefox */
   -ms-overflow-style: none;
@@ -112,15 +112,19 @@
   position: -webkit-sticky !important;
   position: sticky !important;
   top: 0;
-  background-color: white !important;
+  background-color: #ffffff !important;
   z-index: 100;
-  border-bottom: 1px solid #e9e8de;
+  border-bottom: 1px solid #e2e2dc;
   padding: 15px 20px;
 }
 
 .feed h2 {
   font-size: 20px !important;
   font-weight: 700;
+}
+
+.border-none {
+  border: transparent !important;
 }
 
 .widgets {
@@ -146,7 +150,7 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  background-color: #e9e8de;
+  background-color: #e2e2dc;
   padding: 10px;
   border-radius: 20px;
   margin-top: 10px;
@@ -159,7 +163,7 @@
 
 .widgets__input > input {
   border: none;
-  background-color: #e9e8de;
+  background-color: #e2e2dc;
 }
 
 .widgets__searchIcon {
@@ -181,7 +185,7 @@
 
 .tweetBox {
   padding-bottom: 10px;
-  border-bottom: 8px solid #e9e8de;
+  border-bottom: 8px solid #e2e2dc;
   padding-right: 10px;
 }
 
@@ -236,7 +240,7 @@
   -webkit-box-align: start;
       -ms-flex-align: start;
           align-items: flex-start;
-  border-bottom: 1px solid #e9e8de;
+  border-bottom: 1px solid #e2e2dc;
   padding-bottom: 10px;
 }
 

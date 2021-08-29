@@ -15,7 +15,7 @@
   &__header {
     position: sticky !important;
     top: 0;
-    background-color: white !important;
+    background-color: $twitter-header-bg !important;
     z-index: 100;
     border-bottom: 1px solid $twitter-background;
     padding: 15px 20px;
@@ -25,4 +25,8 @@
     font-size: 20px !important;
     font-weight: 700;
   }
+}
+
+.border-none {
+  border: transparent !important;
 }
