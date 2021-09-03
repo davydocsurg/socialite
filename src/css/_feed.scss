@@ -30,3 +30,9 @@
 .border-none {
   border: transparent !important;
 }
+
+@media screen and (max-width: 992px) {
+  .feed {
+    flex: 0.7 !important;
+  }
+}

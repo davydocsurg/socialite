@@ -14,11 +14,20 @@ import Home from "../pages/home";
 import AuthRoutes from "../utils/AuthRoutes";
 import jwtDecode from "jwt-decode";
 
+// redux
+import { store } from "../redux/store";
+// import * as ActionTypes from './redux/ActionTypes'
+import { SignOutAction, getUserData } from "../redux/actions/AuthActions";
+import { SET_AUTHENTICATED } from "../redux/ActionTypes";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+
 const Routes = () => {
   let location = useLocation();
   let history = useHistory();
   const token = localStorage.getItem("user-token");
-  let authenticated;
+  // let authenticated;
+  const dispatch = useDispatch();
 
   // decode token
   // const token = localStorage.user_token
@@ -27,10 +36,16 @@ const Routes = () => {
     // console.log(decodedToken);
 
     if (decodedToken.exp * 1000 < Date.now()) {
-      window.location.href = "/signin";
-      authenticated = false;
+      store.dispatch(SignOutAction());
+      // window.location.href = "/signin";
+      history.push("/signin");
     } else {
-      authenticated = true;
+      // authenticated = true;
+      store.dispatch({
+        type: SET_AUTHENTICATED,
+      });
+      axios.defaults.headers.common["Authorization"] = token;
+      store.dispatch(getUserData());
     }
   }
 
@@ -43,13 +58,13 @@ const Routes = () => {
       <Redirect exact from="/" to="/signin" />
 
       <AuthRoutes
-        authenticated={authenticated}
+        // authenticated={authenticated}
         exact
         path="/signin"
         component={SignIn}
       ></AuthRoutes>
       <AuthRoutes
-        authenticated={authenticated}
+        // authenticated={authenticated}
         exact
         path="/signup"
         component={SignUp}

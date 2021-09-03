@@ -45,3 +45,22 @@
     font-weight: 800;
   }
 }
+
+@media screen and (max-width: 992px) {
+  .widgets {
+    flex: 0.2 !important;
+
+    &__input {
+      // padding: 1px !important;
+      margin-left: 10% !important;
+    }
+
+    &__widgetContainer {
+      margin-top: 15px;
+      margin-left: 10% !important;
+      // padding: 0px !;
+      background-color: #f5f8fa;
+      border-radius: 20px;
+    }
+  }
+}

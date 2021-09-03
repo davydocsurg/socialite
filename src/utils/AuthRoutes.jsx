@@ -16,14 +16,14 @@ const AuthRoutes = ({ component: Component, authenticated, ...rest }) => (
   ></Route>
 );
 
-// AuthRoutes.propTypes = {
-//   user: PropTypes.object.isRequired,
-// };
+AuthRoutes.propTypes = {
+  user: PropTypes.object.isRequired,
+};
 
-// const mapStateToProps = (state) => {
-//   return {
-//     authenticated: state.authenticated,
-//   };
-// };
-export default AuthRoutes;
-// export default connect(mapStateToProps)(AuthRoutes);
+const mapStateToProps = (state) => {
+  return {
+    authenticated: state.userAuth.authenticated,
+  };
+};
+// export default AuthRoutes;
+export default connect(mapStateToProps)(AuthRoutes);

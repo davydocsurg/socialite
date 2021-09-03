@@ -128,10 +128,10 @@ function Feed() {
   const sendTweet = (e) => {
     e.preventDefault();
 
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    };
+    // const headers = {
+    //   "Content-Type": "application/json",
+    //   Authorization: `Bearer ${token}`,
+    // };
 
     axios
       .post(
@@ -266,6 +266,7 @@ function Feed() {
             username={tweet.tweep.handle}
             verified={true}
             text={tweet.tweet_text}
+            tweetTime={tweet.created_at}
             avatar={
               "http://localhost:8000/storage/users/profile/" +
               tweet.tweep.profile_picture
