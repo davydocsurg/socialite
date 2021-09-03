@@ -1,6 +1,14 @@
 export const RESTART_AUTH_RESPONSE = "RESTART_AUTH_RESPONSE";
-export const LOADING = "LOADING";
-export const ISSIGNEDIN = "ISSIGNEDIN";
+// user reducer types
+export const LOADING_USER = "LOADING_USER";
+export const SET_AUTHENTICATED = "SET_AUTHENTICATED";
+export const SET_UNAUTHENTICATED = "SET_UNAUTHENTICATED";
+export const SET_USER = "SET_USER";
+// UI reducer types
+export const SET_ERRORS = "SET_ERRORS";
+export const LOADING_UI = "LOADING_UI";
+export const CLEAR_ERRORS = "CLEAR_ERRORS";
+
 export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
 export const SIGNUP_ERROR = "SIGNUP_ERROR";
 export const CODE_ERROR = "CODE_ERROR";

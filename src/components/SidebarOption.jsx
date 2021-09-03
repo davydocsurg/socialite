@@ -4,7 +4,7 @@ function SidebarOption({ active, text, Icon }) {
   return (
     <div className={`sidebarOption ${active && "sidebarOption--active"}`}>
       <Icon className="" />
-      <h2 className="pl-5 m-0">{text}</h2>
+      <h2 className="pl-5 m-0 d-none d-lg-block">{text}</h2>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 // import FormControlLabel from "@material-ui/core/FormControlLabel";
 // import Checkbox from "@material-ui/core/Checkbox";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { Link, useHistory } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
@@ -12,13 +13,14 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { useDispatch } from "react-redux";
+import { useDispatch, connect } from "react-redux";
 import { SignUpAction } from "../redux/actions/AuthActions";
 import axios from "axios";
 import { Alert, AlertTitle } from "@material-ui/lab";
 import IconButton from "@material-ui/core/IconButton";
 import Collapse from "@material-ui/core/Collapse";
 import CloseIcon from "@material-ui/icons/Close";
+import PropTypes from "prop-types";
 
 // function Copyright() {
 //   return (
@@ -59,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
+const SignUp = ({ UI }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -95,6 +97,8 @@ export default function SignUp() {
     showSuccess: false,
   });
 
+  const [spinner, setSpinner] = useState(false);
+
   useEffect(() => {
     setOpen();
     setShowSuccess();
@@ -106,6 +110,7 @@ export default function SignUp() {
       ...fields,
       [e.target.id]: e.target.value,
     });
+    setSpinner(false);
 
     setErrors({
       ...errors,
@@ -115,31 +120,57 @@ export default function SignUp() {
 
   const RegisterUser = (e) => {
     e.preventDefault();
+    setSpinner(true);
 
-    axios
-      .post("http://localhost:8000/api/signup", fields)
-      .then((res) => {
-        if (res.data.hasOwnProperty("success") && res.data.success === false) {
-          setOpen(true);
-          // console.log(res.data.message);
-          setErrors({ ...errors, errorMsg: res.data.message });
-        } else if (
-          res.data.hasOwnProperty("success") &&
-          res.data.success === true
-        ) {
-          // localStorage.setItem("user-token", res.data.access_token);
-          history.push("/signin");
-          // LoginAfterRegistration();
-          // console.log(res.data.message);
-          setOpen(false);
-          setShowSuccess(true);
-        }
-        return res;
-      })
-      .catch((err) => {
-        setOpen(true);
-        setErrors({ ...errors, errorMsg: err.response.data });
+    dispatch(SignUpAction(fields, history));
+
+    if (UI.errors) {
+      setOpen(true);
+      setErrors({
+        ...errors,
+        errorMsg: {
+          first_name: UI.errors.first_name,
+          last_name: UI.errors.last_name,
+          email: UI.errors.email,
+          handle: UI.errors.handle,
+          password: UI.errors.password,
+          password_confirmation: UI.errors.password_confirmation,
+        },
       });
+      console.log("====================================");
+      console.log(errors);
+      console.log("====================================");
+    } else {
+      setErrors({
+        ...errors,
+        errorMsg: {},
+      });
+    }
+
+    // axios
+    //   .post("http://localhost:8000/api/signup", fields)
+    //   .then((res) => {
+    //     if (res.data.hasOwnProperty("success") && res.data.success === false) {
+    //       setOpen(true);
+    //       // console.log(res.data.message);
+    //       setErrors({ ...errors, errorMsg: res.data.message });
+    //     } else if (
+    //       res.data.hasOwnProperty("success") &&
+    //       res.data.success === true
+    //     ) {
+    //       // localStorage.setItem("user-token", res.data.access_token);
+    //       history.push("/signin");
+    //       // LoginAfterRegistration();
+    //       // console.log(res.data.message);
+    //       setOpen(false);
+    //       setShowSuccess(true);
+    //     }
+    //     return res;
+    //   })
+    //   .catch((err) => {
+    //     setOpen(true);
+    //     setErrors({ ...errors, errorMsg: err.response.data });
+    //   });
 
     // console.log(fields);
     // const passwordMatch = checkPasswordMatch(
@@ -331,6 +362,7 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            endIcon={spinner ? <CircularProgress color="white" /> : null}
           >
             Sign Up
           </Button>
@@ -346,7 +378,31 @@ export default function SignUp() {
       <Box mt={5}>{/* <Copyright /> */}</Box>
     </Container>
   );
-}
+};
+
+SignUp.propTypes = {
+  classes: PropTypes.object.isRequired,
+  SignInAction: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  UI: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+    UI: state.UI,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatch1: () => {
+      dispatch(SignInAction);
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
 
 // import React from "react";
 // import { makeStyles } from "@material-ui/core/styles";

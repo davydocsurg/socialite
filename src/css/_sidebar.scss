@@ -5,7 +5,6 @@
   // min-width: 250px;
   margin-top: 20px !important;
   padding-left: 0.2px !important;
-  padding-right: 20px;
   // overflow-y: hidden !important;
 
   &__twitterIcon {
@@ -26,6 +25,20 @@
     margin-top: 10px !important;
   }
 
+  &__tweet_icon {
+    background-color: $tweet-color !important;
+    border: none !important;
+    color: $btn-color !important;
+    // font-weight: 800 !important;
+    text-transform: inherit !important;
+    border-radius: 50% !important;
+    height: 55px !important;
+    // width: 10% !important;
+    margin: 0% !important;
+    margin-top: 10px !important;
+    margin-bottom: 0 !important;
+  }
+
   &__signout {
     background-color: $btn-danger !important;
     border: none !important;
@@ -34,6 +47,19 @@
     text-transform: inherit !important;
     border-radius: 30px !important;
     height: 45px !important;
+    margin-top: 130px !important;
+    margin-bottom: 0 !important;
+    padding-right: 20px;
+  }
+
+  &__signout-md {
+    background-color: $btn-danger !important;
+    border: none !important;
+    color: $btn-color !important;
+    font-weight: 800 !important;
+    text-transform: inherit !important;
+    border-radius: 50% !important;
+    height: 55px !important;
     margin-top: 130px !important;
     margin-bottom: 0 !important;
   }
@@ -92,5 +118,25 @@
 
   &--active {
     color: $tweet-color;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .sidebar {
+    flex: 0.07 !important;
+
+    &__signout-md {
+      // margin-right: 10px !important;
+      height: 20px;
+    }
+  }
+
+  .sidebarOption {
+    padding-right: 0% !important;
+    margin-right: 0% !important;
+
+    &:hover {
+      border-radius: 50% !important;
+    }
   }
 }

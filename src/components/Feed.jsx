@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Feed(props) {
+function Feed() {
   const [tweets, setTweets] = useState([]);
   //   const [tweetsData, setTweetsData] = useState({
   //     tweets: {
@@ -89,10 +89,6 @@ function Feed(props) {
     };
     reader.readAsDataURL(file);
 
-    // setTweetImage(e.target.files[0]);
-    console.log("====================================");
-    console.log(tweetImageF);
-    console.log("====================================");
     // const formData = new FormData();
     // formData.append("file", file);
     // setTweetImage({
@@ -114,7 +110,7 @@ function Feed(props) {
     let authUserUrl = "authUser";
 
     axios
-      .get("http://localhost:8000/api/authUser", {
+      .get("http://localhost:8000/api/authUser", authUser, {
         headers: headers,
       })
       .then((res) => {

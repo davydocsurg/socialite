@@ -5,7 +5,7 @@
 @import "./tweetBox";
 @import "./post";
 @import "./animations";
-
+//  "build:integration": "env-cmd -f .env.integration yarn run build"
 // * {
 //   margin: 0% !important;
 // }
@@ -32,4 +32,9 @@ body {
 
 .cursor-pointer {
   cursor: pointer !important;
+}
+
+.px-7 {
+  padding-left: 5rem !important;
+  padding-right: 5rem !important;
 }

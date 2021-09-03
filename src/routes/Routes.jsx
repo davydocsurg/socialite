@@ -11,9 +11,6 @@ import {
 import SignIn from "../pages/signIn";
 import SignUp from "../pages/signUp";
 import Home from "../pages/home";
-// import "../css/anime.css";
-import PrivateRoute from "../PrivateRoute";
-import { Guard } from "../Guard";
 import AuthRoutes from "../utils/AuthRoutes";
 import jwtDecode from "jwt-decode";
 

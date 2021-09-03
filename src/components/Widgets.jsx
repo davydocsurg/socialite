@@ -17,7 +17,7 @@ function Widgets() {
 
       <div className="widgets__widgetContainer mt-3">
         <h2 className="mb-2">What's happening</h2>
-        <blockquote class="twitter-tweet">
+        <blockquote className="twitter-tweet">
           <p lang="en" dir="ltr">
             No one knows when they begin, ideas don&#39;t come out fully formed,
             they only become clearer as you work on them. You just have to get
@@ -31,7 +31,7 @@ function Widgets() {
         <script
           async
           src="https://platform.twitter.com/widgets.js"
-          charset="utf-8"
+          charSet="utf-8"
         ></script>
         <TwitterTimelineEmbed
           sourceType="profile"

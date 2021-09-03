@@ -12,8 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
-import { SignInAction } from "../redux/actions/AuthActions";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { Alert, AlertTitle } from "@material-ui/lab";
@@ -23,6 +22,10 @@ import CloseIcon from "@material-ui/icons/Close";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import CircularProgress from "@material-ui/core/CircularProgress";
+// redux
+import { SignInAction } from "../redux/actions/AuthActions";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -46,20 +49,33 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     "& > * + *": {
       marginTop: theme.spacing(2),
+      marginLeft: theme.spacing(2),
+    },
+  },
+
+  spinner: {
+    width: "10% !important",
+    height: "1% !important",
+    position: "absolute",
+    // zIndex: "10",
+    // backgroundColor: "black",
+    "& > * + *": {
+      marginLeft: theme.spacing(2),
     },
   },
 }));
 
-export default function SignIn() {
+// export default function SignIn() {
+const SignIn = ({ UI }) => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const authResponse = useSelector((state) => state.userAuth.authResponse);
-
   const [open, setOpen] = useState({
     open: false,
   });
+
+  const [spinner, setSpinner] = useState(false);
 
   const [showSuccess, setShowSuccess] = useState({
     showSuccess: false,
@@ -95,7 +111,13 @@ export default function SignIn() {
   useEffect(() => {
     setOpen();
     setShowSuccess();
-    // setErrors();
+
+    // setErrors({
+    //   ...errors,
+    //   errorMsg: {
+    //     UI.errors
+    //   },
+    // });
   }, []);
 
   const handleFieldChange = (e) => {
@@ -103,6 +125,9 @@ export default function SignIn() {
       ...fields,
       [e.target.id]: e.target.value,
     });
+
+    // UI.errors = {};
+    setSpinner(false);
 
     setErrors({
       ...errors,
@@ -112,30 +137,50 @@ export default function SignIn() {
 
   const SignInUser = (e) => {
     e.preventDefault();
-    // console.log(fields);
-    axios
-      .post("http://localhost:8000/api/signin", fields)
-      .then((res) => {
-        if (res.data.hasOwnProperty("success") && res.data.success === false) {
-          setOpen(true);
-          // console.log(res.data.message);
-          setErrors({ ...errors, errorMsg: res.data.message });
-        } else if (
-          res.data.hasOwnProperty("success") &&
-          res.data.success === true
-        ) {
-          localStorage.setItem("user-token", res.data.access_token);
-          history.push("/home");
-          // console.log(res.data.message);
-          setOpen(false);
-          setShowSuccess(true);
-        }
-        return res;
-      })
-      .catch((err) => {
-        setOpen(true);
-        setErrors({ ...errors, errorMsg: err.response.data });
+    dispatch(SignInAction(fields, history));
+    setSpinner(true);
+    if (UI.errors) {
+      setOpen(true);
+      setErrors({
+        ...errors,
+        errorMsg: {
+          login: UI.errors.login,
+          password: UI.errors.password,
+        },
       });
+      console.log("====================================");
+      console.log(errors);
+      console.log("====================================");
+    } else {
+      setErrors({
+        ...errors,
+        errorMsg: {},
+      });
+    }
+
+    // axios
+    //   .post("http://localhost:8000/api/signin", fields)
+    //   .then((res) => {
+    //     if (res.data.hasOwnProperty("success") && res.data.success === false) {
+    //       setOpen(true);
+    //       // console.log(res.data.message);
+    //       setErrors({ ...errors, errorMsg: res.data.message });
+    //     } else if (
+    //       res.data.hasOwnProperty("success") &&
+    //       res.data.success === true
+    //     ) {
+    //       localStorage.setItem("user-token", res.data.access_token);
+    //       history.push("/home");
+    //       // console.log(res.data.message);
+    //       setOpen(false);
+    //       setShowSuccess(true);
+    //     }
+    //     return res;
+    //   })
+    //   .catch((err) => {
+    //     setOpen(true);
+    //     setErrors({ ...errors, errorMsg: err.response.data });
+    //   });
     // dispatch(SignInAction(fields, history));
     // console.log(authResponse);
   };
@@ -252,10 +297,15 @@ export default function SignIn() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            startIcon={<ExitToAppOutlinedIcon />}
-            //                     type="submit"
+            startIcon={!spinner ? <ExitToAppOutlinedIcon /> : null}
+            endIcon={spinner ? <CircularProgress color="white" /> : null}
           >
-            Sign In
+            Sign In{" "}
+            {/* {spinner ? (
+              <div className={classes.spinner}>
+                <CircularProgress color="secondary" />
+              </div>
+            ) : null} */}
           </Button>
           <Grid container>
             <Grid item xs>
@@ -273,7 +323,31 @@ export default function SignIn() {
       </div>
     </Container>
   );
-}
+};
+
+SignIn.propTypes = {
+  classes: PropTypes.object.isRequired,
+  SignInAction: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  UI: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+    UI: state.UI,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatch1: () => {
+      dispatch(SignInAction);
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
 
 // import React from "react";
 // import { makeStyles } from "@material-ui/core/styles";

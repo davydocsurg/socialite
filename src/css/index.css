@@ -5,7 +5,6 @@
           flex: 0.2 !important;
   margin-top: 20px !important;
   padding-left: 0.2px !important;
-  padding-right: 20px;
 }
 
 .sidebar__twitterIcon {
@@ -26,6 +25,18 @@
   margin-top: 10px !important;
 }
 
+.sidebar__tweet_icon {
+  background-color: #50b7f5 !important;
+  border: none !important;
+  color: #e9e8de !important;
+  text-transform: inherit !important;
+  border-radius: 50% !important;
+  height: 55px !important;
+  margin: 0% !important;
+  margin-top: 10px !important;
+  margin-bottom: 0 !important;
+}
+
 .sidebar__signout {
   background-color: #eb3535 !important;
   border: none !important;
@@ -34,6 +45,19 @@
   text-transform: inherit !important;
   border-radius: 30px !important;
   height: 45px !important;
+  margin-top: 130px !important;
+  margin-bottom: 0 !important;
+  padding-right: 20px;
+}
+
+.sidebar__signout-md {
+  background-color: #eb3535 !important;
+  border: none !important;
+  color: #e9e8de !important;
+  font-weight: 800 !important;
+  text-transform: inherit !important;
+  border-radius: 50% !important;
+  height: 55px !important;
   margin-top: 130px !important;
   margin-bottom: 0 !important;
 }
@@ -89,6 +113,24 @@
 
 .sidebarOption--active {
   color: #50b7f5;
+}
+
+@media screen and (max-width: 992px) {
+  .sidebar {
+    -webkit-box-flex: 0.07 !important;
+        -ms-flex: 0.07 !important;
+            flex: 0.07 !important;
+  }
+  .sidebar__signout-md {
+    height: 20px;
+  }
+  .sidebarOption {
+    padding-right: 0% !important;
+    margin-right: 0% !important;
+  }
+  .sidebarOption:hover {
+    border-radius: 50% !important;
+  }
 }
 
 .feed {
@@ -418,5 +460,10 @@ body {
 
 .cursor-pointer {
   cursor: pointer !important;
+}
+
+.px-7 {
+  padding-left: 5rem !important;
+  padding-right: 5rem !important;
 }
 /*# sourceMappingURL=index.css.map */
