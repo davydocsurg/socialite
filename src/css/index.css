@@ -121,19 +121,25 @@
 
 @media screen and (max-width: 992px) {
   .sidebar {
-    -webkit-box-flex: 0.07 !important;
-        -ms-flex: 0.07 !important;
-            flex: 0.07 !important;
+    -webkit-box-flex: 0.12 !important;
+        -ms-flex: 0.12 !important;
+            flex: 0.12 !important;
   }
   .sidebar__signout-md {
     height: 20px;
   }
+  .sidebar__twitterIcon {
+    margin-left: 1.5rem !important;
+  }
   .sidebarOption {
     padding-right: 0% !important;
     margin-right: 0% !important;
+    padding-left: 2rem !important;
   }
   .sidebarOption:hover {
-    border-radius: 50% !important;
+    border-radius: 35% !important;
+    padding-left: 0%;
+    padding-right: 0%;
   }
 }
 
@@ -175,10 +181,29 @@
 
 @media screen and (max-width: 992px) {
   .feed {
-    -webkit-box-flex: 0.7 !important;
-        -ms-flex: 0.7 !important;
-            flex: 0.7 !important;
+    -webkit-box-flex: 0.8 !important;
+        -ms-flex: 0.8 !important;
+            flex: 0.8 !important;
   }
+}
+
+.emoji-row {
+  margin-left: 5rem !important;
+  -webkit-box-pack: justify !important;
+      -ms-flex-pack: justify !important;
+          justify-content: space-between !important;
+}
+
+.fileUpld {
+  font-size: 2rem !important;
+}
+
+.fileUpld:hover {
+  background-color: #e8f5fe;
+  border-radius: 70rem !important;
+  padding: 0.3rem !important;
+  -webkit-transition: all 1s ease-in-out !important;
+  transition: all 1s ease-in-out !important;
 }
 
 .widgets {
@@ -239,9 +264,7 @@
 
 @media screen and (max-width: 992px) {
   .widgets {
-    -webkit-box-flex: 0.2 !important;
-        -ms-flex: 0.2 !important;
-            flex: 0.2 !important;
+    display: none !important;
   }
   .widgets__input {
     margin-left: 10% !important;
@@ -300,7 +323,6 @@
   border-radius: 30px !important;
   width: 80px;
   height: 40px !important;
-  margin-top: 20px !important;
   margin-left: auto !important;
 }
 
@@ -574,5 +596,9 @@ body {
 .px-7 {
   padding-left: 5rem !important;
   padding-right: 5rem !important;
+}
+
+.text-twitter-color {
+  color: #50b7f5 !important;
 }
 /*# sourceMappingURL=index.css.map */

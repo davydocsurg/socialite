@@ -3,8 +3,13 @@ import TweetBox from "./TweetBox";
 import Tweet from "./Tweet";
 import FlipMove from "react-flip-move";
 import { Avatar, Button, TextField } from "@material-ui/core";
-// import { EditIcon } from "@material-ui/core/IconButton";
-// import { IconButton } from "@material-ui/core/Select";
+import PhotoOutlinedIcon from "@material-ui/icons/PhotoOutlined";
+import GifOutlinedIcon from "@material-ui/icons/GifOutlined";
+import PollOutlinedIcon from "@material-ui/icons/PollOutlined";
+import ScheduleOutlinedIcon from "@material-ui/icons/ScheduleOutlined";
+import EmojiEmotionsOutlinedIcon from "@material-ui/icons/EmojiEmotionsOutlined";
+import FlareOutlinedIcon from "@material-ui/icons/FlareOutlined";
+import AssistantOutlinedIcon from "@material-ui/icons/AssistantOutlined";
 import { makeStyles } from "@material-ui/styles";
 import axios from "axios";
 import HttpService from "../services/HttpServices";
@@ -243,8 +248,15 @@ const Feed = ({ UI, tweetReducer }) => {
   return (
     <div className="feed mt-0 containe text-left">
       {/* <HomeRoutes></HomeRoutes> */}
-      <div className="feed__header">
-        <h2>Home</h2>
+      <div className="feed__header row overflow-hidden">
+        <div className="col-10">
+          <h2 className="mr-auto">Home</h2>
+        </div>
+        <div className="col-2 ml-auto text-right">
+          <FlareOutlinedIcon className="active text-right float-right ">
+            {" "}
+          </FlareOutlinedIcon>
+        </div>
       </div>
       {token !== null && token !== "" ? (
         // <TweetBox></TweetBox>
@@ -286,19 +298,35 @@ const Feed = ({ UI, tweetReducer }) => {
               placeholder="Optional: Enter image URL"
               type="file"
             />
-
-            {/* <IconButton onClick={handleFileInput} className="button">
-              <EditIcon color="primary"></EditIcon>
-            </IconButton> */}
             {tweetErrors.tweetErrorMsg.tweet_photo ? (
               <span className="text-danger">
                 {tweetErrors.tweetErrorMsg.tweet_photo}
               </span>
             ) : null}
 
-            <Button type="submit" className="tweetBox__tweetButton">
-              Tweet
-            </Button>
+            <div className="row">
+              <div className="col-6 mr-auto">
+                <div className="emoji-row d-flex">
+                  <PhotoOutlinedIcon
+                    onClick={handleFileInput}
+                    className="fileUpld  active cursor-pointer"
+                  ></PhotoOutlinedIcon>
+
+                  <GifOutlinedIcon className="fileUpld active cursor-pointer"></GifOutlinedIcon>
+                  <PollOutlinedIcon className="fileUpld active cursor-pointer"></PollOutlinedIcon>
+                  <EmojiEmotionsOutlinedIcon className="fileUpld active cursor-pointer"></EmojiEmotionsOutlinedIcon>
+                  <ScheduleOutlinedIcon className="fileUpld active cursor-pointer"></ScheduleOutlinedIcon>
+                </div>
+              </div>
+
+              <div className="col-4"></div>
+
+              <div className="col-2 ml-auto float-right">
+                <Button type="submit" className="tweetBox__tweetButton ">
+                  Tweet
+                </Button>
+              </div>
+            </div>
           </form>
         </div>
       ) : (

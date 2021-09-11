@@ -48,7 +48,8 @@
 
 @media screen and (max-width: 992px) {
   .widgets {
-    flex: 0.2 !important;
+    // flex: 0.2 !important;
+    display: none !important;
 
     &__input {
       // padding: 1px !important;

@@ -33,6 +33,22 @@
 
 @media screen and (max-width: 992px) {
   .feed {
-    flex: 0.7 !important;
+    flex: 0.8 !important;
+  }
+}
+
+.emoji-row {
+  margin-left: 5rem !important;
+  justify-content: space-between !important;
+}
+
+.fileUpld {
+  font-size: 2rem !important;
+
+  &:hover {
+    background-color: $sidebar-hover-option;
+    border-radius: 70rem !important;
+    padding: 0.3rem !important;
+    transition: all 1s ease-in-out !important;
   }
 }

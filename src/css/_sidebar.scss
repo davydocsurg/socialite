@@ -129,20 +129,27 @@
 
 @media screen and (max-width: 992px) {
   .sidebar {
-    flex: 0.07 !important;
+    flex: 0.12 !important;
 
     &__signout-md {
       // margin-right: 10px !important;
       height: 20px;
+    }
+
+    &__twitterIcon {
+      margin-left: 1.5rem !important;
     }
   }
 
   .sidebarOption {
     padding-right: 0% !important;
     margin-right: 0% !important;
+    padding-left: 2rem !important;
 
     &:hover {
-      border-radius: 50% !important;
+      border-radius: 35% !important;
+      padding-left: 0%;
+      padding-right: 0%;
     }
   }
 }
