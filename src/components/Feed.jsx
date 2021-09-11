@@ -2,12 +2,21 @@ import React, { useEffect, useState } from "react";
 import TweetBox from "./TweetBox";
 import Tweet from "./Tweet";
 import FlipMove from "react-flip-move";
-import { Avatar, Button } from "@material-ui/core";
-import { TextField } from "@material-ui/core";
+import { Avatar, Button, TextField } from "@material-ui/core";
+// import { EditIcon } from "@material-ui/core/IconButton";
+// import { IconButton } from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/styles";
 import axios from "axios";
 import HttpService from "../services/HttpServices";
 import { Link } from "react-router-dom";
+// redux
+import {
+  CreateTweetAction,
+  FetchTweetsAction,
+} from "../redux/actions/TweetActions";
+import { useDispatch, connect } from "react-redux";
+import PropTypes from "prop-types";
+import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,8 +27,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Feed() {
+const Feed = ({ UI, tweetReducer }) => {
   const [tweets, setTweets] = useState([]);
+  const dispatch = useDispatch();
   //   const [tweetsData, setTweetsData] = useState({
   //     tweets: {
   //       tweet_text: "",
@@ -42,15 +52,11 @@ function Feed() {
 
   const headers = {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
+    Authorization: `${token}`,
   };
 
   // tweets
   const [tweetText, setTweet] = useState("");
-  // const [tweet, setTweet] = useState({
-  //   tweet_text: "",
-  //   tweet_photo: "",
-  // });
 
   const [tweetImageF, setTweetImage] = useState("");
 
@@ -67,10 +73,6 @@ function Feed() {
   });
 
   const handleChange = (e) => {
-    // setTweet({
-    //   ...tweet,
-    //   [e.target.id]: e.target.value || e.target.files[0],
-    // });
     setTweet(e.target.value);
 
     // clear error message
@@ -80,9 +82,25 @@ function Feed() {
     });
   };
 
+  const handleFileInput = () => {
+    const fileInp = document.getElementById("tweet_photo");
+    fileInp.click();
+  };
+
   const handleFileChange = (e) => {
     let file = e.target.files[0];
     let reader = new FileReader();
+
+    let limit = 1024 * 1024 * 2;
+    if (file["size"] > limit) {
+      setTweetImage({
+        ...tweetImageF,
+        tweetImageF: "",
+      });
+      alert("File is too large! It must be less than 2MB.");
+
+      return false;
+    }
 
     reader.onloadend = (file) => {
       setTweetImage(reader.result);
@@ -128,10 +146,35 @@ function Feed() {
   const sendTweet = (e) => {
     e.preventDefault();
 
-    // const headers = {
-    //   "Content-Type": "application/json",
-    //   Authorization: `Bearer ${token}`,
-    // };
+    // dispatch(CreateTweetAction(tweetText, tweetImageF));
+
+    // if ((tweetReducer.tweets = [])) {
+    //   setTweet("");
+    //   setTweetImage("");
+    // } else if (tweetReducer.tweets !== []) {
+    //   fetchTweetsFromServer();
+    // }
+
+    // if (UI.errors) {
+    //   setTweetErrors({
+    //     ...tweetErrors,
+    //     tweetErrorMsg: {
+    //       tweet_text: UI.errors.tweet_text,
+    //       tweet_photo: UI.errors.tweet_photo,
+    //     },
+    //   });
+
+    //   // document.getElementById("tweet_photo").value("");
+    //   console.log("====================================");
+    //   console.log(tweetErrors);
+    //   console.log("====================================");
+    // } else {
+    //   // clear error message
+    //   setTweetErrors({
+    //     ...tweetErrors,
+    //     tweetErrorMsg: {},
+    //   });
+    // }
 
     axios
       .post(
@@ -151,8 +194,16 @@ function Feed() {
           res.data.hasOwnProperty("success") &&
           res.data.success === true
         ) {
-          setTweetImage("");
+          // setTweetImage("");
           setTweet("");
+          // document.getElementsByTagName("input").createAttribute("value");
+          // document.getElementsByTagName("input").setAttribute("value", "");
+          // var inpt = document.getElementsByTagName("input");
+
+          // // .createAttribute("value");
+          // var att = document.createAttribute("value");
+          // att.value = "";
+          // inpt.setAttribute("");
 
           fetchTweetsFromServer();
         }
@@ -162,7 +213,7 @@ function Feed() {
         console.error(err);
         setTweetErrors({
           ...tweetErrors,
-          tweetErrorMsg: err.response.data,
+          tweetErrorMsg: err,
         });
       });
   };
@@ -170,6 +221,12 @@ function Feed() {
   // tweet box ends
 
   const fetchTweetsFromServer = () => {
+    // dispatch(FetchTweetsAction());
+
+    // if (tweetReducer.tweets !== []) {
+    //   setTweets(tweetReducer.tweets);
+    // }
+
     const http = new HttpService();
     let tweetsUrl = "tweets";
 
@@ -181,15 +238,6 @@ function Feed() {
       .catch((err) => {
         console.error(err);
       });
-
-    // axios
-    //   .get("http:localhost:8000/api/tweets")
-    //   .then((res) => {
-    //     setTweets(res);
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //   });
   };
 
   return (
@@ -218,29 +266,35 @@ function Feed() {
               <TextField
                 id="tweet_text"
                 value={tweetText}
-                // label="Multiline"
                 helperText={tweetErrors.tweetErrorMsg.tweet_text}
                 error={tweetErrors.tweetErrorMsg.tweet_text ? true : false}
                 multiline
                 maxRows={5}
                 className="ml-3 border-none"
                 placeholder="What's happening?"
-                // onChange={(e) => setTweet(e.target.value)}
                 onChange={handleChange}
               />
             </div>
             <input
-              // value={tweetImageF}
+              // {...(tweetImageF ? (value = "") : null)}
               // value=""
               helperText={tweetErrors.tweetErrorMsg.tweet_photo}
               error={tweetErrors.tweetErrorMsg.tweet_photo ? true : false}
               id="tweet_photo"
               onChange={handleFileChange}
-              // onChange={(e) => handleFileChange(e)}
-              className="tweetBox__imageInput"
+              className="tweetBox__imageInput d-none"
               placeholder="Optional: Enter image URL"
               type="file"
             />
+
+            {/* <IconButton onClick={handleFileInput} className="button">
+              <EditIcon color="primary"></EditIcon>
+            </IconButton> */}
+            {tweetErrors.tweetErrorMsg.tweet_photo ? (
+              <span className="text-danger">
+                {tweetErrors.tweetErrorMsg.tweet_photo}
+              </span>
+            ) : null}
 
             <Button type="submit" className="tweetBox__tweetButton">
               Tweet
@@ -281,6 +335,29 @@ function Feed() {
       </FlipMove>
     </div>
   );
-}
+};
 
-export default Feed;
+Feed.prototypes = {
+  CreateTweetAction: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  UI: PropTypes.object.isRequired,
+  tweetReducer: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+    UI: state.UI,
+    tweetReducer: state.tweetReducer,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatch1: () => {
+      dispatch(CreateTweetAction);
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feed);

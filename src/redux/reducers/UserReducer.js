@@ -1,10 +1,9 @@
 import * as ActionTypes from "../ActionTypes";
-import { createReducer } from "@reduxjs/toolkit";
+// import { createReducer } from "@reduxjs/toolkit";
 
 const initState = {
-  // authResponse: [],
-  authenticated: false,
   credentials: {},
+  authenticated: false,
   likes: [],
   notifications: [],
 };
@@ -22,7 +21,7 @@ const initState = {
 //   });
 // });
 
-const AuthReducer = (state = initState, action) => {
+const UserReducer = (state = initState, action) => {
   switch (action.type) {
     case ActionTypes.SET_AUTHENTICATED:
       return {
@@ -38,6 +37,7 @@ const AuthReducer = (state = initState, action) => {
     case ActionTypes.SET_USER:
       return {
         authenticated: true,
+        loading: false,
         ...action.payload,
       };
 
@@ -86,4 +86,4 @@ const AuthReducer = (state = initState, action) => {
       return state;
   }
 };
-export default AuthReducer;
+export default UserReducer;

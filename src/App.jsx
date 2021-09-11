@@ -11,6 +11,10 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import ThemeSwitcherComponent from "./components/ThemeSwitcher";
 // import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 import { useLocation } from "react-router-dom";
+import Container from "@material-ui/core/Container";
+// components
+import Sidebar from "./components/Sidebar";
+import Widgets from "./components/Widgets";
 
 function App() {
   // Get OS-level preference for dark mode
@@ -39,14 +43,39 @@ function App() {
   const location = useLocation();
 
   let oddLocations = ["/home", "/notifications"];
+  // let authRoutes = ["/signin", "/signup"];
 
   return (
-    <div className="App">
+    <>
       <ThemeProvider theme={theme}>
         {!location.pathname.match({ oddLocations }) ? (
           <ThemeSwitcherComponent useOs={true} themeChanger={toggleDarkMode} />
         ) : null}
-        {/* return (
+
+        <CssBaseline>
+          <Container
+            className="m-0"
+            component="main"
+            className="app"
+            maxWidth="xl"
+          >
+            {!location.pathname.match(`/signin|/signup`) ? (
+              <Sidebar></Sidebar>
+            ) : null}
+            <Routes></Routes>
+            {!location.pathname.match(`/signin|/signup`) ? (
+              <Widgets></Widgets>
+            ) : null}
+          </Container>
+        </CssBaseline>
+      </ThemeProvider>
+    </>
+  );
+}
+
+export default App;
+{
+  /* return (
   <React.Fragment>
     <Route
       render={({ location }) =>
@@ -67,14 +96,5 @@ function App() {
       ... other routes
     </Switch>
   </React.Fragment>
-); */}
-
-        <CssBaseline>
-          <Routes></Routes>
-        </CssBaseline>
-      </ThemeProvider>
-    </div>
-  );
+); */
 }
-
-export default App;

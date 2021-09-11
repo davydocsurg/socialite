@@ -21,6 +21,9 @@ import { SignOutAction, getUserData } from "../redux/actions/AuthActions";
 import { SET_AUTHENTICATED } from "../redux/ActionTypes";
 import { useDispatch } from "react-redux";
 import axios from "axios";
+import Notifications from "../components/nests/Notifications";
+import Explore from "../components/nests/Explore";
+import Profile from "../components/Profile";
 
 const Routes = () => {
   let location = useLocation();
@@ -30,14 +33,12 @@ const Routes = () => {
   const dispatch = useDispatch();
 
   // decode token
-  // const token = localStorage.user_token
   if (token) {
     const decodedToken = jwtDecode(token);
     // console.log(decodedToken);
 
     if (decodedToken.exp * 1000 < Date.now()) {
       store.dispatch(SignOutAction());
-      // window.location.href = "/signin";
       history.push("/signin");
     } else {
       // authenticated = true;
@@ -70,6 +71,9 @@ const Routes = () => {
         component={SignUp}
       ></AuthRoutes>
       <Route exact path="/home" component={Home}></Route>
+      <Route exact path="/notifications" component={Notifications}></Route>
+      <Route exact path="/explore" component={Explore}></Route>
+      <Route exact path="/profile" component={Profile}></Route>
     </Switch>
     //   </CSSTransition>
     // </TransitionGroup>

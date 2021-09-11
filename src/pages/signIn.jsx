@@ -65,7 +65,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// export default function SignIn() {
 const SignIn = ({ UI }) => {
   const classes = useStyles();
   const history = useHistory();
@@ -148,9 +147,6 @@ const SignIn = ({ UI }) => {
           password: UI.errors.password,
         },
       });
-      console.log("====================================");
-      console.log(errors);
-      console.log("====================================");
     } else {
       setErrors({
         ...errors,

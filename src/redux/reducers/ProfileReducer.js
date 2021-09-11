@@ -2,10 +2,15 @@ import * as ActionTypes from "../ActionTypes";
 // import { createReducer } from "@reduxjs/toolkit";
 
 const initState = {
-  tweepProfile: "",
+  tweepProfile: [],
+  authenticated: false,
+  credentials: {},
+  likes: [],
+  notifications: [],
+  loading: false,
 };
 const ProfileReducer = (state = initState, action) => {
-// const ProfileReducer = createReducer(initState, (builder) => {
+  // const ProfileReducer = createReducer(initState, (builder) => {
   // builder
   //   .addCase(ActionTypes.LOADING, (state) => {
   //     return (state.tweepProfile = "loading");
@@ -25,30 +30,27 @@ const ProfileReducer = (state = initState, action) => {
   //   });
 
   switch (action.type) {
-    case ActionTypes.LOADING:
+    case ActionTypes.LOADING_USER:
       return {
         ...state,
-        tweepProfile: "loading...",
+        loading: true,
       };
-    case ActionTypes.LOAD_PROFILE_SUCCESS:
+    case ActionTypes.SET_USER:
       return {
-        ...state,
-        tweepProfile: action.res,
+        authenticated: true,
+        loading: false,
+        ...action.payload,
       };
-    case ActionTypes.LOAD_PROFILE_ERROR:
-      return {
-        ...state,
-        tweepProfile: action.res,
-      };
-    case ActionTypes.CODE_ERROR:
-      return {
-        ...state,
-        tweepProfile:
-          "There seems to be a problem, please refresh your browser",
-      };
+    case ActionTypes.SET_UNAUTHENTICATED:
+      return initState;
+    // case ActionTypes.CODE_ERROR:
+    //   return {
+    //     ...state,
+    //     tweepProfile:
+    //       "There seems to be a problem, please refresh your browser",
+    //   };
     default:
       return state;
   }
-  }
-;
+};
 export default ProfileReducer;

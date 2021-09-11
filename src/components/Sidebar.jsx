@@ -11,7 +11,7 @@ import { Icon } from "@material-ui/core";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import { Button } from "@material-ui/core";
-import { Link, useRouteMatch, useHistory } from "react-router-dom";
+import { Link, useRouteMatch, useHistory, useLocation } from "react-router-dom";
 import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
 import axios from "axios";
 import HttpService from "../services/HttpServices";
@@ -34,6 +34,8 @@ function Sidebar() {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
   };
+
+  const location = useLocation();
 
   const signOut = (e) => {
     e.preventDefault();
@@ -63,19 +65,42 @@ function Sidebar() {
         onClick={goHome}
       />
 
-      <Link className="side_text" to="/home">
-        <SidebarOption active Icon={HomeIcon} text="Home" />
+      <Link
+        className={`side_text ${location.pathname.match("/home") && "active"}`}
+        to="/home"
+      >
+        <SidebarOption Icon={HomeIcon} text="Home" />
       </Link>
-      <SidebarOption Icon={SearchIcon} text="Explore" />
+
+      <Link
+        className={`side_text ${
+          location.pathname.match("/explore") && "active"
+        }`}
+        to={`/explore`}
+      >
+        <SidebarOption Icon={SearchIcon} text="Explore" />
+      </Link>
       {token !== null && token !== "" ? (
         <div className="">
-          <Link className="side_text" to={`/notifications`}>
+          <Link
+            className={`side_text ${
+              location.pathname.match("/notifications") && "active"
+            }`}
+            to={`/notifications`}
+          >
             <SidebarOption Icon={NotificationsNoneIcon} text="Notifications" />
           </Link>
           <SidebarOption Icon={MailOutlineIcon} text="Messages" />
           <SidebarOption Icon={BookmarkBorderIcon} text="Bookmarks" />
           <SidebarOption Icon={ListAltIcon} text="Lists" />
-          <SidebarOption Icon={PermIdentityIcon} text="Profile" />
+          <Link
+            className={`side_text ${
+              location.pathname.match("/profile") && "active"
+            }`}
+            to={`/profile`}
+          >
+            <SidebarOption Icon={PermIdentityIcon} text="Profile" />
+          </Link>
           <SidebarOption Icon={MoreHorizIcon} text="More" />
           {/* Button -> Tweet */}
           <Button

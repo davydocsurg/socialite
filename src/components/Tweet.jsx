@@ -29,7 +29,7 @@ const Tweet = forwardRef(
               </h3>
 
               <div className="tweet_time col-lg-2 col-md-4">
-                <p>{moment(tweetTime, "YYYYMMDD").fromNow()}</p>
+                <b>{moment(tweetTime).fromNow()}</b>
               </div>
             </div>
             <div className="post__headerDescription">

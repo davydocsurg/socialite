@@ -1,15 +1,15 @@
 import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import thunk from "redux-thunk";
 // import RootReducer from "./reducers/RootReducer";
-// import UIReducer from "./reducers/UIReducer";
-// import DataReducer from "./reducers/DataReducer";
-import AuthReducer from "./reducers/AuthReducer";
+import TweetReducer from "./reducers/TweetReducer";
+import UserReducer from "./reducers/UserReducer";
 import UIReducer from "./reducers/UIReducer";
 
 const initialState = {};
 const middleware = [thunk];
 const reducers = combineReducers({
-  userAuth: AuthReducer,
+  user: UserReducer,
+  tweetReducer: TweetReducer,
   // data: DataReducer,
   UI: UIReducer,
 });

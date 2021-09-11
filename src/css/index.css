@@ -115,6 +115,10 @@
   color: #50b7f5;
 }
 
+.active {
+  color: #50b7f5 !important;
+}
+
 @media screen and (max-width: 992px) {
   .sidebar {
     -webkit-box-flex: 0.07 !important;
@@ -355,6 +359,86 @@
 
 .post__avatar {
   padding: 20px;
+}
+
+.notifications {
+  -webkit-box-flex: 0.5 !important;
+      -ms-flex: 0.5 !important;
+          flex: 0.5 !important;
+  border-right: 1px solid #e2e2dc;
+  overflow-y: scroll !important;
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.notifications::-webkit-scrollbar {
+  display: none;
+}
+
+.notifications__header {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0;
+  background-color: #ffffff !important;
+  z-index: 100;
+  border-bottom: 1px solid #e2e2dc;
+  padding: 15px 20px;
+}
+
+.notifications h2 {
+  font-size: 20px !important;
+  font-weight: 700;
+}
+
+@media screen and (max-width: 992px) {
+  .notifications {
+    -webkit-box-flex: 0.7 !important;
+        -ms-flex: 0.7 !important;
+            flex: 0.7 !important;
+  }
+}
+
+.explore {
+  -webkit-box-flex: 0.5 !important;
+      -ms-flex: 0.5 !important;
+          flex: 0.5 !important;
+  border-right: 1px solid #e2e2dc;
+  overflow-y: scroll !important;
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.explore::-webkit-scrollbar {
+  display: none;
+}
+
+.explore__header {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0;
+  background-color: #ffffff !important;
+  z-index: 100;
+  border-bottom: 1px solid #e2e2dc;
+  padding: 15px 20px;
+}
+
+.explore h2 {
+  font-size: 20px !important;
+  font-weight: 700;
+}
+
+@media screen and (max-width: 992px) {
+  .explore {
+    -webkit-box-flex: 0.7 !important;
+        -ms-flex: 0.7 !important;
+            flex: 0.7 !important;
+  }
 }
 
 .fade-enter {

@@ -118,7 +118,9 @@ export const SignInAction = (fields, history) => {
 };
 
 export const getUserData = () => (dispatch) => {
+  dispatch({ type: ActionTypes.LOADING_USER });
   const http = new HttpService();
+
   axios
     .get(http.url + "/authUser")
     .then((res) => {

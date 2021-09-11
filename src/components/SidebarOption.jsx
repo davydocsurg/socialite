@@ -1,8 +1,8 @@
 import React from "react";
 
-function SidebarOption({ active, text, Icon }) {
+function SidebarOption({ text, Icon }) {
   return (
-    <div className={`sidebarOption ${active && "sidebarOption--active"}`}>
+    <div className={`sidebarOption `}>
       <Icon className="" />
       <h2 className="pl-5 m-0 d-none d-lg-block">{text}</h2>
     </div>
@@ -10,3 +10,4 @@ function SidebarOption({ active, text, Icon }) {
 }
 
 export default SidebarOption;
+// ${active && "sidebarOption--active"}

@@ -8,6 +8,11 @@ export const SET_USER = "SET_USER";
 export const SET_ERRORS = "SET_ERRORS";
 export const LOADING_UI = "LOADING_UI";
 export const CLEAR_ERRORS = "CLEAR_ERRORS";
+// Tweet reducer types
+export const SET_TWEET_TEXT = "SET_TWEET_TEXT";
+export const SET_TWEET_PHOTO = "SET_TWEET_PHOTO";
+export const SET_TWEET_DATA = "SET_TWEET_DATA";
+export const CLEAR_FIELDS = "CLEAR_FIELDS";
 
 export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
 export const SIGNUP_ERROR = "SIGNUP_ERROR";
