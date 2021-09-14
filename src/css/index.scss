@@ -7,11 +7,11 @@
 @import "./notifications";
 @import "./explore";
 @import "./animations";
+@import "./profile";
 //  "build:integration": "env-cmd -f .env.integration yarn run build"
 // * {
 //   margin: 0% !important;
 // }
-
 html {
   scroll-behavior: smooth !important;
   transition: all 1s ease-in-out;

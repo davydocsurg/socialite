@@ -565,6 +565,46 @@
   }
 }
 
+.profile {
+  -webkit-box-flex: 0.5 !important;
+      -ms-flex: 0.5 !important;
+          flex: 0.5 !important;
+  border-right: 1px solid #e2e2dc;
+  overflow-y: scroll !important;
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.profile::-webkit-scrollbar {
+  display: none;
+}
+
+.profile__header {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0;
+  background-color: #ffffff !important;
+  z-index: 100;
+  border-bottom: 1px solid #e2e2dc;
+  padding: 15px 20px;
+}
+
+.profile h2 {
+  font-size: 20px !important;
+  font-weight: 700;
+}
+
+@media screen and (max-width: 992px) {
+  .profile {
+    -webkit-box-flex: 0.7 !important;
+        -ms-flex: 0.7 !important;
+            flex: 0.7 !important;
+  }
+}
+
 html {
   scroll-behavior: smooth !important;
   -webkit-transition: all 1s ease-in-out;

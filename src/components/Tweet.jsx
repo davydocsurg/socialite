@@ -20,7 +20,7 @@ const Tweet = forwardRef(
         <div className="post__body">
           <div className="post__header">
             <div className="post__headerText row d-flex">
-              <h3 className="col-lg-10 col-md-8">
+              <h3 className="col-lg-9 col-md-8">
                 {tweepName}{" "}
                 <span className="post__headerSpecial">
                   {verified && <VerifiedUserIcon className="post__badge" />} @
@@ -28,7 +28,7 @@ const Tweet = forwardRef(
                 </span>
               </h3>
 
-              <div className="tweet_time col-lg-2 col-md-4">
+              <div className="tweet_time col-lg-3 col-md-4">
                 <b>{moment(tweetTime).fromNow()}</b>
               </div>
             </div>

@@ -35,18 +35,6 @@ const useStyles = makeStyles((theme) => ({
 const Feed = ({ UI, tweetReducer }) => {
   const [tweets, setTweets] = useState([]);
   const dispatch = useDispatch();
-  //   const [tweetsData, setTweetsData] = useState({
-  //     tweets: {
-  //       tweet_text: "",
-  //       tweet_photo: "",
-  // created_at:'',
-  //       tweep:{
-  //         first_name:'',
-  //         last_name:'',
-  //         handle:'',
-  //       }
-  //     },
-  //   });
 
   // tweet box begins
   const classes = useStyles();
@@ -123,10 +111,6 @@ const Feed = ({ UI, tweetReducer }) => {
   useEffect(() => {
     fetchAuthUser();
     fetchTweetsFromServer();
-
-    return () => {
-      fetchTweetsFromServer();
-    };
   }, []);
 
   const fetchAuthUser = () => {
@@ -249,10 +233,10 @@ const Feed = ({ UI, tweetReducer }) => {
     <div className="feed mt-0 containe text-left">
       {/* <HomeRoutes></HomeRoutes> */}
       <div className="feed__header row overflow-hidden">
-        <div className="col-10">
+        <div className="col-11">
           <h2 className="mr-auto">Home</h2>
         </div>
-        <div className="col-2 ml-auto text-right">
+        <div className="col-1 ml-auto text-right">
           <FlareOutlinedIcon className="active text-right float-right ">
             {" "}
           </FlareOutlinedIcon>

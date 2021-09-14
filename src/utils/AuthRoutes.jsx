@@ -22,7 +22,7 @@ AuthRoutes.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    authenticated: state.userAuth.authenticated,
+    authenticated: state.user.authenticated,
   };
 };
 // export default AuthRoutes;
