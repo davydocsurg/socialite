@@ -44,3 +44,46 @@ body {
 .text-twitter-color {
   color: $tweet-color !important;
 }
+
+.fit-block {
+  object-fit: cover;
+}
+
+.transform-o {
+  transform-origin: 0.5em 0.625em !important;
+  margin-bottom: 12rem !important;
+}
+
+svg:not(:root).svg-inline--fa {
+  overflow: visible;
+}
+
+.svg-inline--fa.fa-w-16 {
+  width: 1em;
+  margin-bottom: 0.19rem;
+}
+
+// .go-back-div {
+//   // padding: 1rem;
+
+//   &:hover {
+//     // padding: 0.92rem;
+//     // border-radius: 50%;
+//     // background-color: $sidebar-hover-option;
+//     // cursor: pointer;
+//     // transition-property: background-color;
+//     // transition-duration: 0.2s;
+//   }
+// }
+
+.go-back {
+  font-size: 1.2rem !important;
+
+  &:hover {
+    padding: 0.92rem;
+    transition: all 100ms ease-out;
+    border-radius: 50%;
+    background-color: $sidebar-hover-option;
+    cursor: pointer;
+  }
+}

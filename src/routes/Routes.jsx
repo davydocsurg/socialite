@@ -24,8 +24,16 @@ import axios from "axios";
 import Notifications from "../components/nests/Notifications";
 import Explore from "../components/nests/Explore";
 import Profile from "../components/Profile";
+import { PropTypes } from "prop-types";
+import { connect } from "react-redux";
 
-const Routes = () => {
+const Routes = (
+  {
+    // user: {
+    //   credentials: { handle },
+    // },
+  }
+) => {
   let location = useLocation();
   let history = useHistory();
   const token = localStorage.getItem("user-token");
@@ -73,7 +81,8 @@ const Routes = () => {
       <Route exact path="/home" component={Home}></Route>
       <Route exact path="/notifications" component={Notifications}></Route>
       <Route exact path="/explore" component={Explore}></Route>
-      <Route exact path="/profile" component={Profile}></Route>
+      <Route exact path={`/profile`} component={Profile}></Route>
+      {/* <Route exact path={`/${handle}`} component={Profile}></Route> */}
     </Switch>
     //   </CSSTransition>
     // </TransitionGroup>
@@ -81,3 +90,14 @@ const Routes = () => {
 };
 
 export default Routes;
+// Routes.propTypes = {
+//   user: PropTypes.object.isRequired,
+// };
+
+// const mapStateToProps = (state) => {
+//   return {
+//     user: state.user,
+//   };
+// };
+
+// export default connect(mapStateToProps)(Routes);

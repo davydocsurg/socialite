@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import SidebarOption from "./SidebarOption";
 import HomeIcon from "@material-ui/icons/Home";
@@ -15,11 +15,28 @@ import { Link, useRouteMatch, useHistory, useLocation } from "react-router-dom";
 import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
 import axios from "axios";
 import HttpService from "../services/HttpServices";
-import { SignOutAction } from "../redux/actions/AuthActions";
-import { useDispatch } from "react-redux";
+import { getUserData, SignOutAction } from "../redux/actions/AuthActions";
+import { useDispatch, connect } from "react-redux";
+import { PropTypes } from "prop-types";
 // import HomeRoutes from "../routes/HomeRoutes";
 
-function Sidebar() {
+const Sidebar = (
+  {
+    // user: {
+    //   credentials: {
+    //     first_name,
+    //     last_name,
+    //     profile_picture,
+    //     email,
+    //     handle,
+    //     is_verified,
+    //     created_at,
+    //     bio,
+    //     website,
+    //   },
+    // },
+  }
+) => {
   let token = localStorage.getItem("user-token");
   let { path, url } = useRouteMatch();
   const http = new HttpService();
@@ -29,7 +46,6 @@ function Sidebar() {
   const [signOutDet, setSignOutDet] = useState("");
 
   // authorization
-
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
@@ -93,9 +109,15 @@ function Sidebar() {
           <SidebarOption Icon={MailOutlineIcon} text="Messages" />
           <SidebarOption Icon={BookmarkBorderIcon} text="Bookmarks" />
           <SidebarOption Icon={ListAltIcon} text="Lists" />
+          {/* <Link
+            className={`side_text ${
+              location.pathname.match(`/${handle}`) && "active"
+            }`}
+            to={`/${handle}`}
+          > */}
           <Link
             className={`side_text ${
-              location.pathname.match("/profile") && "active"
+              location.pathname.match(`/profile`) && "active"
             }`}
             to={`/profile`}
           >
@@ -140,6 +162,18 @@ function Sidebar() {
       )}
     </div>
   );
-}
+};
 
 export default Sidebar;
+
+// Sidebar.propTypes = {
+//   user: PropTypes.object.isRequired,
+// };
+
+// const mapStateToProps = (state) => {
+//   return {
+//     user: state.user,
+//   };
+// };
+
+// export default connect(mapStateToProps)(Sidebar);

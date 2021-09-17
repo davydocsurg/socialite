@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TweetBox from "./TweetBox";
-import Tweet from "./Tweet";
+import Tweet from "./tweets/Tweet";
 import FlipMove from "react-flip-move";
 import { Avatar, Button, TextField } from "@material-ui/core";
 import PhotoOutlinedIcon from "@material-ui/icons/PhotoOutlined";
@@ -13,7 +13,7 @@ import AssistantOutlinedIcon from "@material-ui/icons/AssistantOutlined";
 import { makeStyles } from "@material-ui/styles";
 import axios from "axios";
 import HttpService from "../services/HttpServices";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 // redux
 import {
   CreateTweetAction,
@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 const Feed = ({ UI, tweetReducer }) => {
   const [tweets, setTweets] = useState([]);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   // tweet box begins
   const classes = useStyles();
@@ -123,9 +124,9 @@ const Feed = ({ UI, tweetReducer }) => {
       .then((res) => {
         setAuthUser({
           ...authUser,
-          authUserDetails: res.data,
+          authUserDetails: res.data.credentials,
         });
-        // console.log(res);
+        // console.log(res.data);
       })
       .catch((err) => {
         console.error(err);
@@ -207,6 +208,10 @@ const Feed = ({ UI, tweetReducer }) => {
       });
   };
 
+  const goToProfile = () => {
+    history.push("/profile");
+  };
+
   // tweet box ends
 
   const fetchTweetsFromServer = () => {
@@ -257,7 +262,8 @@ const Feed = ({ UI, tweetReducer }) => {
                   "http://localhost:8000/storage/users/profile/" +
                   authUser.authUserDetails.profile_picture
                 }
-                className="shadow-sm mr-5"
+                className="shadow-sm mr-5 cursor-pointer"
+                onClick={goToProfile}
               />
               <TextField
                 id="tweet_text"
