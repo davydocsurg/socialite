@@ -16,6 +16,7 @@ import AuthUserTweet from "./tweets/AuthUserTweet";
 import GoBack from "./constants/GoBack";
 import FlipMove from "react-flip-move";
 import HttpService from "../services/HttpServices";
+// import AuthUserTweetPhoto from "./tweets/AuthUserTweetPhoto";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -43,7 +44,7 @@ const Profile = ({
       website,
       location,
     },
-    authUserTweets: [],
+    authUserTweets,
     authUserTweetsCount,
     loading,
     authenticated,
@@ -87,8 +88,8 @@ const Profile = ({
   return (
     <>
       <div className="profile">
-        <div className="profile text-left">
-          <div className="profile__header row">
+        <div className="text-left profile__header">
+          <div className=" row">
             <div className="col-1">
               <GoBack></GoBack>
             </div>
@@ -215,18 +216,13 @@ const Profile = ({
           {authUserTweets.map((authUserTweet) => (
             <AuthUserTweet
               key={authUserTweet.slug}
-              tweepName={
-                authUserTweet.tweep.first_name +
-                " " +
-                authUserTweet.tweep.last_name
-              }
-              username={authUserTweet.tweep.handle}
+              tweepName={first_name + " " + last_name}
+              username={handle}
               verified={true}
               text={authUserTweet.tweet_text}
               tweetTime={authUserTweet.created_at}
               avatar={
-                "http://localhost:8000/storage/users/profile/" +
-                authUserTweet.tweep.profile_picture
+                "http://localhost:8000/storage/users/profile/" + profile_picture
               }
               tweetImage={
                 authUserTweet.tweet_photo

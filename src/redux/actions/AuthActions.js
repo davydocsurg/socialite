@@ -144,7 +144,7 @@ export const SignOutAction = (history) => (dispatch) => {
   };
   axios
     .post(http.url + "/signout", {
-      headers: headers,
+      headers,
     })
     .then(() => {
       localStorage.removeItem("user-token");

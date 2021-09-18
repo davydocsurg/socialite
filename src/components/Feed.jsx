@@ -184,7 +184,7 @@ const Feed = ({ UI, tweetReducer }) => {
           res.data.hasOwnProperty("success") &&
           res.data.success === true
         ) {
-          // setTweetImage("");
+          setTweetImage("");
           setTweet("");
           // document.getElementsByTagName("input").createAttribute("value");
           // document.getElementsByTagName("input").setAttribute("value", "");
@@ -275,6 +275,13 @@ const Feed = ({ UI, tweetReducer }) => {
                 className="ml-3 border-none"
                 placeholder="What's happening?"
                 onChange={handleChange}
+              />
+            </div>
+            <div className="mb-3 col-10 mx-auto img-preview">
+              <img
+                src={tweetImageF}
+                alt=""
+                className="py-2 shadow-sm img-fluid"
               />
             </div>
             <input

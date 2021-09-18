@@ -14,11 +14,11 @@
 
   &__header {
     position: sticky !important;
-    top: 0;
+    top: 0 !important;
     background-color: $twitter-header-bg !important;
-    z-index: 100;
-    border-bottom: 1px solid $twitter-background;
-    padding: 15px 20px;
+    z-index: 100 !important;
+    border-bottom: 1px solid $twitter-background !important;
+    padding: 10px 10px !important;
   }
 
   & h2 {

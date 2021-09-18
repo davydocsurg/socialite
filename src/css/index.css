@@ -585,11 +585,11 @@
 .profile__header {
   position: -webkit-sticky !important;
   position: sticky !important;
-  top: 0;
+  top: 0 !important;
   background-color: #ffffff !important;
-  z-index: 100;
-  border-bottom: 1px solid #e2e2dc;
-  padding: 15px 20px;
+  z-index: 100 !important;
+  border-bottom: 1px solid #e2e2dc !important;
+  padding: 10px 10px !important;
 }
 
 .profile h2 {
@@ -750,5 +750,11 @@ svg:not(:root).svg-inline--fa {
   border-radius: 50%;
   background-color: #e8f5fe;
   cursor: pointer;
+}
+
+.img-preview img {
+  -webkit-transition: all 0.95s ease-in !important;
+  transition: all 0.95s ease-in !important;
+  border-radius: 2rem !important;
 }
 /*# sourceMappingURL=index.css.map */

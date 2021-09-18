@@ -87,3 +87,10 @@ svg:not(:root).svg-inline--fa {
     cursor: pointer;
   }
 }
+
+.img-preview {
+  img {
+    transition: all 0.95s ease-in !important;
+    border-radius: 2rem !important;
+  }
+}
