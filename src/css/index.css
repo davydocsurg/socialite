@@ -262,6 +262,29 @@
   font-weight: 800;
 }
 
+.followBtn {
+  background-color: #50b7f5 !important;
+  border: none !important;
+  color: #e9e8de !important;
+  font-weight: 800 !important;
+  text-transform: inherit !important;
+  border-radius: 25px !important;
+  height: 45px !important;
+  margin-top: 10px !important;
+}
+
+.followBtn :hover {
+  background-color: #50b7f5 !important;
+}
+
+.tweeps-suggestions {
+  cursor: pointer;
+}
+
+.tweeps-suggestions :hover {
+  background-color: #e2e2dc;
+}
+
 @media screen and (max-width: 992px) {
   .widgets {
     display: none !important;
@@ -670,6 +693,12 @@
   width: 10.5rem;
 }
 
+.avatar-img {
+  height: 10.5rem !important;
+  width: 10.5rem !important;
+  margin-bottom: 4.1rem !important;
+}
+
 .avatar {
   position: relative;
   display: inline-block;
@@ -682,6 +711,10 @@
   box-sizing: border-box;
 }
 
+.prof-details-inp {
+  margin-top: 6rem !important;
+}
+
 html {
   scroll-behavior: smooth !important;
   -webkit-transition: all 1s ease-in-out;
@@ -690,8 +723,6 @@ html {
 
 body {
   max-height: 100vh !important;
-  -webkit-transition: all 1s ease-in-out;
-  transition: all 1s ease-in-out;
 }
 
 .app {
@@ -756,5 +787,9 @@ svg:not(:root).svg-inline--fa {
   -webkit-transition: all 0.95s ease-in !important;
   transition: all 0.95s ease-in !important;
   border-radius: 2rem !important;
+}
+
+.ml-7 {
+  margin-left: 20px !important;
 }
 /*# sourceMappingURL=index.css.map */

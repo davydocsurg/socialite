@@ -134,50 +134,53 @@ export const getUserData = () => (dispatch) => {
     });
 };
 
-export const SignOutAction = (history) => (dispatch) => {
-  // return (dispatch) => {
-  let token = localStorage.getItem("user-token");
-  const http = new HttpService();
-  const headers = {
-    Authorization: `Bearer ${token}`,
-    "Content-type": "application/json",
+export const SignOutAction = (history) => {
+  return (dispatch) => {
+    // return (dispatch) => {
+    let token = localStorage.getItem("user-token");
+    const http = new HttpService();
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-type": "application/json",
+    };
+    axios
+      .post(http.url + "/signout", {
+        headers: headers,
+      })
+      .then(() => {
+        localStorage.removeItem("user-token");
+        history.push("/signin");
+        delete axios.defaults.headers.common["Authorization"];
+        dispatch({ type: ActionTypes.SET_UNAUTHENTICATED });
+        // location.href='/signin'
+        dispatch({
+          type: ActionTypes.CLEAR_ERRORS,
+        });
+        // if (res.data.hasOwnProperty("success") && res.data.success === false) {
+        //   dispatch({
+        //     type: ActionTypes.SET_ERRORS,
+        //     payload: res.data.message,
+        //   });
+        // } else if (
+        //   res.data.hasOwnProperty("success") &&
+        //   res.data.success === true
+        // ) {
+        // localStorage.removeItem("user-token");
+        // delete axios.defaults.headers.common["Authorization"];
+        // dispatch({ type: ActionTypes.SET_UNAUTHENTICATED });
+        // dispatch({
+        //   type: ActionTypes.CLEAR_ERRORS,
+        // });
+        // history.push("/signin");
+        // }
+      })
+      .catch((err) => {
+        dispatch({
+          type: ActionTypes.SET_ERRORS,
+          payload: err,
+        });
+      });
   };
-  axios
-    .post(http.url + "/signout", {
-      headers,
-    })
-    .then(() => {
-      localStorage.removeItem("user-token");
-      delete axios.defaults.headers.common["Authorization"];
-      dispatch({ type: ActionTypes.SET_UNAUTHENTICATED });
-      history.push("/signin");
-      dispatch({
-        type: ActionTypes.CLEAR_ERRORS,
-      });
-      // if (res.data.hasOwnProperty("success") && res.data.success === false) {
-      //   dispatch({
-      //     type: ActionTypes.SET_ERRORS,
-      //     payload: res.data.message,
-      //   });
-      // } else if (
-      //   res.data.hasOwnProperty("success") &&
-      //   res.data.success === true
-      // ) {
-      // localStorage.removeItem("user-token");
-      // delete axios.defaults.headers.common["Authorization"];
-      // dispatch({ type: ActionTypes.SET_UNAUTHENTICATED });
-      // dispatch({
-      //   type: ActionTypes.CLEAR_ERRORS,
-      // });
-      // history.push("/signin");
-      // }
-    })
-    .catch((err) => {
-      dispatch({
-        type: ActionTypes.SET_ERRORS,
-        payload: err,
-      });
-    });
 
   // dispatch({ type: ActionTypes.RESTART_AUTH_RESPONSE });
 

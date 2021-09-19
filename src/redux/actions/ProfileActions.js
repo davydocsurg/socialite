@@ -4,7 +4,7 @@ import * as ActionTypes from "../ActionTypes";
 export const LoadProfileAction = () => {
   return (dispatch) => {
     console.log("profile...");
-    dispatch({ type: ActionTypes.LOADING });
+    dispatch({ type: ActionTypes.LOADING_UI });
     LoadProfile().then(
       (res) => {
         if (res.hasOwnProperty("success") && res.success === true) {
@@ -17,5 +17,12 @@ export const LoadProfileAction = () => {
         dispatch({ type: ActionTypes.CODE_ERROR, error });
       }
     );
+  };
+};
+
+export const UpdateProfileInfo = () => {
+  return (dispatch) => {
+    console.log("updating...");
+    dispatch({ type: ActionTypes.LOADING_UI });
   };
 };

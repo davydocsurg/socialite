@@ -19,7 +19,7 @@ html {
 
 body {
   max-height: 100vh !important;
-  transition: all 1s ease-in-out;
+  // transition: all 1s ease-in-out;
 }
 
 .app {
@@ -93,4 +93,8 @@ svg:not(:root).svg-inline--fa {
     transition: all 0.95s ease-in !important;
     border-radius: 2rem !important;
   }
+}
+
+.ml-7 {
+  margin-left: 20px !important;
 }

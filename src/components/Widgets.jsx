@@ -10,21 +10,21 @@ import { connect } from "react-redux";
 import FlipMove from "react-flip-move";
 import { PropTypes } from "prop-types";
 import { useLocation } from "react-router-dom";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
+import Paper from "@material-ui/core/Paper";
+import { Avatar, Button } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-  height: 60,
-  lineHeight: "60px",
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexWrap: "wrap",
+    "& > *": {
+      margin: theme.spacing(1),
+      width: theme.spacing(16),
+      height: theme.spacing(16),
+    },
+  },
 }));
-
-const darkTheme = createTheme({ palette: { mode: "dark" } });
-const lightTheme = createTheme({ palette: { mode: "light" } });
 
 const Widgets = ({
   user: {
@@ -41,11 +41,14 @@ const Widgets = ({
     },
     authUserTweets,
     authUserTweetsCount,
+    tweeps,
     loading,
     authenticated,
   },
 }) => {
   const location = useLocation();
+  const classes = useStyles();
+  const profilePicsUrl = "http://localhost:8000/storage/users/profile/";
 
   return (
     <div className="widgets mt-2">
@@ -55,75 +58,85 @@ const Widgets = ({
       </div>
       {location.pathname.match(`/profile`) && authUserTweets && (
         <>
-          <FlipMove className="container mx-auto">
-            <div className="card-group cursor-pointer">
-              {authUserTweets.slice(0, 3).map((authUserTweet) => (
-                <div
-                  class="card bg-dark text-white"
-                  //  style={{ maxWidth: "30rem" }}
-                >
-                  <div class="card-img-top">
-                    <img
-                      class="img-fluid border-bottom-4 border-right-4"
-                      loading="lazy"
-                      src={
-                        "http://localhost:8000/tweets/photos/" +
-                        authUserTweet.tweet_photo
-                      }
-                      alt={handle + " 's media"}
-                    />
-                  </div>
+          <div className="container">
+            <div className="ml-7">
+              <FlipMove className="">
+                <div className="card-group cursor-pointer">
+                  {authUserTweets.slice(0, 3).map((authUserTweet) => (
+                    <div
+                      class="card bg-dark text-white"
+                      //  style={{ maxWidth: "30rem" }}
+                    >
+                      <div class="card-img-top">
+                        <img
+                          class="img-fluid border-bottom-4 border-right-4"
+                          loading="lazy"
+                          src={
+                            "http://localhost:8000/tweets/photos/" +
+                            authUserTweet.tweet_photo
+                          }
+                          alt={handle + " 's media"}
+                        />
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            <div className="card-group cursor-pointer">
-              {authUserTweets.slice(3, 6).map((authUserTweet) => (
-                <div
-                  class="card bg-dark text-white"
-                  //  style={{ maxWidth: "30rem" }}
-                >
-                  <div class="card-img-top">
-                    <img
-                      class="img-fluid border-bottom-4 border-right-4"
-                      loading="lazy"
-                      src={
-                        "http://localhost:8000/tweets/photos/" +
-                        authUserTweet.tweet_photo
-                      }
-                      alt={handle + " 's media"}
-                    />
-                  </div>
+                <div className="card-group cursor-pointer">
+                  {authUserTweets.slice(3, 6).map((authUserTweet) => (
+                    <div
+                      class="card bg-dark text-white"
+                      //  style={{ maxWidth: "30rem" }}
+                    >
+                      <div class="card-img-top">
+                        <img
+                          class="img-fluid border-bottom-4 border-right-4"
+                          loading="lazy"
+                          src={
+                            "http://localhost:8000/tweets/photos/" +
+                            authUserTweet.tweet_photo
+                          }
+                          alt={handle + " 's media"}
+                        />
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </FlipMove>
+
+              <div className="mt-3">
+                <Paper elevation={1}>
+                  <div className="container py-3 ">
+                    <h4 className="mb-4">You might Like</h4>
+                    {tweeps.slice(0, 3).map((tweep) => (
+                      <div className="tweeps-suggestions">
+                        <div className="row p-2">
+                          <div className="col-2">
+                            <Avatar
+                              src={profilePicsUrl + tweep.profile_picture}
+                              className="shadow-sm mr-5 cursor-pointer"
+                            />
+                          </div>
+                          <div className="col-7">
+                            <h5>
+                              {tweep.first_name} {tweep.last_name}
+                            </h5>
+                            <em>@{tweep.handle}</em>
+                          </div>
+                          <div className="col-2">
+                            <Button className="followBtn text-white" fullWidth>
+                              Follow
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </Paper>
+              </div>
             </div>
-          </FlipMove>
+          </div>
         </>
       )}
-      <div className="">
-        <Grid container spacing={2}>
-          {[lightTheme, darkTheme].map((theme, index) => (
-            <Grid item xs={6} key={index}>
-              <ThemeProvider theme={theme}>
-                <Box
-                  sx={{
-                    p: 2,
-                    bgcolor: "background.default",
-                    display: "grid",
-                    gridTemplateColumns: { md: "1fr 1fr" },
-                    gap: 2,
-                  }}
-                >
-                  {[0, 1, 2, 3, 4, 6, 8, 12, 16, 24].map((elevation) => (
-                    <Item key={elevation} elevation={elevation}>
-                      {`elevation=${elevation}`}
-                    </Item>
-                  ))}
-                </Box>
-              </ThemeProvider>
-            </Grid>
-          ))}
-        </Grid>
-      </div>
       {/* {authUserTweets.slice(0, 6).map((authUserTweet) => (
       <AuthUserTweetPhoto
         // key={authUserTweet.slug}

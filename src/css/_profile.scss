@@ -87,12 +87,6 @@
   border-bottom-right-radius: 0.375rem;
   border-bottom-left-radius: 0.375rem;
 }
-// *,
-// ::after,
-// ::before {
-//   -webkit-box-sizing: border-box;
-//   box-sizing: border-box;
-// }
 
 .avatar-profile {
   position: absolute;
@@ -106,6 +100,12 @@
   width: 10.5rem;
 }
 
+.avatar-img {
+  height: 10.5rem !important;
+  width: 10.5rem !important;
+  margin-bottom: 4.1rem !important;
+}
+
 .avatar {
   position: relative;
   display: inline-block;
@@ -115,4 +115,8 @@
 ::before {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+}
+
+.prof-details-inp {
+  margin-top: 6rem !important;
 }

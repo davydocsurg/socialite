@@ -1,4 +1,4 @@
-import HttpService from "./HttpService";
+import HttpService from "./HttpServices";
 
 export const LoadProfile = () => {
   const http = new HttpService();

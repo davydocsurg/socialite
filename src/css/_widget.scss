@@ -46,6 +46,29 @@
   }
 }
 
+.followBtn {
+  background-color: $tweet-color !important;
+  border: none !important;
+  color: $btn-color !important;
+  font-weight: 800 !important;
+  text-transform: inherit !important;
+  border-radius: 25px !important;
+  height: 45px !important;
+  margin-top: 10px !important;
+
+  :hover {
+    background-color: $tweet-color !important;
+  }
+}
+
+.tweeps-suggestions {
+  cursor: pointer;
+
+  :hover {
+    background-color: $twitter-background;
+  }
+}
+
 @media screen and (max-width: 992px) {
   .widgets {
     // flex: 0.2 !important;
