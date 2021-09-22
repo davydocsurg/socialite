@@ -3,7 +3,8 @@ import * as ActionTypes from "../ActionTypes";
 const initState = {
   tweetText: "",
   tweetPhoto: "",
-  tweets: [],
+  allTweets: [],
+  tweetBoxVisibity: false,
 };
 
 const TweetReducer = (state = initState, action) => {
@@ -22,12 +23,24 @@ const TweetReducer = (state = initState, action) => {
 
     case ActionTypes.SET_TWEET_DATA:
       return {
-        tweets: action.payload,
+        allTweets: [...action.payload],
       };
 
     case ActionTypes.CLEAR_FIELDS:
       return {
-        tweets: [],
+        allTweets: [],
+      };
+
+    case ActionTypes.CLOSE_TWEET_BOX:
+      return {
+        // tweetBoxVisibity: action.payload,
+        ...action.payload,
+      };
+
+    case ActionTypes.OPEN_TWEET_BOX:
+      return {
+        // tweetBoxVisibity: true,
+        ...action.payload,
       };
 
     default:

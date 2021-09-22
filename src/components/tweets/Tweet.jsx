@@ -23,8 +23,16 @@ const Tweet = forwardRef(
               <h3 className="col-lg-9 col-md-8">
                 {tweepName}{" "}
                 <span className="post__headerSpecial">
-                  {verified && <VerifiedUserIcon className="post__badge" />} @
-                  {username}
+                  {verified ? (
+                    <small
+                      className="fas fa-check-circle text-twitter-color ml-5"
+                      data-toggle="tooltip"
+                      data-placement="right"
+                      title="Verified"
+                      data-fa-transform="shrink-4 down-2"
+                    ></small>
+                  ) : null}{" "}
+                  @{username}
                 </span>
               </h3>
 

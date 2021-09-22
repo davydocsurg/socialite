@@ -629,7 +629,6 @@
 }
 
 .bg-holder {
-  background-image: url("../assets/images/avatar.png");
   position: absolute;
   width: 100%;
   min-height: 100%;
@@ -715,6 +714,36 @@
   margin-top: 6rem !important;
 }
 
+.profile-icons {
+  font-size: 1.2rem !important;
+}
+
+.profile-modal-body {
+  max-height: 35rem !important;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+}
+
+.btn-update-prof {
+  background: #e8f5fe !important;
+  border-radius: 50% !important;
+  z-index: 22 !important;
+  margin-left: 3.21rem;
+}
+
+.btn-update-cover {
+  background: #e8f5fe !important;
+  border-radius: 50% !important;
+  z-index: 22 !important;
+  margin-left: 15rem;
+}
+
+@media screen and (min-width: 900px) {
+  .ml-lg-7 {
+    margin-left: 25rem;
+  }
+}
+
 html {
   scroll-behavior: smooth !important;
   -webkit-transition: all 1s ease-in-out;
@@ -750,6 +779,16 @@ body {
   color: #50b7f5 !important;
 }
 
+.btn-twitter:hover {
+  background: #e8f5fe !important;
+  border-radius: 50%;
+}
+
+.btn-remove-img {
+  background: #e8f5fe !important;
+  border-radius: 50% !important;
+}
+
 .fit-block {
   -o-object-fit: cover;
      object-fit: cover;
@@ -770,12 +809,15 @@ svg:not(:root).svg-inline--fa {
   margin-bottom: 0.19rem;
 }
 
-.go-back {
+.bg-twitter-bg {
+  background-color: #e2e2dc !important;
+}
+
+.go-back-button .go-back {
   font-size: 1.2rem !important;
 }
 
-.go-back:hover {
-  padding: 0.92rem;
+.go-back-button:hover {
   -webkit-transition: all 100ms ease-out;
   transition: all 100ms ease-out;
   border-radius: 50%;
@@ -784,8 +826,8 @@ svg:not(:root).svg-inline--fa {
 }
 
 .img-preview img {
-  -webkit-transition: all 0.95s ease-in !important;
-  transition: all 0.95s ease-in !important;
+  -webkit-transition: all 1.95s ease-in-out !important;
+  transition: all 1.95s ease-in-out !important;
   border-radius: 2rem !important;
 }
 

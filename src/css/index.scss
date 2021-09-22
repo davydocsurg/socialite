@@ -45,6 +45,20 @@ body {
   color: $tweet-color !important;
 }
 
+.btn-twitter {
+  &:hover {
+    background: $sidebar-hover-option !important;
+    border-radius: 50%;
+  }
+}
+
+.btn-remove-img {
+  // &:hover {
+  background: $sidebar-hover-option !important;
+  border-radius: 50% !important;
+  // }
+}
+
 .fit-block {
   object-fit: cover;
 }
@@ -63,24 +77,17 @@ svg:not(:root).svg-inline--fa {
   margin-bottom: 0.19rem;
 }
 
-// .go-back-div {
-//   // padding: 1rem;
+.bg-twitter-bg {
+  background-color: $twitter-background !important;
+}
 
-//   &:hover {
-//     // padding: 0.92rem;
-//     // border-radius: 50%;
-//     // background-color: $sidebar-hover-option;
-//     // cursor: pointer;
-//     // transition-property: background-color;
-//     // transition-duration: 0.2s;
-//   }
-// }
-
-.go-back {
-  font-size: 1.2rem !important;
+.go-back-button {
+  .go-back {
+    font-size: 1.2rem !important;
+  }
 
   &:hover {
-    padding: 0.92rem;
+    // padding: 0.92rem;
     transition: all 100ms ease-out;
     border-radius: 50%;
     background-color: $sidebar-hover-option;
@@ -90,7 +97,7 @@ svg:not(:root).svg-inline--fa {
 
 .img-preview {
   img {
-    transition: all 0.95s ease-in !important;
+    transition: all 1.95s ease-in-out !important;
     border-radius: 2rem !important;
   }
 }

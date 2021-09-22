@@ -10,7 +10,7 @@ import LinkIcon from "@material-ui/icons/Link";
 import CalendarToday from "@material-ui/icons/CalendarToday";
 import moment from "moment";
 import { Avatar } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, StylesProvider } from "@material-ui/core/styles";
 import AuthUserTweet from "./tweets/AuthUserTweet";
 // import { useHistory } from "react-router-dom";
 import GoBack from "./constants/GoBack";
@@ -18,6 +18,8 @@ import FlipMove from "react-flip-move";
 import HttpService from "../services/HttpServices";
 import Modal from "@material-ui/core/Modal";
 import { UpdateProfileInfo } from "../redux/actions/ProfileActions";
+import { getUserData } from "../redux/actions/AuthActions";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -28,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+  },
+  bg: {
+    // backgroundImage: url("../assets/images/avatar.png"),
   },
   paper: {
     position: "absolute",
@@ -43,12 +48,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Profile = ({
+  UI,
   user: {
     credentials: {
       id,
       first_name,
       last_name,
       profile_picture,
+      cover_picture,
       email,
       handle,
       is_verified,
@@ -70,14 +77,29 @@ const Profile = ({
   // authorization
   const token = localStorage.getItem("user-token");
   const [openModal, setOpenModal] = useState(false);
+  const [openProfPicsModal, setOpenProfPicsModal] = useState(false);
   const [profileDetails, setProfileDetails] = useState({
-    first_name,
-    last_name,
-    bio,
-    website,
-    location,
-    profile_picture,
-    // cover_picture,
+    first_name: "",
+    last_name: "",
+    bio: "",
+    website: "",
+    location: "",
+    profile_picture: "",
+    cover_picture,
+  });
+
+  const [profPics, setProfPics] = useState("");
+
+  const [errors, setErrors] = useState({
+    errorMsg: {
+      first_name: "",
+      last_name: "",
+      bio: "",
+      website: "",
+      location: "",
+      profile_picture: "",
+      handle: "",
+    },
   });
 
   const headers = {
@@ -85,23 +107,142 @@ const Profile = ({
     Authorization: `${token}`,
   };
 
-  const profilePicsUrl = "http://localhost:8000/storage/users/profile/";
+  const profilePicsUrl = "http://localhost:8000/profile/photos/";
+  const coverPicsUrl = "http://localhost:8000/profile/photos/";
+  // const coverPicsUrl = "http://localhost:8000/storage/users/profile/";
+  let fullName = first_name + " " + last_name + " ";
 
   const openProfileModal = () => {
+    setProfileDetails({
+      ...profileDetails,
+      first_name: first_name,
+      last_name: last_name,
+      bio: bio,
+      website: website,
+      location: location,
+      handle: handle,
+      profile_picture: profile_picture,
+    });
     setOpenModal(true);
   };
 
   const closeProfileModal = () => {
     setOpenModal(false);
+    setProfileDetails({
+      ...profileDetails,
+    });
   };
 
   const handleChange = (e) => {
-    setProfileDetails(e.target.value);
+    setProfileDetails({
+      ...profileDetails,
+      [e.target.id]: e.target.value,
+    });
+    clearAllErrors();
   };
 
-  const handleSubmit = (e) => {
+  const handleProfFileChange = (e) => {
+    setOpenProfPicsModal(true);
+    setTimeout(() => {
+      document.getElementById("profile_picture").click();
+
+      let file = e.target.files[0];
+      let reader = new FileReader();
+
+      let limit = 1024 * 1024 * 2;
+      if (file["size"] > limit) {
+        setProfPics({
+          ...profPics,
+          profPics: "",
+        });
+        alert("File is too large! It must be less than 2MB.");
+
+        return false;
+      }
+
+      reader.onloadend = (file) => {
+        setProfPics(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }, 1000);
+  };
+
+  const changeProfPics = () => {
+    // console.log("====================================");
+    // console.log("profile Image changed");
+    // console.log("====================================");
+    axios
+      .post(
+        "http://localhost:8000/api/update-profile-picture",
+        { profile_picture: profPics },
+        {
+          headers: headers,
+        }
+      )
+      .then((res) => {
+        if (res.data.hasOwnProperty("success") && res.data.success === false) {
+          alert(res.data);
+        } else if (
+          res.data.hasOwnProperty("success") &&
+          res.data.success === true
+        ) {
+          closeProfPicsModal();
+          dispatch(getUserData());
+        }
+        return res;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  // close profile pics modal
+  const closeProfPicsModal = () => {
+    setProfPics("");
+    setOpenProfPicsModal(false);
+  };
+
+  // open profile pics modal
+  const openProfPicsPreviewModal = () => {
+    handleProfFileChange();
+    // document.getElementById("profile_picture").click();
+    // setOpenProfPicsModal(true);
+  };
+
+  const handleDetailsSubmit = (e) => {
     e.preventDefault();
-    dispatch(UpdateProfileInfo());
+    // if (UI.errors.length > 1) {
+    //   clearAllErrors();
+    // }
+    dispatch(UpdateProfileInfo(profileDetails));
+
+    if (UI.errors) {
+      setOpenModal(true);
+      setErrors({
+        ...errors,
+        errorMsg: {
+          handle: UI.errors.handle,
+          email: UI.errors.email,
+          first_name: UI.errors.first_name,
+          last_name: UI.errors.last_name,
+          bio: UI.errors.bio,
+          website: UI.errors.website,
+          location: UI.errors.location,
+          profile_picture: UI.errors.profile_picture,
+        },
+      });
+    } else if (!UI.errors) {
+      // clearAllErrors();
+      setOpenModal(false);
+    }
+    // setOpenModal(false);
+  };
+
+  const clearAllErrors = () => {
+    setErrors({
+      ...errors,
+      errorMsg: {},
+    });
   };
 
   // const [authUserTweets, setAuthUserTweets] = useState([]);
@@ -133,20 +274,15 @@ const Profile = ({
     <>
       <div className="mx-auto">
         <Modal open={openModal} onClose={closeProfileModal} className="">
-          <div
-            // className="modal modal-xl "
-            id="exampleModal"
-            // tabindex="-1"
-            role="dialog"
-          >
-            <div className="modal-dialog" role="document">
+          <div id="exampleModal" role="dialog">
+            <div className="modal-dialog modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="modal-title" id="exampleModalLabel">
                     Edit Profile
                   </h5>
                   <button
-                    className="close"
+                    className="close btn btn-twitter"
                     type="button"
                     data-dismiss="modal"
                     aria-label="Close"
@@ -157,28 +293,120 @@ const Profile = ({
                     </span>
                   </button>
                 </div>
-                <div className="modal-body">
-                  <div className="position-relative min-vh-25 mb-7">
-                    <div className="bg-holder rounded-soft rounded-bottom-0"></div>
-                    <div className="avatar avatar-5xl avatar-profile">
-                      <Avatar
-                        alt="Remy Sharp"
-                        src={profilePicsUrl + profile_picture}
-                        className={`rounded-circle  transform-o avatar-img  img-fluid shadow-sm`}
-                      />
-                    </div>
-                  </div>
+                <form onSubmit={handleDetailsSubmit}>
+                  <div className="modal-body profile-modal-body">
+                    <div className="position-relative min-vh-25 mb-7">
+                      <button
+                        className="btn shadow-lg mt-4 p-4 position-absolute btn-update-cover ml-lg-7"
+                        // onClick={removeImg}
+                        type="button"
+                      >
+                        <i className="fas fa-upload"></i>
+                      </button>
+                      <div
+                        className="bg-holder rounded-soft rounded-bottom-0"
+                        style={{
+                          backgroundImage: `url(${
+                            coverPicsUrl + cover_picture
+                          })`,
+                        }}
+                      ></div>
+                      <div className="avatar avatar-5xl avatar-profile">
+                        {/* img preview modal */}
+                        {openProfPicsModal && (
+                          <Modal
+                            open={openProfPicsModal}
+                            onClose={closeProfPicsModal}
+                            className="mt-auto"
+                          >
+                            <div role="dialog">
+                              <div
+                                className="modal-dialog modal-md"
+                                role="document"
+                              >
+                                <div className="modal-content">
+                                  <div className="modal-header">
+                                    <h5
+                                      className="modal-title"
+                                      id="exampleModalLabel"
+                                    >
+                                      Profile Image Preview
+                                    </h5>
+                                    <button
+                                      className="close btn btn-twitter"
+                                      type="button"
+                                      data-dismiss="modal"
+                                      aria-label="Close"
+                                      onClick={closeProfPicsModal}
+                                    >
+                                      <span
+                                        className="font-weight-light"
+                                        aria-hidden="true"
+                                      >
+                                        &times;
+                                      </span>
+                                    </button>
+                                  </div>
 
-                  <div className="prof-details-inp">
-                    <form onSubmit={handleSubmit}>
+                                  <img
+                                    src={profPics}
+                                    alt=""
+                                    className="p-5 shadow-sm img-fluid"
+                                  />
+                                  {/* <form onSubmit={changeProfPics}> */}
+                                  <div className="modal-footer">
+                                    <input
+                                      id="profile_picture"
+                                      onChange={handleProfFileChange}
+                                      className="d-none"
+                                      placeholder="Optional: Enter image URL"
+                                      type="file"
+                                    />
+
+                                    <button
+                                      className="px-4 text-white  followBtn"
+                                      type="button"
+                                      onClick={changeProfPics}
+                                    >
+                                      Save changes
+                                    </button>
+                                  </div>
+                                  {/* </form> */}
+                                </div>
+                              </div>
+                            </div>
+                          </Modal>
+                        )}
+                        <div className="bg-dark shadow-lg">
+                          <button
+                            className="btn shadow-lg mt-4 p-4 position-absolute btn-update-prof"
+                            onClick={openProfPicsPreviewModal}
+                            type="button"
+                          >
+                            <i className="fas fa-upload"></i>
+                          </button>
+                        </div>
+                        <Avatar
+                          alt={fullName}
+                          src={profilePicsUrl + profile_picture}
+                          className={`rounded-circle  transform-o avatar-img  img-fluid shadow-sm`}
+                        ></Avatar>
+                      </div>
+                    </div>
+
+                    <div className="prof-details-inp">
                       <div className="row">
                         <div className="col-lg-6">
                           <TextField
                             required
-                            id="standard-required"
+                            id="first_name"
                             label="First Name"
                             defaultValue={first_name}
+                            // value={profileDetails.first_name}
                             variant="standard"
+                            onChange={handleChange}
+                            helperText={errors.errorMsg.first_name}
+                            error={errors.errorMsg.first_name ? true : false}
                             fullWidth
                           />
                         </div>
@@ -186,10 +414,14 @@ const Profile = ({
                         <div className="col-lg-6">
                           <TextField
                             required
-                            id="standard-required"
+                            id="last_name"
                             label="Last Name"
                             defaultValue={last_name}
+                            // value={profileDetails.last_name}
                             variant="standard"
+                            onChange={handleChange}
+                            helperText={errors.errorMsg.last_name}
+                            error={errors.errorMsg.last_name ? true : false}
                             fullWidth
                           />
                         </div>
@@ -197,44 +429,94 @@ const Profile = ({
 
                       <div className="col-12 mt-3">
                         <TextField
-                          id="standard-multiline-flexible"
-                          label="Bio"
-                          multiline
-                          maxRows={4}
-                          value={bio && bio}
+                          id="handle"
+                          label="Handle"
+                          defaultValue={handle && handle}
+                          // value={profileDetails.handle}
+                          variant="standard"
                           fullWidth
                           onChange={handleChange}
+                          helperText={errors.errorMsg.handle}
+                          error={errors.errorMsg.handle ? true : false}
                         />
                       </div>
 
                       <div className="col-12 mt-3">
                         <TextField
-                          id="standard-required"
-                          label="Website"
-                          defaultValue={website && website}
+                          id="email"
+                          label="Email"
+                          defaultValue={email && email}
+                          // value={profileDetails.email}
                           variant="standard"
                           fullWidth
+                          onChange={handleChange}
+                          helperText={errors.errorMsg.email}
+                          error={errors.errorMsg.email ? true : false}
                         />
                       </div>
-                    </form>
+
+                      {/* #TODO: Fix Bio */}
+                      <div className="col-12 mt-3">
+                        <TextField
+                          id="bio"
+                          label="Bio"
+                          multiline
+                          maxRows={4}
+                          defaultValue={bio && bio}
+                          // value={profileDetails.bio}
+                          fullWidth
+                          onChange={handleChange}
+                          helperText={errors.errorMsg.bio}
+                          error={errors.errorMsg.bio ? true : false}
+                        />
+                      </div>
+
+                      <div className="col-12 mt-3">
+                        <TextField
+                          id="website"
+                          label="Website"
+                          defaultValue={website && website}
+                          // value={profileDetails.website}
+                          variant="standard"
+                          fullWidth
+                          onChange={handleChange}
+                          helperText={errors.errorMsg.website}
+                          error={errors.errorMsg.website ? true : false}
+                        />
+                      </div>
+
+                      <div className="col-12 mt-3">
+                        <TextField
+                          id="location"
+                          label="Location"
+                          defaultValue={location && location}
+                          // value={profileDetails.location}
+                          variant="standard"
+                          fullWidth
+                          onChange={handleChange}
+                          helperText={errors.errorMsg.location}
+                          error={errors.errorMsg.location ? true : false}
+                        />
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="modal-footer">
-                  {/* <Button
+                  <div className="modal-footer">
+                    {/* <Button
                     className="btn btn-secondary btn-sm"
                     type="Button"
                     data-dismiss="modal"
                     onClick={closeProfileModal}
-                  >
+                    >
                     Close
                   </Button> */}
-                  <Button
-                    className="btn btn-primary text-white btn-sm followBtn"
-                    type="submit"
-                  >
-                    Save changes
-                  </Button>
-                </div>
+                    <Button
+                      className="px-4 text-white  followBtn"
+                      type="submit"
+                    >
+                      Save changes
+                    </Button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
@@ -250,11 +532,10 @@ const Profile = ({
             </div>
             {"  "}
             <div className="col-4">
-              <h2 className="ml-4">
-                {first_name} {last_name}
-              </h2>
+              <h2 className="ml-4">{fullName}</h2>
               <em className="font-weight-lighter">
-                {authUserTweetsCount} Tweets
+                {authUserTweetsCount}{" "}
+                {authUserTweetsCount > 1 ? "Tweets" : "Tweet"}
               </em>
             </div>
           </div>
@@ -262,10 +543,15 @@ const Profile = ({
 
         <div className="card mb-3">
           <div className="card-header position-relative min-vh-25 mb-7">
-            <div className="bg-holder rounded-soft rounded-bottom-0"></div>
+            <div
+              className={"bg-holder rounded-soft rounded-bottom-0" + classes.bg}
+              style={{
+                backgroundImage: `url(${coverPicsUrl + cover_picture})`,
+              }}
+            ></div>
             <div className="avatar avatar-5xl avatar-profile">
               <Avatar
-                alt="Remy Sharp"
+                alt={fullName}
                 src={profilePicsUrl + profile_picture}
                 className={
                   // classes.large +
@@ -287,21 +573,19 @@ const Profile = ({
             <div className="row">
               <div className="col-8">
                 <h4 className="mb-1 mt-5">
-                  {first_name} {last_name}{" "}
-                  <small
-                    className="fas fa-check-circle text-primary ml-5"
-                    data-toggle="tooltip"
-                    data-placement="right"
-                    title="Verified"
-                    data-fa-transform="shrink-4 down-2"
-                  ></small>
+                  {fullName}
+                  {is_verified ? (
+                    <small
+                      className="fas fa-check-circle text-twitter-color ml-5"
+                      data-toggle="tooltip"
+                      data-placement="right"
+                      title="Verified"
+                      data-fa-transform="shrink-4 down-2"
+                    ></small>
+                  ) : null}
                 </h4>
                 <b className="text-muted">@{handle}</b>
                 <br />
-                <br />
-                <h5 className="fs-0 font-weight-normal">
-                  {bio && <Typography variant="body2"> bio</Typography>}
-                </h5>
               </div>
 
               <div className="col-4  pl-2 pl-lg-3">
@@ -318,58 +602,6 @@ const Profile = ({
                           Edit Profile
                         </button>
                       </div>
-
-                      {/* {openModal && (
-                        <div
-                          // className="modal fade position-absolute"
-                          id="exampleModal"
-                          tabindex="-1"
-                          role="dialog"
-                        >
-                          <div className="modal-dialog" role="document">
-                            <div className="modal-content">
-                              <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLabel">
-                                  Modal Title
-                                </h5>
-                                <button
-                                  className="close"
-                                  type="button"
-                                  data-dismiss="modal"
-                                  aria-label="Close"
-                                >
-                                  <span
-                                    className="font-weight-light"
-                                    aria-hidden="true"
-                                  >
-                                    &times;
-                                  </span>
-                                </button>
-                              </div>
-                              <div className="modal-body">
-                                <p>
-                                  Woohoo, you're reading this text in a modal!
-                                </p>
-                              </div>
-                              <div className="modal-footer">
-                                <button
-                                  className="btn btn-secondary btn-sm"
-                                  type="button"
-                                  data-dismiss="modal"
-                                >
-                                  Close
-                                </button>
-                                <button
-                                  className="btn btn-primary btn-sm"
-                                  type="button"
-                                >
-                                  Save changes
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      )} */}
                     </>
                   )}
 
@@ -397,37 +629,46 @@ const Profile = ({
                 </div>
                 <hr className="border-dashed my-4 d-md-none d-lg-none" />
               </div>
+              <div className="col-10 my-3">
+                {bio && <Typography variant="body2"> {bio}</Typography>}
+              </div>
               <div className="row mr-auto">
                 {location && (
-                  <div className="col-lg-3 col-md-3 col-sm-6">
+                  <div className="col-lg-3 col-md-4 col-sm-6">
                     <p className="text-500">
                       <Fragment>
-                        <LocationOn color="primary" />
-                        {location}
+                        {/* <LocationOn color="primary" /> */}
+                        <i className="fas fa-map-marker-alt profile-icons"> </i>
+                        {" " + location}
                       </Fragment>
                     </p>
                   </div>
                 )}
                 {website && (
-                  <div className="col-lg-3 col-md-3 col-sm-6">
+                  <div className="col-lg-5 col-md-7 col-sm-6">
                     <Fragment>
-                      <LinkIcon>
+                      {/* <LinkIcon></LinkIcon> */}
+                      <div className="d-flex">
+                        <i className="fas fa-link profile-icons"> </i>
                         <a
                           href={website}
                           target="_blank"
                           rel="noopener noreferrer"
+                          className=""
                         >
                           {" "}
                           {website}
                         </a>
-                      </LinkIcon>
+                      </div>
                     </Fragment>
                   </div>
                 )}
 
-                <div className="col-lg-6 col-md-6 col-sm-6 text-muted">
-                  <CalendarToday className="mb-2"></CalendarToday>{" "}
-                  <b className="mt-4">
+                <div className="col-lg-4 col-md-6 col-sm-6 text-muted">
+                  {/* <CalendarToday className="mb-2"></CalendarToday>{" "} */}
+                  <i className="far fa-calendar-alt profile-icons"></i>
+                  <b className="mt-">
+                    {" "}
                     Joined {moment(created_at).format("MMMM YYYY")}
                   </b>
                 </div>
@@ -447,23 +688,27 @@ const Profile = ({
         </div>
 
         <FlipMove>
-          {authUserTweets.map((authUserTweet) => (
-            <AuthUserTweet
-              key={authUserTweet.slug}
-              tweepName={first_name + " " + last_name}
-              username={handle}
-              verified={true}
-              text={authUserTweet.tweet_text}
-              tweetTime={authUserTweet.created_at}
-              avatar={profilePicsUrl + profile_picture}
-              tweetImage={
-                authUserTweet.tweet_photo
-                  ? "http://localhost:8000/tweets/photos/" +
-                    authUserTweet.tweet_photo
-                  : null
-              }
-            ></AuthUserTweet>
-          ))}
+          {authUserTweets ? (
+            authUserTweets.map((authUserTweet) => (
+              <AuthUserTweet
+                key={authUserTweet.slug}
+                tweepName={first_name + " " + last_name}
+                username={handle}
+                verified={true}
+                text={authUserTweet.tweet_text}
+                tweetTime={authUserTweet.created_at}
+                avatar={profilePicsUrl + profile_picture}
+                tweetImage={
+                  authUserTweet.tweet_photo
+                    ? "http://localhost:8000/tweets/photos/" +
+                      authUserTweet.tweet_photo
+                    : null
+                }
+              ></AuthUserTweet>
+            ))
+          ) : (
+            <div className="text-center text-black">No Tweets Found</div>
+          )}
         </FlipMove>
       </div>
     </>
@@ -472,11 +717,13 @@ const Profile = ({
 
 Profile.propTypes = {
   user: PropTypes.object.isRequired,
+  UI: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {
   return {
     user: state.user,
+    UI: state.UI,
   };
 };
 

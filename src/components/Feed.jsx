@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Feed = ({ UI, tweetReducer }) => {
+const Feed = ({ UI, tweetReducer: { allTweets } }) => {
   const [tweets, setTweets] = useState([]);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -54,6 +54,7 @@ const Feed = ({ UI, tweetReducer }) => {
 
   const [tweetImageF, setTweetImage] = useState("");
 
+  const [tweetImageRemover, setTweetImageRemover] = useState(false);
   // auth user
   const [authUser, setAuthUser] = useState({
     authUserDetails: {},
@@ -101,6 +102,8 @@ const Feed = ({ UI, tweetReducer }) => {
     };
     reader.readAsDataURL(file);
 
+    setTweetImageRemover(true);
+
     // const formData = new FormData();
     // formData.append("file", file);
     // setTweetImage({
@@ -109,9 +112,17 @@ const Feed = ({ UI, tweetReducer }) => {
     // });
   };
 
+  const removeImg = () => {
+    setTweetImage({
+      ...tweetImageF,
+      tweetImageF: "",
+    });
+    setTweetImageRemover(false);
+  };
+
   useEffect(() => {
     fetchAuthUser();
-    fetchTweetsFromServer();
+    // fetchTweetsFromServer();
   }, []);
 
   const fetchAuthUser = () => {
@@ -195,6 +206,8 @@ const Feed = ({ UI, tweetReducer }) => {
           // att.value = "";
           // inpt.setAttribute("");
 
+          setTweetImageRemover(false);
+          dispatch(FetchTweetsAction());
           fetchTweetsFromServer();
         }
         return res;
@@ -215,7 +228,7 @@ const Feed = ({ UI, tweetReducer }) => {
   // tweet box ends
 
   const fetchTweetsFromServer = () => {
-    // dispatch(FetchTweetsAction());
+    dispatch(FetchTweetsAction());
 
     // if (tweetReducer.tweets !== []) {
     //   setTweets(tweetReducer.tweets);
@@ -278,6 +291,15 @@ const Feed = ({ UI, tweetReducer }) => {
               />
             </div>
             <div className="mb-3 col-10 mx-auto img-preview">
+              {tweetImageRemover && (
+                <button
+                  className="btn shadow-lg position-absolute btn-remove-img"
+                  onClick={removeImg}
+                  type="button"
+                >
+                  <i className="fas fa-times"></i>
+                </button>
+              )}
               <img
                 src={tweetImageF}
                 alt=""
@@ -338,12 +360,12 @@ const Feed = ({ UI, tweetReducer }) => {
         </div>
       )}
       <FlipMove>
-        {tweets.map((tweet) => (
+        {allTweets.map((tweet) => (
           <Tweet
             key={tweet.slug}
             tweepName={tweet.tweep.first_name + " " + tweet.tweep.last_name}
             username={tweet.tweep.handle}
-            verified={true}
+            verified={tweet.tweep.is_verified}
             text={tweet.tweet_text}
             tweetTime={tweet.created_at}
             avatar={

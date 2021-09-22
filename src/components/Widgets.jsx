@@ -64,12 +64,12 @@ const Widgets = ({
                 <div className="card-group cursor-pointer">
                   {authUserTweets.slice(0, 3).map((authUserTweet) => (
                     <div
-                      class="card bg-dark text-white"
+                      class="card bg-twitter-bg text-white"
                       //  style={{ maxWidth: "30rem" }}
                     >
                       <div class="card-img-top">
                         <img
-                          class="img-fluid border-bottom-4 border-right-4"
+                          class="img-fluid justify-content-space-between"
                           loading="lazy"
                           src={
                             "http://localhost:8000/tweets/photos/" +
@@ -84,12 +84,12 @@ const Widgets = ({
                 <div className="card-group cursor-pointer">
                   {authUserTweets.slice(3, 6).map((authUserTweet) => (
                     <div
-                      class="card bg-dark text-white"
+                      class="card bg-twitter-bg text-white"
                       //  style={{ maxWidth: "30rem" }}
                     >
                       <div class="card-img-top">
                         <img
-                          class="img-fluid border-bottom-4 border-right-4"
+                          class="img-fluid justify-content-space-between"
                           loading="lazy"
                           src={
                             "http://localhost:8000/tweets/photos/" +

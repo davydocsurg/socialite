@@ -6,6 +6,7 @@ import {
 } from "../../services/AuthServices";
 import HttpService from "../../services/HttpServices";
 import axios from "axios";
+import { FetchTweetsAction } from "./TweetActions";
 // import { useHistory } from "react-router-dom";
 // import { RouteHistory } from "./RouteActions";
 // import { Route } from "react-router-dom";
@@ -79,6 +80,7 @@ export const SignInAction = (fields, history) => {
           setAuthToken(res.data.access_token);
 
           dispatch(getUserData());
+          dispatch(FetchTweetsAction());
           dispatch({
             type: ActionTypes.CLEAR_ERRORS,
           });
@@ -119,10 +121,14 @@ export const SignInAction = (fields, history) => {
 
 export const getUserData = () => (dispatch) => {
   dispatch({ type: ActionTypes.LOADING_USER });
+  let token = localStorage.getItem("user-token");
   const http = new HttpService();
-
+  const headers = {
+    Authorization: `${token}`,
+    "Content-type": "application/json",
+  };
   axios
-    .get(http.url + "/authUser")
+    .get(http.url + "/authUser", { headers: headers })
     .then((res) => {
       dispatch({
         type: ActionTypes.SET_USER,
@@ -140,7 +146,7 @@ export const SignOutAction = (history) => {
     let token = localStorage.getItem("user-token");
     const http = new HttpService();
     const headers = {
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
       "Content-type": "application/json",
     };
     axios
@@ -149,10 +155,9 @@ export const SignOutAction = (history) => {
       })
       .then(() => {
         localStorage.removeItem("user-token");
-        history.push("/signin");
         delete axios.defaults.headers.common["Authorization"];
         dispatch({ type: ActionTypes.SET_UNAUTHENTICATED });
-        // location.href='/signin'
+        history.push("/signin");
         dispatch({
           type: ActionTypes.CLEAR_ERRORS,
         });

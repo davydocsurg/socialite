@@ -2,16 +2,18 @@ import * as ActionTypes from "../ActionTypes";
 
 const initState = {
   loading: false,
-  errors: null,
+  errors: {},
 };
 
 const UIReducer = (state = initState, action) => {
   switch (action.type) {
     case ActionTypes.SET_ERRORS:
       return {
-        ...state,
         loading: false,
-        errors: action.payload,
+        ...state,
+        errors: {
+          ...action.payload,
+        },
       };
     case ActionTypes.CLEAR_ERRORS:
       return {

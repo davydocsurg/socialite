@@ -48,32 +48,58 @@ export const CreateTweetAction = (tweet_text, tweet_photo) => (dispatch) => {
     });
 };
 
-export const FetchTweetsAction = () => (dispatch) => {
-  // const FetchTweetsAction = () => (dispatch) => {
-  const http = new HttpService();
-  dispatch({ type: ActionTypes.LOADING_UI });
+export const FetchTweetsAction = () => {
+  return (dispatch) => {
+    const http = new HttpService();
+    dispatch({ type: ActionTypes.LOADING_UI });
 
-  axios
-    .get(http.url + "/tweets")
-    .then((res) => {
-      if (res.data.hasOwnProperty("success") && res.data.success === false) {
-        dispatch({
-          type: ActionTypes.SET_ERRORS,
-          payload: res.data.message,
-        });
-      } else if (
-        res.data.hasOwnProperty("success") &&
-        res.data.success === true
-      ) {
+    axios
+      .get(http.url + "/tweets")
+      .then((res) => {
+        // if (res.data.hasOwnProperty("success") && res.data.success === false) {
+        //   dispatch({
+        //     type: ActionTypes.SET_ERRORS,
+        //     payload: res.data.message,
+        //   });
+        // } else if (
+        //   res.data.hasOwnProperty("success") &&
+        //   res.data.success === true
+        // ) {
         dispatch({
           type: ActionTypes.CLEAR_ERRORS,
           type: ActionTypes.SET_TWEET_DATA,
           payload: res.data,
         });
-      }
-      return res;
-    })
-    .catch((err) => {
-      console.error(err);
+        // console.log("=====from store===============================");
+        // console.log(res.data);
+        // console.log("====================================");
+        // }
+        // return res;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+};
+
+export const OpenTweetBox = () => {
+  return (dispatch) => {
+    dispatch({
+      type: ActionTypes.OPEN_TWEET_BOX,
+      payload: true,
     });
+
+    console.log("====================================");
+    console.log(ActionTypes.OPEN_TWEET_BOX.payload);
+    console.log("====================================");
+  };
+};
+
+export const CloseTweetBox = () => {
+  return (dispatch) => {
+    dispatch({
+      type: ActionTypes.CLOSE_TWEET_BOX,
+      payload: false,
+    });
+  };
 };

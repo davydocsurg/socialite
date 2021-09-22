@@ -136,6 +136,10 @@ const SignIn = ({ UI }) => {
 
   const SignInUser = (e) => {
     e.preventDefault();
+    setErrors({
+      ...errors,
+      errorMsg: {},
+    });
     dispatch(SignInAction(fields, history));
     setSpinner(true);
     if (UI.errors) {
@@ -147,7 +151,7 @@ const SignIn = ({ UI }) => {
           password: UI.errors.password,
         },
       });
-    } else {
+    } else if ((UI.errors.length = 0)) {
       setErrors({
         ...errors,
         errorMsg: {},

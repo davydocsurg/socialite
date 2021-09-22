@@ -7,9 +7,9 @@ export default function GoBack() {
 
   return (
     <>
-      <div className="go-back-div">
+      <button className="go-back-button btn ">
         <h3 className="fas fa-arrow-left mt-2 go-back" onClick={goBack}></h3>
-      </div>
+      </button>
     </>
   );
 }

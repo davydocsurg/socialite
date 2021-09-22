@@ -34,7 +34,7 @@
 }
 
 .bg-holder {
-  background-image: url("../assets/images/avatar.png");
+  // background-image: url("../assets/images/avatar.png");
   position: absolute;
   width: 100%;
   min-height: 100%;
@@ -119,4 +119,38 @@
 
 .prof-details-inp {
   margin-top: 6rem !important;
+}
+
+.profile-icons {
+  font-size: 1.2rem !important;
+}
+
+.profile-modal-body {
+  max-height: 35rem !important;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+}
+
+.btn-update-prof {
+  background: $sidebar-hover-option !important;
+  border-radius: 50% !important;
+  z-index: 22 !important;
+  margin-left: 3.21rem;
+  // padding: 1rem !important;
+  // margin-top: 140rem !important;
+}
+
+.btn-update-cover {
+  background: $sidebar-hover-option !important;
+  border-radius: 50% !important;
+  z-index: 22 !important;
+  margin-left: 15rem;
+  // padding: 1rem !important;
+  // margin-top: 140rem !important;
+}
+
+@media screen and(min-width:900px) {
+  .ml-lg-7 {
+    margin-left: 25rem;
+  }
 }

@@ -13,6 +13,8 @@ export const SET_TWEET_TEXT = "SET_TWEET_TEXT";
 export const SET_TWEET_PHOTO = "SET_TWEET_PHOTO";
 export const SET_TWEET_DATA = "SET_TWEET_DATA";
 export const CLEAR_FIELDS = "CLEAR_FIELDS";
+export const CLOSE_TWEET_BOX = "CLOSE_TWEET_BOX";
+export const OPEN_TWEET_BOX = "OPEN_TWEET_BOX";
 
 export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
 export const SIGNUP_ERROR = "SIGNUP_ERROR";
