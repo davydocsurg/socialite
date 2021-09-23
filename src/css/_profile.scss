@@ -149,6 +149,11 @@
   // margin-top: 140rem !important;
 }
 
+.b-radius {
+  border: transparent solid 0.1rem;
+  border-radius: 2rem !important;
+}
+
 @media screen and(min-width:900px) {
   .ml-lg-7 {
     margin-left: 25rem;

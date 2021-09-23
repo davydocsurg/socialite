@@ -78,6 +78,7 @@ const Profile = ({
   const token = localStorage.getItem("user-token");
   const [openModal, setOpenModal] = useState(false);
   const [openProfPicsModal, setOpenProfPicsModal] = useState(false);
+  const [openCoverPhotoModal, setOpenCoverPhotoModal] = useState(false);
   const [profileDetails, setProfileDetails] = useState({
     first_name: "",
     last_name: "",
@@ -89,6 +90,7 @@ const Profile = ({
   });
 
   const [profPics, setProfPics] = useState("");
+  const [coverPhoto, setCoverPhoto] = useState("");
 
   const [errors, setErrors] = useState({
     errorMsg: {
@@ -167,10 +169,33 @@ const Profile = ({
     }, 1000);
   };
 
+  const handleCoverFileChange = (e) => {
+    setOpenCoverPhotoModal(true);
+    setTimeout(() => {
+      document.getElementById("cover_picture").click();
+
+      let file = e.target.files[0];
+      let reader = new FileReader();
+
+      let limit = 1024 * 1024 * 2;
+      if (file["size"] > limit) {
+        setCoverPhoto({
+          ...coverPhoto,
+          coverPhoto: "",
+        });
+        alert("File is too large! It must be less than 2MB.");
+
+        return false;
+      }
+
+      reader.onloadend = (file) => {
+        setCoverPhoto(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }, 1000);
+  };
+
   const changeProfPics = () => {
-    // console.log("====================================");
-    // console.log("profile Image changed");
-    // console.log("====================================");
     axios
       .post(
         "http://localhost:8000/api/update-profile-picture",
@@ -196,10 +221,42 @@ const Profile = ({
       });
   };
 
+  const changeCoverPhoto = () => {
+    axios
+      .post(
+        "http://localhost:8000/api/update-cover-picture",
+        { cover_picture: coverPhoto },
+        {
+          headers: headers,
+        }
+      )
+      .then((res) => {
+        if (res.data.hasOwnProperty("success") && res.data.success === false) {
+          alert(res.data);
+        } else if (
+          res.data.hasOwnProperty("success") &&
+          res.data.success === true
+        ) {
+          closeCoverPhotoModal();
+          dispatch(getUserData());
+        }
+        return res;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   // close profile pics modal
   const closeProfPicsModal = () => {
     setProfPics("");
     setOpenProfPicsModal(false);
+  };
+
+  // close cover photo modal
+  const closeCoverPhotoModal = () => {
+    setCoverPhoto("");
+    setOpenCoverPhotoModal(false);
   };
 
   // open profile pics modal
@@ -207,6 +264,11 @@ const Profile = ({
     handleProfFileChange();
     // document.getElementById("profile_picture").click();
     // setOpenProfPicsModal(true);
+  };
+
+  // open cover photo modal
+  const openCoverPhotoPreviewModal = () => {
+    handleCoverFileChange();
   };
 
   const handleDetailsSubmit = (e) => {
@@ -296,9 +358,72 @@ const Profile = ({
                 <form onSubmit={handleDetailsSubmit}>
                   <div className="modal-body profile-modal-body">
                     <div className="position-relative min-vh-25 mb-7">
+                      {/* cover photo preview modal */}
+                      {openCoverPhotoModal && (
+                        <Modal
+                          open={openCoverPhotoModal}
+                          onClose={closeCoverPhotoModal}
+                          className="mt-auto"
+                        >
+                          <div role="dialog">
+                            <div
+                              className="modal-dialog modal-md"
+                              role="document"
+                            >
+                              <div className="modal-content">
+                                <div className="modal-header">
+                                  <h5 className="modal-title">
+                                    Cover Photo Preview
+                                  </h5>
+                                  <button
+                                    className="close btn btn-twitter"
+                                    type="button"
+                                    data-dismiss="modal"
+                                    aria-label="Close"
+                                    onClick={closeCoverPhotoModal}
+                                  >
+                                    <span
+                                      className="font-weight-light"
+                                      aria-hidden="true"
+                                    >
+                                      &times;
+                                    </span>
+                                  </button>
+                                </div>
+
+                                <img
+                                  src={coverPhoto}
+                                  alt=""
+                                  className="p-5 shadow-sm img-fluid b-radius"
+                                />
+                                {/* <form onSubmit={changeProfPics}> */}
+                                <div className="modal-footer">
+                                  <input
+                                    id="cover_picture"
+                                    onChange={handleCoverFileChange}
+                                    className="d-none"
+                                    placeholder="Optional: Enter image URL"
+                                    type="file"
+                                  />
+
+                                  <button
+                                    className="px-4 text-white  followBtn"
+                                    type="button"
+                                    onClick={changeCoverPhoto}
+                                  >
+                                    Save changes
+                                  </button>
+                                </div>
+                                {/* </form> */}
+                              </div>
+                            </div>
+                          </div>
+                        </Modal>
+                      )}
+
                       <button
                         className="btn shadow-lg mt-4 p-4 position-absolute btn-update-cover ml-lg-7"
-                        // onClick={removeImg}
+                        onClick={openCoverPhotoPreviewModal}
                         type="button"
                       >
                         <i className="fas fa-upload"></i>
@@ -351,7 +476,7 @@ const Profile = ({
                                   <img
                                     src={profPics}
                                     alt=""
-                                    className="p-5 shadow-sm img-fluid"
+                                    className="p-5 shadow-sm img-fluid b-radius"
                                   />
                                   {/* <form onSubmit={changeProfPics}> */}
                                   <div className="modal-footer">

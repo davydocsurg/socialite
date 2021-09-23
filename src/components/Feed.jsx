@@ -44,6 +44,8 @@ const Feed = ({ UI, tweetReducer: { allTweets } }) => {
   // authorization
   const token = localStorage.getItem("user-token");
 
+  const profilePicsUrl = "http://localhost:8000/profile/photos/";
+
   const headers = {
     "Content-Type": "application/json",
     Authorization: `${token}`,
@@ -122,7 +124,7 @@ const Feed = ({ UI, tweetReducer: { allTweets } }) => {
 
   useEffect(() => {
     fetchAuthUser();
-    // fetchTweetsFromServer();
+    fetchTweetsFromServer();
   }, []);
 
   const fetchAuthUser = () => {
@@ -271,10 +273,7 @@ const Feed = ({ UI, tweetReducer: { allTweets } }) => {
           >
             <div className="tweetBox__input">
               <Avatar
-                src={
-                  "http://localhost:8000/storage/users/profile/" +
-                  authUser.authUserDetails.profile_picture
-                }
+                src={profilePicsUrl + authUser.authUserDetails.profile_picture}
                 className="shadow-sm mr-5 cursor-pointer"
                 onClick={goToProfile}
               />
@@ -368,10 +367,7 @@ const Feed = ({ UI, tweetReducer: { allTweets } }) => {
             verified={tweet.tweep.is_verified}
             text={tweet.tweet_text}
             tweetTime={tweet.created_at}
-            avatar={
-              "http://localhost:8000/storage/users/profile/" +
-              tweet.tweep.profile_picture
-            }
+            avatar={profilePicsUrl + tweet.tweep.profile_picture}
             tweetImage={
               tweet.tweet_photo
                 ? "http://localhost:8000/tweets/photos/" + tweet.tweet_photo
