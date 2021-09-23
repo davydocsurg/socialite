@@ -21,7 +21,12 @@ import {
 } from "../redux/actions/TweetActions";
 import { useDispatch, connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Alert } from "@material-ui/lab";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,6 +62,9 @@ const Feed = ({ UI, tweetReducer: { allTweets } }) => {
   const [tweetImageF, setTweetImage] = useState("");
 
   const [tweetImageRemover, setTweetImageRemover] = useState(false);
+
+  const [openTweetSuccessMessage, setOpenTweetSuccessMessage] = useState(false);
+
   // auth user
   const [authUser, setAuthUser] = useState({
     authUserDetails: {},
@@ -199,16 +207,9 @@ const Feed = ({ UI, tweetReducer: { allTweets } }) => {
         ) {
           setTweetImage("");
           setTweet("");
-          // document.getElementsByTagName("input").createAttribute("value");
-          // document.getElementsByTagName("input").setAttribute("value", "");
-          // var inpt = document.getElementsByTagName("input");
-
-          // // .createAttribute("value");
-          // var att = document.createAttribute("value");
-          // att.value = "";
-          // inpt.setAttribute("");
 
           setTweetImageRemover(false);
+          setOpenTweetSuccessMessage(true);
           dispatch(FetchTweetsAction());
           fetchTweetsFromServer();
         }
@@ -225,6 +226,10 @@ const Feed = ({ UI, tweetReducer: { allTweets } }) => {
 
   const goToProfile = () => {
     history.push("/profile");
+  };
+
+  const closeTweetSuccessMessage = () => {
+    setOpenTweetSuccessMessage(false);
   };
 
   // tweet box ends
@@ -250,133 +255,147 @@ const Feed = ({ UI, tweetReducer: { allTweets } }) => {
   };
 
   return (
-    <div className="feed mt-0 containe text-left">
-      {/* <HomeRoutes></HomeRoutes> */}
-      <div className="feed__header row overflow-hidden">
-        <div className="col-11">
-          <h2 className="mr-auto">Home</h2>
-        </div>
-        <div className="col-1 ml-auto text-right">
-          <FlareOutlinedIcon className="active text-right float-right ">
-            {" "}
-          </FlareOutlinedIcon>
-        </div>
-      </div>
-      {token !== null && token !== "" ? (
-        // <TweetBox></TweetBox>
-        <div className="tweetBox">
-          <form
-            className={classes.root}
-            noValidate
-            autoComplete="off"
-            onSubmit={sendTweet}
-          >
-            <div className="tweetBox__input">
-              <Avatar
-                src={profilePicsUrl + authUser.authUserDetails.profile_picture}
-                className="shadow-sm mr-5 cursor-pointer"
-                onClick={goToProfile}
-              />
-              <TextField
-                id="tweet_text"
-                value={tweetText}
-                helperText={tweetErrors.tweetErrorMsg.tweet_text}
-                error={tweetErrors.tweetErrorMsg.tweet_text ? true : false}
-                multiline
-                maxRows={5}
-                className="ml-3 border-none"
-                placeholder="What's happening?"
-                onChange={handleChange}
-              />
-            </div>
-            <div className="mb-3 col-10 mx-auto img-preview">
-              {tweetImageRemover && (
-                <button
-                  className="btn shadow-lg position-absolute btn-remove-img"
-                  onClick={removeImg}
-                  type="button"
-                >
-                  <i className="fas fa-times"></i>
-                </button>
-              )}
-              <img
-                src={tweetImageF}
-                alt=""
-                className="py-2 shadow-sm img-fluid"
-              />
-            </div>
-            <input
-              // {...(tweetImageF ? (value = "") : null)}
-              // value=""
-              helperText={tweetErrors.tweetErrorMsg.tweet_photo}
-              error={tweetErrors.tweetErrorMsg.tweet_photo ? true : false}
-              id="tweet_photo"
-              onChange={handleFileChange}
-              className="tweetBox__imageInput d-none"
-              placeholder="Optional: Enter image URL"
-              type="file"
-            />
-            {tweetErrors.tweetErrorMsg.tweet_photo ? (
-              <span className="text-danger">
-                {tweetErrors.tweetErrorMsg.tweet_photo}
-              </span>
-            ) : null}
-
-            <div className="row">
-              <div className="col-6 mr-auto">
-                <div className="emoji-row d-flex">
-                  <PhotoOutlinedIcon
-                    onClick={handleFileInput}
-                    className="fileUpld  active cursor-pointer"
-                  ></PhotoOutlinedIcon>
-
-                  <GifOutlinedIcon className="fileUpld active cursor-pointer"></GifOutlinedIcon>
-                  <PollOutlinedIcon className="fileUpld active cursor-pointer"></PollOutlinedIcon>
-                  <EmojiEmotionsOutlinedIcon className="fileUpld active cursor-pointer"></EmojiEmotionsOutlinedIcon>
-                  <ScheduleOutlinedIcon className="fileUpld active cursor-pointer"></ScheduleOutlinedIcon>
-                </div>
-              </div>
-
-              <div className="col-4"></div>
-
-              <div className="col-2 ml-auto float-right">
-                <Button type="submit" className="tweetBox__tweetButton ">
-                  Tweet
-                </Button>
-              </div>
-            </div>
-          </form>
-        </div>
-      ) : (
-        <div className="container">
-          <div className="card mt-3">
-            <div className="card-body">
-              <Link to="/signin">
-                <h4 className="text-center">Login to tweet</h4>
-              </Link>
-            </div>
+    <>
+      {/* tweet success message */}
+      <Snackbar
+        open={openTweetSuccessMessage}
+        autoHideDuration={6000}
+        onClose={closeTweetSuccessMessage}
+      >
+        <Alert onClose={closeTweetSuccessMessage} severity="success">
+          Tweet sent!
+        </Alert>
+      </Snackbar>
+      <div className="feed mt-0 containe text-left">
+        {/* <HomeRoutes></HomeRoutes> */}
+        <div className="feed__header row overflow-hidden">
+          <div className="col-11">
+            <h2 className="mr-auto">Home</h2>
+          </div>
+          <div className="col-1 ml-auto text-right">
+            <FlareOutlinedIcon className="active text-right float-right ">
+              {" "}
+            </FlareOutlinedIcon>
           </div>
         </div>
-      )}
-      <FlipMove>
-        {allTweets.map((tweet) => (
-          <Tweet
-            key={tweet.slug}
-            tweepName={tweet.tweep.first_name + " " + tweet.tweep.last_name}
-            username={tweet.tweep.handle}
-            verified={tweet.tweep.is_verified}
-            text={tweet.tweet_text}
-            tweetTime={tweet.created_at}
-            avatar={profilePicsUrl + tweet.tweep.profile_picture}
-            tweetImage={
-              tweet.tweet_photo
-                ? "http://localhost:8000/tweets/photos/" + tweet.tweet_photo
-                : null
-            }
-          ></Tweet>
-        ))}
-      </FlipMove>
-    </div>
+        {token !== null && token !== "" ? (
+          // <TweetBox></TweetBox>
+          <div className="tweetBox">
+            <form
+              className={classes.root}
+              noValidate
+              autoComplete="off"
+              onSubmit={sendTweet}
+            >
+              <div className="tweetBox__input">
+                <Avatar
+                  src={
+                    profilePicsUrl + authUser.authUserDetails.profile_picture
+                  }
+                  className="shadow-sm mr-5 cursor-pointer"
+                  onClick={goToProfile}
+                />
+                <TextField
+                  id="tweet_text"
+                  value={tweetText}
+                  helperText={tweetErrors.tweetErrorMsg.tweet_text}
+                  error={tweetErrors.tweetErrorMsg.tweet_text ? true : false}
+                  multiline
+                  maxRows={5}
+                  className="ml-3 border-none"
+                  placeholder="What's happening?"
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="mb-3 col-10 mx-auto img-preview">
+                {tweetImageRemover && (
+                  <button
+                    className="btn shadow-lg position-absolute btn-remove-img"
+                    onClick={removeImg}
+                    type="button"
+                  >
+                    <i className="fas fa-times"></i>
+                  </button>
+                )}
+                <img
+                  src={tweetImageF}
+                  alt=""
+                  className="py-2 shadow-sm img-fluid"
+                />
+              </div>
+              <input
+                // {...(tweetImageF ? (value = "") : null)}
+                // value=""
+                helperText={tweetErrors.tweetErrorMsg.tweet_photo}
+                error={tweetErrors.tweetErrorMsg.tweet_photo ? true : false}
+                id="tweet_photo"
+                onChange={handleFileChange}
+                className="tweetBox__imageInput d-none"
+                placeholder="Optional: Enter image URL"
+                type="file"
+              />
+              {tweetErrors.tweetErrorMsg.tweet_photo ? (
+                <span className="text-danger">
+                  {tweetErrors.tweetErrorMsg.tweet_photo}
+                </span>
+              ) : null}
+
+              <div className="row">
+                <div className="col-6 mr-auto">
+                  <div className="emoji-row d-flex">
+                    <PhotoOutlinedIcon
+                      onClick={handleFileInput}
+                      className="fileUpld  active cursor-pointer"
+                    ></PhotoOutlinedIcon>
+
+                    <GifOutlinedIcon className="fileUpld active cursor-pointer"></GifOutlinedIcon>
+                    <PollOutlinedIcon className="fileUpld active cursor-pointer"></PollOutlinedIcon>
+                    <EmojiEmotionsOutlinedIcon className="fileUpld active cursor-pointer"></EmojiEmotionsOutlinedIcon>
+                    <ScheduleOutlinedIcon className="fileUpld active cursor-pointer"></ScheduleOutlinedIcon>
+                  </div>
+                </div>
+
+                <div className="col-4"></div>
+
+                <div className="col-2 ml-auto float-right">
+                  <Button type="submit" className="tweetBox__tweetButton ">
+                    Tweet
+                  </Button>
+                </div>
+              </div>
+            </form>
+          </div>
+        ) : (
+          <div className="container">
+            <div className="card mt-3">
+              <div className="card-body">
+                <Link to="/signin">
+                  <h4 className="text-center">Login to tweet</h4>
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
+        <FlipMove>
+          {allTweets.map((tweet) => (
+            <Tweet
+              key={tweet.slug}
+              tweepName={tweet.tweep.first_name + " " + tweet.tweep.last_name}
+              username={tweet.tweep.handle}
+              verified={tweet.tweep.is_verified}
+              text={tweet.tweet_text}
+              tweetTime={tweet.created_at}
+              avatar={profilePicsUrl + tweet.tweep.profile_picture}
+              tweetImage={
+                tweet.tweet_photo
+                  ? "http://localhost:8000/tweets/photos/" + tweet.tweet_photo
+                  : null
+              }
+            ></Tweet>
+          ))}
+        </FlipMove>
+      </div>
+    </>
   );
 };
 

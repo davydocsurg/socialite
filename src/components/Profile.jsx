@@ -19,7 +19,18 @@ import HttpService from "../services/HttpServices";
 import Modal from "@material-ui/core/Modal";
 import { UpdateProfileInfo } from "../redux/actions/ProfileActions";
 import { getUserData } from "../redux/actions/AuthActions";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+import Slide from "@material-ui/core/Slide";
 import axios from "axios";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+// function TransitionRight(props) {
+// return <Slide {...props} direction="right" />;
+// }
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -91,6 +102,7 @@ const Profile = ({
 
   const [profPics, setProfPics] = useState("");
   const [coverPhoto, setCoverPhoto] = useState("");
+  const [transition, setSetTransition] = useState(undefined);
 
   const [errors, setErrors] = useState({
     errorMsg: {
@@ -103,6 +115,24 @@ const Profile = ({
       handle: "",
     },
   });
+
+  const [
+    openProfileDetailsUpdateSuccessMessage,
+    setOpenProfileDetailsUpdateSuccessMessage,
+  ] = useState(false);
+
+  const [
+    openProfilePicsUpdateSuccessMessage,
+    setOpenProfilePicsUpdateSuccessMessage,
+  ] = useState(false);
+
+  const [
+    openCoverPhotoUpdateSuccessMessage,
+    setOpenCoverPhotoUpdateSuccessMessage,
+  ] = useState(false);
+
+  const [openProfileUpdateErrorMessage, setOpenProfileUpdateErrorMessage] =
+    useState(false);
 
   const headers = {
     "Content-Type": "application/json",
@@ -206,12 +236,13 @@ const Profile = ({
       )
       .then((res) => {
         if (res.data.hasOwnProperty("success") && res.data.success === false) {
-          alert(res.data);
+          setOpenProfileUpdateErrorMessage(true);
         } else if (
           res.data.hasOwnProperty("success") &&
           res.data.success === true
         ) {
           closeProfPicsModal();
+          setOpenProfilePicsUpdateSuccessMessage(true);
           dispatch(getUserData());
         }
         return res;
@@ -232,12 +263,13 @@ const Profile = ({
       )
       .then((res) => {
         if (res.data.hasOwnProperty("success") && res.data.success === false) {
-          alert(res.data);
+          setOpenProfileUpdateErrorMessage(true);
         } else if (
           res.data.hasOwnProperty("success") &&
           res.data.success === true
         ) {
           closeCoverPhotoModal();
+          setOpenCoverPhotoUpdateSuccessMessage(true);
           dispatch(getUserData());
         }
         return res;
@@ -271,15 +303,32 @@ const Profile = ({
     handleCoverFileChange();
   };
 
+  const closeProfileDetailsUpdateSuccessMessage = () => {
+    setOpenProfileDetailsUpdateSuccessMessage(false);
+  };
+
+  const closeProfilePicsUpdateSuccessMessage = () => {
+    setOpenProfilePicsUpdateSuccessMessage(false);
+  };
+
+  const closeCoverPhotoUpdateSuccessMessage = () => {
+    setOpenCoverPhotoUpdateSuccessMessage(false);
+  };
+
+  const closeProfileUpdateErrorMessage = () => {
+    setOpenProfileUpdateErrorMessage(false);
+  };
+
   const handleDetailsSubmit = (e) => {
     e.preventDefault();
     // if (UI.errors.length > 1) {
-    //   clearAllErrors();
+    clearAllErrors();
     // }
     dispatch(UpdateProfileInfo(profileDetails));
 
     if (UI.errors) {
       setOpenModal(true);
+      setOpenProfileUpdateErrorMessage(true);
       setErrors({
         ...errors,
         errorMsg: {
@@ -296,6 +345,7 @@ const Profile = ({
     } else if (!UI.errors) {
       // clearAllErrors();
       setOpenModal(false);
+      setOpenProfileDetailsUpdateSuccessMessage(true);
     }
     // setOpenModal(false);
   };
@@ -334,6 +384,61 @@ const Profile = ({
 
   return (
     <>
+      {/* profile details success message */}
+      <Snackbar
+        open={openProfileDetailsUpdateSuccessMessage}
+        autoHideDuration={6000}
+        onClose={closeProfileDetailsUpdateSuccessMessage}
+      >
+        <Alert
+          onClose={closeProfileDetailsUpdateSuccessMessage}
+          severity="success"
+        >
+          Profile Updated Successfully!
+        </Alert>
+      </Snackbar>
+
+      {/* profile pics success message */}
+      <Snackbar
+        open={openProfilePicsUpdateSuccessMessage}
+        autoHideDuration={6000}
+        onClose={closeProfilePicsUpdateSuccessMessage}
+      >
+        <Alert
+          onClose={closeProfilePicsUpdateSuccessMessage}
+          severity="success"
+        >
+          Profile Picture Updated Successfully!
+        </Alert>
+      </Snackbar>
+
+      {/* cover photo success message */}
+      <Snackbar
+        open={openCoverPhotoUpdateSuccessMessage}
+        autoHideDuration={6000}
+        onClose={closeCoverPhotoUpdateSuccessMessage}
+      >
+        <Alert onClose={closeCoverPhotoUpdateSuccessMessage} severity="success">
+          Cover Photo Updated Successfully!
+        </Alert>
+      </Snackbar>
+
+      {/* profile update error message */}
+      <Snackbar
+        open={openProfileUpdateErrorMessage}
+        autoHideDuration={6000}
+        onClose={closeProfileUpdateErrorMessage}
+        // anchorOrigin={"top right"}
+        // key={top right}
+        // key={transition ? transition.name : "TransitionRight"}
+        // TransitionComponent={transition}
+      >
+        <Alert onClose={closeProfileUpdateErrorMessage} severity="error">
+          Oops, something went wrong. Please, check your credentials and try
+          again.
+        </Alert>
+      </Snackbar>
+
       <div className="mx-auto">
         <Modal open={openModal} onClose={closeProfileModal} className="">
           <div id="exampleModal" role="dialog">

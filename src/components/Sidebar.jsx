@@ -26,6 +26,12 @@ import { PropTypes } from "prop-types";
 import TweetBox from "./TweetBox";
 import { OpenTweetBox } from "../redux/actions/TweetActions";
 import { CloseTweetBox } from "../redux/actions/TweetActions";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,8 +65,10 @@ const Sidebar = ({
   const dispatch = useDispatch();
   const [tweetBoxVisibility, setTweetBoxVisibility] = useState(false);
   const classes = useStyles();
+  const [openTweetSuccessMessage, setOpenTweetSuccessMessage] = useState(false);
 
   const [signOutDet, setSignOutDet] = useState("");
+  const profilePicsUrl = "http://localhost:8000/profile/photos/";
 
   // authorization
   const headers = {
@@ -190,6 +198,10 @@ const Sidebar = ({
       });
   };
 
+  const closeTweetSuccessMessage = () => {
+    setOpenTweetSuccessMessage(false);
+  };
+
   const handleCloseTweetBox = () => {
     setTweetBoxVisibility(false);
     dispatch(CloseTweetBox());
@@ -220,8 +232,10 @@ const Sidebar = ({
           setTweet("");
 
           setTweetImageRemover(false);
+          setOpenTweetSuccessMessage(true);
           fetchTweetsFromServer();
           setTweetBoxVisibility(false);
+          dispatch(getUserData());
         }
         return res;
       })
@@ -241,12 +255,6 @@ const Sidebar = ({
   // tweet box ends
 
   const fetchTweetsFromServer = () => {
-    // dispatch(FetchTweetsAction());
-
-    // if (tweetReducer.tweets !== []) {
-    //   setTweets(tweetReducer.tweets);
-    // }
-
     const http = new HttpService();
     let tweetsUrl = "tweets";
 
@@ -266,6 +274,16 @@ const Sidebar = ({
 
   return (
     <>
+      {/* tweet success message */}
+      <Snackbar
+        open={openTweetSuccessMessage}
+        autoHideDuration={6000}
+        onClose={closeTweetSuccessMessage}
+      >
+        <Alert onClose={closeTweetSuccessMessage} severity="success">
+          Tweet sent!
+        </Alert>
+      </Snackbar>
       {/* {tweetBoxVisibility && ( */}
       {tweetBoxVisibility && (
         <>
@@ -297,7 +315,7 @@ const Sidebar = ({
                       <div className="tweetBox__input">
                         <Avatar
                           src={
-                            "http://localhost:8000/storage/users/profile/" +
+                            profilePicsUrl +
                             authUser.authUserDetails.profile_picture
                           }
                           className="shadow-sm mr-5 cursor-pointer"
@@ -334,8 +352,6 @@ const Sidebar = ({
                         />
                       </div>
                       <input
-                        // {...(tweetImageF ? (value = "") : null)}
-                        // value=""
                         helperText={tweetErrors.tweetErrorMsg.tweet_photo}
                         error={
                           tweetErrors.tweetErrorMsg.tweet_photo ? true : false
