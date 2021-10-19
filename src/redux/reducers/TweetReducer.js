@@ -26,9 +26,19 @@ const TweetReducer = (state = initState, action) => {
         allTweets: [...action.payload],
       };
 
+    case ActionTypes.LIKE_TWEET:
+    case ActionTypes.UNLIKE_TWEET:
+      let i = state.allTweets.findIndex((tweet) => {
+        tweet.slug === action.payload.slug;
+      });
+      state.allTweets[i] = action.payload;
+      return {
+        ...state,
+      };
+
     case ActionTypes.CLEAR_FIELDS:
       return {
-        allTweets: [],
+        // allTweets: [],
       };
 
     case ActionTypes.CLOSE_TWEET_BOX:

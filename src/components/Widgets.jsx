@@ -48,7 +48,7 @@ const Widgets = ({
 }) => {
   const location = useLocation();
   const classes = useStyles();
-  const profilePicsUrl = "http://localhost:8000/storage/users/profile/";
+  const profilePicsUrl = "http://localhost:8000/profile/photos/";
 
   return (
     <div className="widgets mt-2">

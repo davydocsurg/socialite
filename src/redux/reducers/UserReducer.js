@@ -4,6 +4,7 @@ import * as ActionTypes from "../ActionTypes";
 const initState = {
   credentials: {},
   authenticated: false,
+  loading: false,
   likes: [],
   notifications: [],
 };
@@ -39,6 +40,24 @@ const UserReducer = (state = initState, action) => {
         authenticated: true,
         loading: false,
         ...action.payload,
+      };
+
+    case ActionTypes.LIKE_TWEET:
+      return {
+        ...state,
+        likes: [
+          ...state.likes,
+          {
+            tweepHandle: state.credentials.handle,
+            slug: action.payload.slug,
+          },
+        ],
+      };
+
+    case ActionTypes.UNLIKE_TWEET:
+      return {
+        ...state,
+        likes: state.likes.filter((like) => like.slug === action.payload.slug),
       };
 
     // case ActionTypes.LOADING:

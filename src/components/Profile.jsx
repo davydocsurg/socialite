@@ -4,7 +4,7 @@ import { PropTypes } from "prop-types";
 import { Paper, TextField, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import MUILink from "@material-ui/core/Link";
-import { Typography } from "@material-ui/core";
+import { Typography, Tooltip } from "@material-ui/core";
 import LocationOn from "@material-ui/icons/LocationOn";
 import LinkIcon from "@material-ui/icons/Link";
 import CalendarToday from "@material-ui/icons/CalendarToday";
@@ -526,13 +526,16 @@ const Profile = ({
                         </Modal>
                       )}
 
-                      <button
-                        className="btn shadow-lg mt-4 p-4 position-absolute btn-update-cover ml-lg-7"
-                        onClick={openCoverPhotoPreviewModal}
-                        type="button"
-                      >
-                        <i className="fas fa-upload"></i>
-                      </button>
+                      <Tooltip title="Change Cover Photo" placement="top">
+                        <button
+                          className="btn shadow-lg mt-4 p-4 position-absolute btn-update-cover ml-lg-7"
+                          onClick={openCoverPhotoPreviewModal}
+                          type="button"
+                        >
+                          <i className="fas fa-upload"></i>
+                        </button>
+                      </Tooltip>
+
                       <div
                         className="bg-holder rounded-soft rounded-bottom-0"
                         style={{
@@ -608,13 +611,18 @@ const Profile = ({
                           </Modal>
                         )}
                         <div className="bg-dark shadow-lg">
-                          <button
-                            className="btn shadow-lg mt-4 p-4 position-absolute btn-update-prof"
-                            onClick={openProfPicsPreviewModal}
-                            type="button"
+                          <Tooltip
+                            title="Change Profile Picture"
+                            placement="top"
                           >
-                            <i className="fas fa-upload"></i>
-                          </button>
+                            <button
+                              className="btn shadow-lg mt-4 p-4 position-absolute btn-update-prof"
+                              onClick={openProfPicsPreviewModal}
+                              type="button"
+                            >
+                              <i className="fas fa-upload"></i>
+                            </button>
+                          </Tooltip>
                         </div>
                         <Avatar
                           alt={fullName}
@@ -774,7 +782,7 @@ const Profile = ({
         <div className="card mb-3">
           <div className="card-header position-relative min-vh-25 mb-7">
             <div
-              className={"bg-holder rounded-soft rounded-bottom-0" + classes.bg}
+              className={"bg-holder rounded-soft rounded-bottom-0"}
               style={{
                 backgroundImage: `url(${coverPicsUrl + cover_picture})`,
               }}
@@ -917,8 +925,15 @@ const Profile = ({
           </div>
         </div>
 
+        {/* loading UI */}
+        {loading && (
+          <div className="mb-auto mt-5 text-center mx-auto text-twitter-color">
+            <i className="spinner-border spinner-border-md "></i>
+          </div>
+        )}
+
         <FlipMove>
-          {authUserTweets ? (
+          {authUserTweets.length > 0 ? (
             authUserTweets.map((authUserTweet) => (
               <AuthUserTweet
                 key={authUserTweet.slug}
@@ -937,7 +952,9 @@ const Profile = ({
               ></AuthUserTweet>
             ))
           ) : (
-            <div className="text-center text-black">No Tweets Found</div>
+            <div className="text-center text-black mt-5 mx-auto">
+              <h2>No Tweets Found</h2>
+            </div>
           )}
         </FlipMove>
       </div>

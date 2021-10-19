@@ -12,6 +12,10 @@
       border-radius: 20px;
     }
   }
+  &:hover {
+    cursor: pointer;
+    background-color: $sidebar-hover-option !important;
+  }
 
   &__footer {
     display: flex;

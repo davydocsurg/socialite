@@ -23,6 +23,7 @@ import { useDispatch, connect } from "react-redux";
 import PropTypes from "prop-types";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import { getUserData } from "../redux/actions/AuthActions";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -37,7 +38,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Feed = ({ UI, tweetReducer: { allTweets } }) => {
+const Feed = ({
+  UI,
+  tweetReducer: { allTweets },
+  user: {
+    credentials: { profile_picture },
+  },
+}) => {
   const [tweets, setTweets] = useState([]);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -131,28 +138,30 @@ const Feed = ({ UI, tweetReducer: { allTweets } }) => {
   };
 
   useEffect(() => {
-    fetchAuthUser();
-    fetchTweetsFromServer();
+    // fetchAuthUser();
+    dispatch(getUserData());
+    dispatch(FetchTweetsAction());
+    return () => {};
   }, []);
 
-  const fetchAuthUser = () => {
-    let authUserUrl = "authUser";
+  // const fetchAuthUser = () => {
+  //   let authUserUrl = "authUser";
 
-    axios
-      .get("http://localhost:8000/api/authUser", authUser, {
-        headers: headers,
-      })
-      .then((res) => {
-        setAuthUser({
-          ...authUser,
-          authUserDetails: res.data.credentials,
-        });
-        // console.log(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
+  //   axios
+  //     .get("http://localhost:8000/api/authUser", authUser, {
+  //       headers: headers,
+  //     })
+  //     .then((res) => {
+  //       setAuthUser({
+  //         ...authUser,
+  //         authUserDetails: res.data.credentials,
+  //       });
+  //       // console.log(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //     });
+  // };
 
   const sendTweet = (e) => {
     e.preventDefault();
@@ -211,7 +220,7 @@ const Feed = ({ UI, tweetReducer: { allTweets } }) => {
           setTweetImageRemover(false);
           setOpenTweetSuccessMessage(true);
           dispatch(FetchTweetsAction());
-          fetchTweetsFromServer();
+          // fetchTweetsFromServer();
         }
         return res;
       })
@@ -289,9 +298,7 @@ const Feed = ({ UI, tweetReducer: { allTweets } }) => {
             >
               <div className="tweetBox__input">
                 <Avatar
-                  src={
-                    profilePicsUrl + authUser.authUserDetails.profile_picture
-                  }
+                  src={profilePicsUrl + profile_picture}
                   className="shadow-sm mr-5 cursor-pointer"
                   onClick={goToProfile}
                 />
@@ -324,8 +331,6 @@ const Feed = ({ UI, tweetReducer: { allTweets } }) => {
                 />
               </div>
               <input
-                // {...(tweetImageF ? (value = "") : null)}
-                // value=""
                 helperText={tweetErrors.tweetErrorMsg.tweet_photo}
                 error={tweetErrors.tweetErrorMsg.tweet_photo ? true : false}
                 id="tweet_photo"
@@ -367,7 +372,7 @@ const Feed = ({ UI, tweetReducer: { allTweets } }) => {
           </div>
         ) : (
           <div className="container">
-            <div className="card mt-3">
+            <div className="card shadow-none my-3">
               <div className="card-body">
                 <Link to="/signin">
                   <h4 className="text-center">Login to tweet</h4>
@@ -376,24 +381,41 @@ const Feed = ({ UI, tweetReducer: { allTweets } }) => {
             </div>
           </div>
         )}
-        <FlipMove>
-          {allTweets.map((tweet) => (
-            <Tweet
-              key={tweet.slug}
-              tweepName={tweet.tweep.first_name + " " + tweet.tweep.last_name}
-              username={tweet.tweep.handle}
-              verified={tweet.tweep.is_verified}
-              text={tweet.tweet_text}
-              tweetTime={tweet.created_at}
-              avatar={profilePicsUrl + tweet.tweep.profile_picture}
-              tweetImage={
-                tweet.tweet_photo
-                  ? "http://localhost:8000/tweets/photos/" + tweet.tweet_photo
-                  : null
-              }
-            ></Tweet>
-          ))}
-        </FlipMove>
+        {/* loading UI */}
+        {UI.loading && (
+          <div className="mb-auto mt-5 text-center mx-auto text-twitter-color">
+            <i className="spinner-border spinner-border-md "></i>
+          </div>
+        )}
+
+        {allTweets.length > 0 && UI.loading == false ? (
+          <FlipMove>
+            {allTweets.map((tweet) => (
+              <Tweet
+                key={tweet.slug}
+                slug={tweet.slug}
+                tweepName={tweet.tweep.first_name + " " + tweet.tweep.last_name}
+                username={tweet.tweep.handle}
+                verified={tweet.tweep.is_verified}
+                text={tweet.tweet_text}
+                tweetTime={tweet.created_at}
+                avatar={profilePicsUrl + tweet.tweep.profile_picture}
+                tweetImage={
+                  tweet.tweet_photo
+                    ? "http://localhost:8000/tweets/photos/" + tweet.tweet_photo
+                    : null
+                }
+                likesCount={tweet.likes.length}
+              ></Tweet>
+            ))}
+          </FlipMove>
+        ) : (
+          UI.loading == false && (
+            <div className="text-center mt-5">
+              <h2>No Tweets Found</h2>
+            </div>
+          )
+        )}
       </div>
     </>
   );

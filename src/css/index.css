@@ -371,6 +371,11 @@
   border-radius: 20px;
 }
 
+.post:hover {
+  cursor: pointer;
+  background-color: #e8f5fe !important;
+}
+
 .post__footer {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -741,6 +746,68 @@
 .b-radius {
   border: transparent solid 0.1rem;
   border-radius: 2rem !important;
+}
+
+@media screen and (min-width: 900px) {
+  .ml-lg-7 {
+    margin-left: 25rem;
+  }
+}
+
+.singleTweet {
+  -webkit-box-flex: 0.5 !important;
+      -ms-flex: 0.5 !important;
+          flex: 0.5 !important;
+  border-right: 1px solid #e2e2dc;
+  overflow-y: scroll !important;
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.singleTweet::-webkit-scrollbar {
+  display: none;
+}
+
+.singleTweet__header {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0 !important;
+  background-color: #ffffff !important;
+  z-index: 100 !important;
+  border-bottom: 1px solid #e2e2dc !important;
+  padding: 10px 10px !important;
+}
+
+.singleTweet h2 {
+  font-size: 20px !important;
+  font-weight: 700;
+}
+
+@media screen and (max-width: 992px) {
+  .singleTweet {
+    -webkit-box-flex: 0.86 !important;
+        -ms-flex: 0.86 !important;
+            flex: 0.86 !important;
+  }
+}
+
+.bg-holder {
+  position: absolute;
+  width: 100%;
+  min-height: 100%;
+  top: 0;
+  left: 0;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  will-change: transform, opacity, filter;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  background-repeat: no-repeat;
+  z-index: 0;
 }
 
 @media screen and (min-width: 900px) {

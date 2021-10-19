@@ -15,6 +15,7 @@ import AuthRoutes from "../utils/AuthRoutes";
 import jwtDecode from "jwt-decode";
 
 // redux
+import HttpService from "../services/HttpServices";
 import { store } from "../redux/store";
 // import * as ActionTypes from './redux/ActionTypes'
 import { SignOutAction, getUserData } from "../redux/actions/AuthActions";
@@ -26,19 +27,17 @@ import Explore from "../components/nests/Explore";
 import Profile from "../components/Profile";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
+import TweetDetails from "../components/tweets/TweetDetails";
+import Tweet from "../components/tweets/Tweet";
 
-const Routes = (
-  {
-    // user: {
-    //   credentials: { handle },
-    // },
-  }
-) => {
+const Routes = () => {
   let location = useLocation();
   let history = useHistory();
   const token = localStorage.getItem("user-token");
-  // let authenticated;
   const dispatch = useDispatch();
+
+  const [tweepHandle, setTweepHandle] = useState("");
+  const [tweetDetails, setTweerDetails] = useState("");
 
   // decode token
   if (token) {
@@ -54,11 +53,54 @@ const Routes = (
         type: SET_AUTHENTICATED,
       });
       axios.defaults.headers.common["Authorization"] = token;
-      store.dispatch(getUserData());
+      // store.dispatch(getUserData());
     }
   }
 
   let { path, url } = useRouteMatch();
+
+  useEffect(() => {
+    getHandle();
+    getTweet();
+    return () => {};
+  }, []);
+
+  const getHandle = () => {
+    let token = localStorage.getItem("user-token");
+    const http = new HttpService();
+    const headers = {
+      Authorization: `${token}`,
+      "Content-type": "application/json",
+    };
+    axios
+      .get(http.url + "/authUser", { headers: headers })
+      .then((res) => {
+        setTweepHandle(res.data.credentials.handle);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const getTweet = (tweet) => {
+    let token = localStorage.getItem("user-token");
+    const http = new HttpService();
+    const headers = {
+      Authorization: `${token}`,
+      "Content-type": "application/json",
+    };
+    axios
+      .get(http.url + `/tweets/${tweet}/show`, { headers: headers })
+      .then((res) => {
+        setTweetDetails(res.data);
+        console.log("====================================");
+        console.log(res.data);
+        console.log("====================================");
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   return (
     // <TransitionGroup>
@@ -81,8 +123,9 @@ const Routes = (
       <Route exact path="/home" component={Home}></Route>
       <Route exact path="/notifications" component={Notifications}></Route>
       <Route exact path="/explore" component={Explore}></Route>
-      <Route exact path={`/profile`} component={Profile}></Route>
-      {/* <Route exact path={`/${handle}`} component={Profile}></Route> */}
+      <Route exact path={`/${tweepHandle}`} component={Profile}></Route>
+      <Route exact path={`/tweet`} component={TweetDetails}></Route>
+      {/* <Route exact path={`/${allTweets.slug}`} component={TweetDetails}></Route> */}
     </Switch>
     //   </CSSTransition>
     // </TransitionGroup>
@@ -92,11 +135,13 @@ const Routes = (
 export default Routes;
 // Routes.propTypes = {
 //   user: PropTypes.object.isRequired,
+//   tweetReducer: PropTypes.object.isRequired,
 // };
 
 // const mapStateToProps = (state) => {
 //   return {
 //     user: state.user,
+//     tweetReducer: state.tweetReducer,
 //   };
 // };
 

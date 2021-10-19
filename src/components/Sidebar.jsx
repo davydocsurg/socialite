@@ -80,18 +80,22 @@ const Sidebar = ({
 
   const openTweetBox = () => {
     setTweetBoxVisibility(true);
-    dispatch(OpenTweetBox());
+    // dispatch(OpenTweetBox());
   };
 
   const closeTweetBox = () => {
     setTweetBoxVisibility(false);
-    dispatch(CloseTweetBox());
+    // dispatch(CloseTweetBox());
   };
 
   const signOut = (e) => {
     e.preventDefault();
 
     dispatch(SignOutAction(history));
+    setTimeout(() => {
+      // history.push("/signin");
+      location.href = "/signin";
+    }, 1000);
     // axios
     //   .post("http://localhost:8000/api/signout", {
     //     headers: headers,
@@ -114,11 +118,6 @@ const Sidebar = ({
   const [tweetText, setTweet] = useState("");
 
   const [tweetImageF, setTweetImage] = useState("");
-
-  // auth user
-  const [authUser, setAuthUser] = useState({
-    authUserDetails: {},
-  });
 
   const [tweetErrors, setTweetErrors] = useState({
     tweetErrorMsg: {
@@ -175,28 +174,9 @@ const Sidebar = ({
   };
 
   useEffect(() => {
-    fetchAuthUser();
-    fetchTweetsFromServer();
+    // fetchAuthUser();
+    // fetchTweetsFromServer();
   }, []);
-
-  const fetchAuthUser = () => {
-    let authUserUrl = "authUser";
-
-    axios
-      .get("http://localhost:8000/api/authUser", authUser, {
-        headers: headers,
-      })
-      .then((res) => {
-        setAuthUser({
-          ...authUser,
-          authUserDetails: res.data.credentials,
-        });
-        // console.log(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
 
   const closeTweetSuccessMessage = () => {
     setOpenTweetSuccessMessage(false);
@@ -235,7 +215,7 @@ const Sidebar = ({
           setOpenTweetSuccessMessage(true);
           fetchTweetsFromServer();
           setTweetBoxVisibility(false);
-          dispatch(getUserData());
+          // dispatch(getUserData());
         }
         return res;
       })
@@ -454,9 +434,9 @@ const Sidebar = ({
           > */}
             <Link
               className={`side_text ${
-                location.pathname.match(`/profile`) && "active"
+                location.pathname.match(`/${handle}`) && "active"
               }`}
-              to={`/profile`}
+              to={`/${handle}`}
             >
               <SidebarOption Icon={PermIdentityIcon} text="Profile" />
             </Link>
@@ -505,8 +485,6 @@ const Sidebar = ({
     </>
   );
 };
-
-// export default Sidebar;
 
 Sidebar.propTypes = {
   user: PropTypes.object.isRequired,

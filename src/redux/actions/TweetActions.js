@@ -56,25 +56,15 @@ export const FetchTweetsAction = () => {
     axios
       .get(http.url + "/tweets")
       .then((res) => {
-        // if (res.data.hasOwnProperty("success") && res.data.success === false) {
-        //   dispatch({
-        //     type: ActionTypes.SET_ERRORS,
-        //     payload: res.data.message,
-        //   });
-        // } else if (
-        //   res.data.hasOwnProperty("success") &&
-        //   res.data.success === true
-        // ) {
         dispatch({
-          type: ActionTypes.CLEAR_ERRORS,
+          // type: ActionTypes.CLEAR_ERRORS,
           type: ActionTypes.SET_TWEET_DATA,
           payload: res.data,
         });
-        // console.log("=====from store===============================");
-        // console.log(res.data);
-        // console.log("====================================");
-        // }
-        // return res;
+
+        dispatch({
+          type: ActionTypes.STOP_LOADING_UI,
+        });
       })
       .catch((err) => {
         console.error(err);
@@ -88,10 +78,6 @@ export const OpenTweetBox = () => {
       type: ActionTypes.OPEN_TWEET_BOX,
       payload: true,
     });
-
-    console.log("====================================");
-    console.log(ActionTypes.OPEN_TWEET_BOX.payload);
-    console.log("====================================");
   };
 };
 
@@ -102,4 +88,76 @@ export const CloseTweetBox = () => {
       payload: false,
     });
   };
+};
+
+export const FetchTweet = (tweet) => (dispatch) => {
+  const token = localStorage.getItem("user-token");
+
+  const headers = {
+    Authorization: `${token}`,
+    "Content-type": "application/json",
+  };
+  axios
+    .get(`/tweets/${tweet}/show`, {
+      headers,
+    })
+    .then((res) => {
+      dispatch({
+        type: ActionTypes.FETCH_TWEET,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      console.error("====================================");
+      console.error(err);
+      console.error("====================================");
+    });
+};
+
+export const LikeTweet = (tweet) => (dispatch) => {
+  const token = localStorage.getItem("user-token");
+
+  const headers = {
+    Authorization: `${token}`,
+    "Content-type": "application/json",
+  };
+  axios
+    .get(`/tweets/${tweet}/like`, {
+      headers,
+    })
+    .then((res) => {
+      dispatch({
+        type: ActionTypes.LIKE_TWEET,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      console.error("====================================");
+      console.error(err);
+      console.error("====================================");
+    });
+};
+
+export const UnlikeTweet = () => (dispatch) => {
+  const token = localStorage.getItem("user-token");
+
+  const headers = {
+    Authorization: `${token}`,
+    "Content-type": "application/json",
+  };
+  axios
+    .get(`/tweets/${tweet}/unlike`, {
+      headers,
+    })
+    .then((res) => {
+      dispatch({
+        type: ActionTypes.UNLIKE_TWEET,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      console.log("====================================");
+      console.log(err);
+      console.log("====================================");
+    });
 };

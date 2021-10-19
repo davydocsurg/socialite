@@ -9,8 +9,8 @@ const UIReducer = (state = initState, action) => {
   switch (action.type) {
     case ActionTypes.SET_ERRORS:
       return {
-        loading: false,
         ...state,
+        loading: false,
         errors: {
           ...action.payload,
         },
@@ -25,6 +25,11 @@ const UIReducer = (state = initState, action) => {
       return {
         ...state,
         loading: true,
+      };
+    case ActionTypes.STOP_LOADING_UI:
+      return {
+        ...state,
+        loading: false,
       };
     default:
       return state;

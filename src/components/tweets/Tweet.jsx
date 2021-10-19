@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useEffect } from "react";
 import { Avatar } from "@material-ui/core";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
@@ -6,12 +6,46 @@ import RepeatIcon from "@material-ui/icons/Repeat";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import PublishIcon from "@material-ui/icons/Publish";
 import moment from "moment";
+import { useHistory } from "react-router-dom";
+import { useDispatch, connect } from "react-redux";
+import PropTypes from "prop-types";
+import { LikeTweet, FetchTweet } from "../../redux/actions/TweetActions";
 
 const Tweet = forwardRef(
   (
-    { tweepName, username, verified, text, tweetImage, avatar, tweetTime },
+    {
+      tweepName,
+      username,
+      verified,
+      text,
+      tweetImage,
+      avatar,
+      tweetTime,
+      likesCount,
+      slug,
+    },
     ref
   ) => {
+    const history = useHistory();
+    const dispatch = useDispatch();
+    const token = localStorage.getItem("user-token");
+
+    useEffect(() => {
+      // fetchTweet();
+    }, []);
+
+    const fetchTweet = () => {
+      dispatch(fetchTweet());
+    };
+
+    const viewTweet = () => {
+      history.push("/tweet");
+    };
+
+    const handleLikeTweet = () => {
+      dispatch(LikeTweet(slug));
+    };
+
     return (
       <div className="post" ref={ref}>
         <div className="post__avatar">
@@ -19,7 +53,7 @@ const Tweet = forwardRef(
         </div>
         <div className="post__body">
           <div className="post__header">
-            <div className="post__headerText row d-flex">
+            <div className="post__headerText row d-flex" onClick={viewTweet}>
               <h3 className="col-lg-9 col-md-8">
                 {tweepName}{" "}
                 <span className="post__headerSpecial">
@@ -47,16 +81,36 @@ const Tweet = forwardRef(
           {tweetImage ? (
             <img src={tweetImage} alt="" className="py-2 img-fluid" />
           ) : null}
-          <div className="post__footer">
-            <ChatBubbleOutlineIcon fontSize="small" />
-            <RepeatIcon fontSize="small" />
-            <FavoriteBorderIcon fontSize="small" />
-            <PublishIcon fontSize="small" />
-          </div>
+
+          {token && (
+            <div className="post__footer">
+              {/* <ChatBubbleOutlineIcon fontSize="small" /> */}
+              <i className="far fa-comment"></i>
+              <RepeatIcon fontSize="small" />
+              <div className="">
+                <FavoriteBorderIcon
+                  fontSize="small"
+                  onClick={handleLikeTweet}
+                />{" "}
+                {likesCount > 0 && likesCount}
+              </div>
+              <i className="fas fa-share-alt"></i>
+            </div>
+          )}
         </div>
       </div>
     );
   }
 );
 
-export default Tweet;
+Tweet.prototypes = {
+  user: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  };
+};
+
+export default connect(mapStateToProps)(Tweet);

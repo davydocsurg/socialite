@@ -15,8 +15,11 @@ import Container from "@material-ui/core/Container";
 // components
 import Sidebar from "./components/Sidebar";
 import Widgets from "./components/Widgets";
+// redux
+import { PropTypes } from "prop-types";
+import { connect } from "react-redux";
 
-function App() {
+const App = ({}) => {
   // Get OS-level preference for dark mode
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
@@ -71,9 +74,23 @@ function App() {
       </ThemeProvider>
     </>
   );
-}
+};
 
 export default App;
+
+// App.propTypes = {
+//   user: PropTypes.object.isRequired,
+//   tweetReducer: PropTypes.object.isRequired,
+// };
+
+// const mapStateToProps = (state) => {
+//   return {
+//     user: state.user,
+//     tweetReducer: state.tweetReducer,
+//   };
+// };
+
+// export default connect(mapStateToProps)(App);
 {
   /* return (
   <React.Fragment>
