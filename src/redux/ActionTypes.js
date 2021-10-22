@@ -19,6 +19,7 @@ export const CLEAR_FIELDS = "CLEAR_FIELDS";
 export const CLOSE_TWEET_BOX = "CLOSE_TWEET_BOX";
 export const OPEN_TWEET_BOX = "OPEN_TWEET_BOX";
 export const FETCH_TWEET = "FETCH_TWEET";
+export const FETCH_TWEET_LIKES = "FETCH_TWEET_LIKES";
 
 export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
 export const SIGNUP_ERROR = "SIGNUP_ERROR";

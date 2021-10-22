@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import { Avatar } from "@material-ui/core";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
@@ -9,7 +9,7 @@ import moment from "moment";
 import { useHistory } from "react-router-dom";
 import { useDispatch, connect } from "react-redux";
 import PropTypes from "prop-types";
-import { LikeTweet, FetchTweet } from "../../redux/actions/TweetActions";
+import { LikeTweet, FetchTweetsAction } from "../../redux/actions/TweetActions";
 
 const Tweet = forwardRef(
   (
@@ -22,6 +22,8 @@ const Tweet = forwardRef(
       avatar,
       tweetTime,
       likesCount,
+      tweepLikeId,
+      authUserId,
       slug,
     },
     ref
@@ -29,9 +31,14 @@ const Tweet = forwardRef(
     const history = useHistory();
     const dispatch = useDispatch();
     const token = localStorage.getItem("user-token");
+    const [showLikedBtn, setShowLikedBtn] = useState(false);
 
     useEffect(() => {
       // fetchTweet();
+      console.log("====================================");
+      console.log(authUserId === tweepLikeId[0]);
+      console.log(tweepLikeId);
+      console.log("====================================");
     }, []);
 
     const fetchTweet = () => {
@@ -39,11 +46,13 @@ const Tweet = forwardRef(
     };
 
     const viewTweet = () => {
-      history.push("/tweet");
+      history.push(`/tweet/${slug}`);
     };
 
     const handleLikeTweet = () => {
+      setShowLikedBtn(true);
       dispatch(LikeTweet(slug));
+      dispatch(FetchTweetsAction());
     };
 
     return (
@@ -88,10 +97,14 @@ const Tweet = forwardRef(
               <i className="far fa-comment"></i>
               <RepeatIcon fontSize="small" />
               <div className="">
-                <FavoriteBorderIcon
-                  fontSize="small"
-                  onClick={handleLikeTweet}
-                />{" "}
+                {authUserId === tweepLikeId ? (
+                  <i className="fas fa-heart text-danger"></i>
+                ) : (
+                  <FavoriteBorderIcon
+                    fontSize="small"
+                    onClick={handleLikeTweet}
+                  />
+                )}{" "}
                 {likesCount > 0 && likesCount}
               </div>
               <i className="fas fa-share-alt"></i>

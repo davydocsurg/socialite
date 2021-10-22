@@ -92,21 +92,6 @@ const Sidebar = ({
     e.preventDefault();
 
     dispatch(SignOutAction(history));
-    setTimeout(() => {
-      // history.push("/signin");
-      location.href = "/signin";
-    }, 1000);
-    // axios
-    //   .post("http://localhost:8000/api/signout", {
-    //     headers: headers,
-    //   })
-    //   .then(() => {
-    //     localStorage.removeItem("user-token");
-    //     history.push("/signin");
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //   });
   };
 
   // ************** tweet box **************

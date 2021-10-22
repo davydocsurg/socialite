@@ -160,7 +160,7 @@ export const SignOutAction = (history) => {
         localStorage.removeItem("user-token");
         delete axios.defaults.headers.common["Authorization"];
         dispatch({ type: ActionTypes.SET_UNAUTHENTICATED });
-        // history.push("/signin");
+        history.push("/signin");
         dispatch({
           type: ActionTypes.CLEAR_ERRORS,
         });

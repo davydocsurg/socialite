@@ -37,7 +37,9 @@ const Routes = () => {
   const dispatch = useDispatch();
 
   const [tweepHandle, setTweepHandle] = useState("");
-  const [tweetDetails, setTweerDetails] = useState("");
+  const [tweetDetails, setTweetDetails] = useState("");
+  const [tweets, setTweets] = useState([]);
+  const [tweetSlugs, setTweetSlugs] = useState([]);
 
   // decode token
   if (token) {
@@ -61,7 +63,10 @@ const Routes = () => {
 
   useEffect(() => {
     getHandle();
-    getTweet();
+    fetchTweets();
+    setTimeout(() => {
+      getTweetSlugs();
+    }, 3000);
     return () => {};
   }, []);
 
@@ -82,7 +87,7 @@ const Routes = () => {
       });
   };
 
-  const getTweet = (tweet) => {
+  const getTweet = (tweetSlug) => {
     let token = localStorage.getItem("user-token");
     const http = new HttpService();
     const headers = {
@@ -90,7 +95,7 @@ const Routes = () => {
       "Content-type": "application/json",
     };
     axios
-      .get(http.url + `/tweets/${tweet}/show`, { headers: headers })
+      .get(http.url + `/tweets/${tweetSlug}/show`, { headers: headers })
       .then((res) => {
         setTweetDetails(res.data);
         console.log("====================================");
@@ -100,6 +105,25 @@ const Routes = () => {
       .catch((err) => {
         console.error(err);
       });
+  };
+
+  const fetchTweets = () => {
+    const http = new HttpService();
+    axios
+      .get(http.url + `/tweets`)
+      .then((res) => {
+        setTweets(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const getTweetSlugs = () => {
+    let slugs = [];
+
+    tweets.map((t) => (slugs = t.slug));
+    setTweetSlugs(slugs);
   };
 
   return (
@@ -124,7 +148,11 @@ const Routes = () => {
       <Route exact path="/notifications" component={Notifications}></Route>
       <Route exact path="/explore" component={Explore}></Route>
       <Route exact path={`/${tweepHandle}`} component={Profile}></Route>
-      <Route exact path={`/tweet`} component={TweetDetails}></Route>
+      <Route
+        exact
+        path={`/tweet/${tweetSlugs}`}
+        component={TweetDetails}
+      ></Route>
       {/* <Route exact path={`/${allTweets.slug}`} component={TweetDetails}></Route> */}
     </Switch>
     //   </CSSTransition>

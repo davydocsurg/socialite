@@ -4,6 +4,7 @@ const initState = {
   tweetText: "",
   tweetPhoto: "",
   allTweets: [],
+  tweetLikes: [],
   tweetBoxVisibity: false,
 };
 
@@ -24,6 +25,11 @@ const TweetReducer = (state = initState, action) => {
     case ActionTypes.SET_TWEET_DATA:
       return {
         allTweets: [...action.payload],
+      };
+
+    case ActionTypes.FETCH_TWEET_LIKES:
+      return {
+        tweetLikes: [...action.payload],
       };
 
     case ActionTypes.LIKE_TWEET:

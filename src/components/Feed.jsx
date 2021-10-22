@@ -18,6 +18,7 @@ import { Link, useHistory } from "react-router-dom";
 import {
   CreateTweetAction,
   FetchTweetsAction,
+  FetchTweetsLikeAction,
 } from "../redux/actions/TweetActions";
 import { useDispatch, connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -42,7 +43,7 @@ const Feed = ({
   UI,
   tweetReducer: { allTweets },
   user: {
-    credentials: { profile_picture },
+    credentials: { profile_picture, id, handle },
   },
 }) => {
   const [tweets, setTweets] = useState([]);
@@ -141,6 +142,7 @@ const Feed = ({
     // fetchAuthUser();
     dispatch(getUserData());
     dispatch(FetchTweetsAction());
+    // dispatch(FetchTweetsLikeAction());
     return () => {};
   }, []);
 
@@ -234,7 +236,7 @@ const Feed = ({
   };
 
   const goToProfile = () => {
-    history.push("/profile");
+    history.push(`/${handle}`);
   };
 
   const closeTweetSuccessMessage = () => {
@@ -406,6 +408,8 @@ const Feed = ({
                     : null
                 }
                 likesCount={tweet.likes.length}
+                tweepLikeId={tweet.likes.map((l) => l.user_id)}
+                authUserId={id}
               ></Tweet>
             ))}
           </FlipMove>

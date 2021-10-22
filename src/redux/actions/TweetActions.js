@@ -72,6 +72,29 @@ export const FetchTweetsAction = () => {
   };
 };
 
+export const FetchTweetsLikeAction = () => {
+  return (dispatch) => {
+    const http = new HttpService();
+    dispatch({ type: ActionTypes.LOADING_UI });
+
+    axios
+      .get(http.url + "/tweets/likes")
+      .then((res) => {
+        dispatch({
+          type: ActionTypes.FETCH_TWEET_LIKES,
+          payload: res.data,
+        });
+
+        dispatch({
+          type: ActionTypes.STOP_LOADING_UI,
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+};
+
 export const OpenTweetBox = () => {
   return (dispatch) => {
     dispatch({
@@ -121,8 +144,9 @@ export const LikeTweet = (tweet) => (dispatch) => {
     Authorization: `${token}`,
     "Content-type": "application/json",
   };
+  const http = new HttpService();
   axios
-    .get(`/tweets/${tweet}/like`, {
+    .get(http.url + `/tweets/${tweet}/like`, {
       headers,
     })
     .then((res) => {
@@ -130,6 +154,7 @@ export const LikeTweet = (tweet) => (dispatch) => {
         type: ActionTypes.LIKE_TWEET,
         payload: res.data,
       });
+      dispatch(FetchTweetsAction());
     })
     .catch((err) => {
       console.error("====================================");

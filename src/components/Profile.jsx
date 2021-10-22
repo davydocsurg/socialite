@@ -772,7 +772,7 @@ const Profile = ({
             <div className="col-4">
               <h2 className="ml-4">{fullName}</h2>
               <em className="font-weight-lighter">
-                {authUserTweetsCount}{" "}
+                {authUserTweetsCount < 1 ? "No" : authUserTweetsCount}{" "}
                 {authUserTweetsCount > 1 ? "Tweets" : "Tweet"}
               </em>
             </div>
