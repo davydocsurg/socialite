@@ -9,7 +9,12 @@ import moment from "moment";
 import { useHistory } from "react-router-dom";
 import { useDispatch, connect } from "react-redux";
 import PropTypes from "prop-types";
-import { LikeTweet, FetchTweetsAction } from "../../redux/actions/TweetActions";
+import {
+  LikeTweet,
+  UnlikeTweet,
+  FetchTweetsAction,
+  RefreshTweetsAction,
+} from "../../redux/actions/TweetActions";
 
 const Tweet = forwardRef(
   (
@@ -35,11 +40,16 @@ const Tweet = forwardRef(
 
     useEffect(() => {
       // fetchTweet();
-      console.log("====================================");
-      console.log(authUserId === tweepLikeId[0]);
-      console.log(tweepLikeId);
-      console.log("====================================");
+      checkLikes();
     }, []);
+
+    const checkLikes = () => {
+      const compAuthId = (value, index, array) => {
+        value !== authUserId ? setShowLikedBtn(false) : setShowLikedBtn(true);
+      };
+      let ff = tweepLikeId.filter(compAuthId);
+      return ff;
+    };
 
     const fetchTweet = () => {
       dispatch(fetchTweet());
@@ -50,9 +60,19 @@ const Tweet = forwardRef(
     };
 
     const handleLikeTweet = () => {
-      setShowLikedBtn(true);
       dispatch(LikeTweet(slug));
-      dispatch(FetchTweetsAction());
+      setTimeout(() => {
+        setShowLikedBtn(true);
+        dispatch(RefreshTweetsAction());
+      }, 500);
+    };
+
+    const handleUnlikeTweet = () => {
+      dispatch(UnlikeTweet(slug));
+      setTimeout(() => {
+        setShowLikedBtn(false);
+        dispatch(RefreshTweetsAction());
+      }, 500);
     };
 
     return (
@@ -97,8 +117,11 @@ const Tweet = forwardRef(
               <i className="far fa-comment"></i>
               <RepeatIcon fontSize="small" />
               <div className="">
-                {authUserId === tweepLikeId ? (
-                  <i className="fas fa-heart text-danger"></i>
+                {showLikedBtn ? (
+                  <i
+                    className="fas fa-heart text-danger"
+                    onClick={handleUnlikeTweet}
+                  ></i>
                 ) : (
                   <FavoriteBorderIcon
                     fontSize="small"

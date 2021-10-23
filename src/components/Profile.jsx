@@ -949,6 +949,8 @@ const Profile = ({
                       authUserTweet.tweet_photo
                     : null
                 }
+                likesCount={tweet.likes.length}
+                tweepLikeId={tweet.likes.map((l) => l.user_id)}
               ></AuthUserTweet>
             ))
           ) : (

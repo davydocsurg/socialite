@@ -57,13 +57,30 @@ export const FetchTweetsAction = () => {
       .get(http.url + "/tweets")
       .then((res) => {
         dispatch({
-          // type: ActionTypes.CLEAR_ERRORS,
           type: ActionTypes.SET_TWEET_DATA,
           payload: res.data,
         });
 
         dispatch({
           type: ActionTypes.STOP_LOADING_UI,
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+};
+
+export const RefreshTweetsAction = () => {
+  return (dispatch) => {
+    const http = new HttpService();
+
+    axios
+      .get(http.url + "/tweets")
+      .then((res) => {
+        dispatch({
+          type: ActionTypes.SET_TWEET_DATA,
+          payload: res.data,
         });
       })
       .catch((err) => {
@@ -163,15 +180,16 @@ export const LikeTweet = (tweet) => (dispatch) => {
     });
 };
 
-export const UnlikeTweet = () => (dispatch) => {
+export const UnlikeTweet = (tweet) => (dispatch) => {
   const token = localStorage.getItem("user-token");
 
   const headers = {
     Authorization: `${token}`,
     "Content-type": "application/json",
   };
+  const http = new HttpService();
   axios
-    .get(`/tweets/${tweet}/unlike`, {
+    .get(http.url + `/tweets/${tweet}/unlike`, {
       headers,
     })
     .then((res) => {
