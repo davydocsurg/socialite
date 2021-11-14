@@ -49,6 +49,10 @@ const Tweet = forwardRef(
       };
       let ff = tweepLikeId.filter(compAuthId);
       return ff;
+
+      if (likesCount < 1) {
+        setShowLikedBtn(false);
+      }
     };
 
     const fetchTweet = () => {
@@ -63,6 +67,7 @@ const Tweet = forwardRef(
       dispatch(LikeTweet(slug));
       setTimeout(() => {
         setShowLikedBtn(true);
+        checkLikes();
         dispatch(RefreshTweetsAction());
       }, 500);
     };
@@ -71,6 +76,7 @@ const Tweet = forwardRef(
       dispatch(UnlikeTweet(slug));
       setTimeout(() => {
         setShowLikedBtn(false);
+        checkLikes();
         dispatch(RefreshTweetsAction());
       }, 500);
     };

@@ -21,19 +21,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Collapse from "@material-ui/core/Collapse";
 import CloseIcon from "@material-ui/icons/Close";
 import PropTypes from "prop-types";
-
-// function Copyright() {
-//   return (
-//     <Typography variant="body2" color="textSecondary" align="center">
-//       {'Copyright © '}
-//       <Link color="inherit" href="https://material-ui.com/">
-//         Your Website
-//       </Link>{' '}
-//       {new Date().getFullYear()}
-//       {'.'}
-//     </Typography>
-//   );
-// }
+import Snackbar from "@material-ui/core/Snackbar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -119,6 +107,10 @@ const SignUp = ({ UI }) => {
   };
 
   const RegisterUser = (e) => {
+    setErrors({
+      ...errors,
+      errorMsg: {},
+    });
     e.preventDefault();
     setSpinner(true);
 
@@ -228,30 +220,13 @@ const SignUp = ({ UI }) => {
         </div>
       ) : null}
 
-      {open ? (
-        <div className={classes.root}>
-          <Collapse in={open}>
-            <Alert
-              action={
-                <IconButton
-                  aria-label="close"
-                  color="inherit"
-                  size="small"
-                  onClick={() => {
-                    setOpen(false);
-                  }}
-                >
-                  <CloseIcon fontSize="inherit" />
-                </IconButton>
-              }
-              severity="error"
-            >
-              <AlertTitle>Error!</AlertTitle>
-              Please check your credentials and try again.
-            </Alert>
-          </Collapse>
-        </div>
-      ) : null}
+      {open && (
+        <Snackbar open={open} autoHideDuration={2000} onClose={!open}>
+          <Alert onClose={!open} severity="error">
+            Something went wrong! Check your credentials and try again.
+          </Alert>
+        </Snackbar>
+      )}
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -403,102 +378,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
-
-// import React from "react";
-// import { makeStyles } from "@material-ui/core/styles";
-// import Button from "@material-ui/core/Button";
-// import TextField from "@material-ui/core/TextField";
-// import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
-// import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     "& > *": {
-//       margin: theme.spacing(2),
-//       // width: "45ch",
-//     },
-//   },
-//   button: {
-//     margin: theme.spacing(1),
-//   },
-// }));
-
-// const SignIn = () => {
-//   const classes = useStyles();
-//   return (
-//     <div className="container mt-5">
-//       <h4 className="text-center">Sign Up</h4>
-//       <div className="row justify-content-center text-center align-items-center">
-//         <div className="col-lg-6 col-12">
-//           <div className="card">
-//             <div className="card-body">
-//               <form className={classes.root} noValidate autoComplete="off">
-//                 <div className="form-group">
-//                   <TextField
-//                     id="standard-basic"
-//                     label="Name"
-//                     className="form-control"
-//                   />
-//                 </div>
-
-//                 <div className="form-group">
-//                   <TextField
-//                     id="standard-basic"
-//                     label="Email"
-//                     className="form-control"
-//                   />
-//                 </div>
-
-//                 <div className="form-group">
-//                   <TextField
-//                     id="standard-basic"
-//                     label="Handle"
-//                     className="form-control"
-//                   />
-//                 </div>
-
-//                 <div className="form-group">
-//                   <TextField
-//                     id="standard-password-input"
-//                     label="Password"
-//                     type="password"
-//                     autoComplete="current-password"
-//                     className="form-control"
-//                   />{" "}
-//                 </div>
-
-//                 <div className="form-group">
-//                   <TextField
-//                     id="standard-password-input"
-//                     label="Confirm Password"
-//                     type="password"
-//                     autoComplete="current-password"
-//                     className="form-control"
-//                   />{" "}
-//                 </div>
-//                 <div className="form-group">
-//                   <Button
-//                     variant="contained"
-//                     color="default"
-//                     className={classes.button}
-//                     startIcon={<ExitToAppOutlinedIcon />}
-//                     type="submit"
-//                   >
-//                     Sign Up
-//                   </Button>
-//                 </div>
-//               </form>
-
-//               <div className="text-info">
-//                 <small className="text-dark">
-//                   Already have an account? <Link to="/">Sign In</Link>
-//                 </small>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-// export default SignIn;

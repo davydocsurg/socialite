@@ -116,6 +116,10 @@ const Profile = ({
     },
   });
 
+  useEffect(() => {
+    dispatch(getUserData());
+  }, []);
+
   const [
     openProfileDetailsUpdateSuccessMessage,
     setOpenProfileDetailsUpdateSuccessMessage,
@@ -926,7 +930,7 @@ const Profile = ({
         </div>
 
         {/* loading UI */}
-        {loading && (
+        {UI.loading && (
           <div className="mb-auto mt-5 text-center mx-auto text-twitter-color">
             <i className="spinner-border spinner-border-md "></i>
           </div>
@@ -937,6 +941,7 @@ const Profile = ({
             authUserTweets.map((authUserTweet) => (
               <AuthUserTweet
                 key={authUserTweet.slug}
+                slug={authUserTweet.slug}
                 tweepName={first_name + " " + last_name}
                 username={handle}
                 verified={true}
@@ -949,8 +954,9 @@ const Profile = ({
                       authUserTweet.tweet_photo
                     : null
                 }
-                likesCount={tweet.likes.length}
-                tweepLikeId={tweet.likes.map((l) => l.user_id)}
+                likesCount={authUserTweet.likes.length}
+                authUserId={id}
+                tweepLikeId={authUserTweet.likes.map((l) => l.user_id)}
               ></AuthUserTweet>
             ))
           ) : (

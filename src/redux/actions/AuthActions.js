@@ -123,7 +123,7 @@ export const SignInAction = (fields, history) => {
 };
 
 export const getUserData = () => (dispatch) => {
-  dispatch({ type: ActionTypes.LOADING_USER });
+  dispatch({ type: ActionTypes.LOADING_UI });
   let token = localStorage.getItem("user-token");
   const http = new HttpService();
   const headers = {
@@ -137,6 +137,7 @@ export const getUserData = () => (dispatch) => {
         type: ActionTypes.SET_USER,
         payload: res.data,
       });
+      dispatch({ type: ActionTypes.STOP_LOADING_UI });
     })
     .catch((err) => {
       console.error(err);

@@ -13,12 +13,14 @@ import {
   UnlikeTweet,
   FetchTweetsAction,
   RefreshTweetsAction,
+  RefreshAuthUser,
 } from "../../redux/actions/TweetActions";
 
 const AuthUserTweet = forwardRef(
   (
     {
       tweepName,
+      slug,
       username,
       verified,
       text,
@@ -27,6 +29,7 @@ const AuthUserTweet = forwardRef(
       tweetTime,
       tweepLikeId,
       likesCount,
+      authUserId,
     },
     ref
   ) => {
@@ -36,7 +39,6 @@ const AuthUserTweet = forwardRef(
     const [showLikedBtn, setShowLikedBtn] = useState(false);
 
     useEffect(() => {
-      // fetchTweet();
       checkLikes();
     }, []);
 
@@ -48,10 +50,6 @@ const AuthUserTweet = forwardRef(
       return ff;
     };
 
-    const fetchTweet = () => {
-      dispatch(fetchTweet());
-    };
-
     const viewTweet = () => {
       history.push(`/tweet/${slug}`);
     };
@@ -60,7 +58,7 @@ const AuthUserTweet = forwardRef(
       dispatch(LikeTweet(slug));
       setTimeout(() => {
         setShowLikedBtn(true);
-        dispatch(RefreshTweetsAction());
+        dispatch(RefreshAuthUser());
       }, 500);
     };
 
@@ -68,7 +66,7 @@ const AuthUserTweet = forwardRef(
       dispatch(UnlikeTweet(slug));
       setTimeout(() => {
         setShowLikedBtn(false);
-        dispatch(RefreshTweetsAction());
+        dispatch(RefreshAuthUser());
       }, 500);
     };
 

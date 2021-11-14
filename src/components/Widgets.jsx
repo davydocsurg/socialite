@@ -56,7 +56,7 @@ const Widgets = ({
         <SearchIcon className="widgets__searchIcon" />
         <input placeholder="Search Twitter" type="text" />
       </div>
-      {location.pathname.match(`/profile`) && authUserTweets && (
+      {location.pathname.match(`/${handle}`) && authUserTweets && (
         <>
           <div className="container">
             <div className="ml-7">

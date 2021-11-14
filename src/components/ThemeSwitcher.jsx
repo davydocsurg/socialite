@@ -23,13 +23,11 @@ export default function ThemeSwitcherComponent(props) {
   const handleCheck = (_e, checked) => {
     setState({ ...state, useOs: checked });
     state.themeChanger(checked ? null : state.useDark);
-    console.log(state);
   };
 
   const handleSwitch = (_e, checked) => {
     setState({ ...state, useDark: checked });
     state.themeChanger(checked);
-    console.log(state);
   };
 
   // Get OS-level preference for dark mode

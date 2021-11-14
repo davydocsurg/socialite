@@ -24,8 +24,11 @@ import { getUserData, SignOutAction } from "../redux/actions/AuthActions";
 import { useDispatch, connect } from "react-redux";
 import { PropTypes } from "prop-types";
 import TweetBox from "./TweetBox";
-import { OpenTweetBox } from "../redux/actions/TweetActions";
-import { CloseTweetBox } from "../redux/actions/TweetActions";
+import {
+  OpenTweetBox,
+  CloseTweetBox,
+  FetchTweetsAction,
+} from "../redux/actions/TweetActions";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 
@@ -198,9 +201,9 @@ const Sidebar = ({
 
           setTweetImageRemover(false);
           setOpenTweetSuccessMessage(true);
-          fetchTweetsFromServer();
+          dispatch(getUserData());
+          dispatch(FetchTweetsAction());
           setTweetBoxVisibility(false);
-          // dispatch(getUserData());
         }
         return res;
       })
@@ -218,20 +221,6 @@ const Sidebar = ({
   };
 
   // tweet box ends
-
-  const fetchTweetsFromServer = () => {
-    const http = new HttpService();
-    let tweetsUrl = "tweets";
-
-    return http
-      .getData(tweetsUrl)
-      .then((res) => {
-        setTweets(res);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
 
   const goHome = () => {
     location.href = "/home";
@@ -279,10 +268,7 @@ const Sidebar = ({
                     >
                       <div className="tweetBox__input">
                         <Avatar
-                          src={
-                            profilePicsUrl +
-                            authUser.authUserDetails.profile_picture
-                          }
+                          src={profilePicsUrl + profile_picture}
                           className="shadow-sm mr-5 cursor-pointer"
                           onClick={goToProfile}
                         />

@@ -89,6 +89,26 @@ export const RefreshTweetsAction = () => {
   };
 };
 
+export const RefreshAuthUser = () => (dispatch) => {
+  let token = localStorage.getItem("user-token");
+  const http = new HttpService();
+  const headers = {
+    Authorization: `${token}`,
+    "Content-type": "application/json",
+  };
+  axios
+    .get(http.url + "/authUser", { headers: headers })
+    .then((res) => {
+      dispatch({
+        type: ActionTypes.SET_USER,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
 export const FetchTweetsLikeAction = () => {
   return (dispatch) => {
     const http = new HttpService();

@@ -46,7 +46,7 @@ const UserReducer = (state = initState, action) => {
       return {
         ...state,
         likes: [
-          ...state.likes,
+          // ...state.likes,
           {
             tweepHandle: state.credentials.handle,
             slug: action.payload.slug,
