@@ -222,7 +222,6 @@ const Feed = ({
           setTweetImageRemover(false);
           setOpenTweetSuccessMessage(true);
           dispatch(FetchTweetsAction());
-          // fetchTweetsFromServer();
         }
         return res;
       })
@@ -414,11 +413,11 @@ const Feed = ({
             ))}
           </FlipMove>
         ) : (
-          UI.loading == false && (
+          (allTweets.length = 0 && UI.loading == false && (
             <div className="text-center mt-5">
               <h2>No Tweets Found</h2>
             </div>
-          )
+          ))
         )}
       </div>
     </>

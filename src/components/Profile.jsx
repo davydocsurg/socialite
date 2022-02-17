@@ -149,6 +149,10 @@ const Profile = ({
   let fullName = first_name + " " + last_name + " ";
 
   const openProfileModal = () => {
+    // setErrors("");
+    console.log("====================================");
+    console.log(errors);
+    console.log("====================================");
     setProfileDetails({
       ...profileDetails,
       first_name: first_name,
@@ -164,6 +168,7 @@ const Profile = ({
 
   const closeProfileModal = () => {
     setOpenModal(false);
+    setErrors("");
     setProfileDetails({
       ...profileDetails,
     });
