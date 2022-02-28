@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
   useLocation,
-  Switch,
+  Routes,
   Route,
-  Redirect,
-  useHistory,
-  useRouteMatch,
+  Navigate,
+  useNavigate,
+  useMatch,
 } from "react-router-dom";
 // import { TransitionGroup, CSSTransition } from "react-transition-group";
 import SignIn from "../pages/signIn";
@@ -29,10 +29,11 @@ import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import TweetDetails from "../components/tweets/TweetDetails";
 import Tweet from "../components/tweets/Tweet";
+import NotFound from "../components/notFound/index";
 
-const Routes = () => {
+const LiteRoutes = (authenticated) => {
   let location = useLocation();
-  let history = useHistory();
+  let navigate = useNavigate();
   const token = localStorage.getItem("user-token");
   const dispatch = useDispatch();
 
@@ -40,7 +41,7 @@ const Routes = () => {
   const [tweetDetails, setTweetDetails] = useState("");
   const [tweets, setTweets] = useState([]);
   const [tweetSlugs, setTweetSlugs] = useState([]);
-
+  // const [authenticated, setAuth] = useState(false);
   // decode token
   if (token) {
     const decodedToken = jwtDecode(token);
@@ -48,7 +49,7 @@ const Routes = () => {
 
     if (decodedToken.exp * 1000 < Date.now()) {
       store.dispatch(SignOutAction());
-      history.push("/signin");
+      navigate("/signin");
     } else {
       // authenticated = true;
       store.dispatch({
@@ -59,7 +60,7 @@ const Routes = () => {
     }
   }
 
-  let { path, url } = useRouteMatch();
+  // let { path, url } = useMatch();
 
   useEffect(() => {
     getHandle();
@@ -129,48 +130,42 @@ const Routes = () => {
   return (
     // <TransitionGroup>
     // <CSSTransition key={location.key} classNames="fade" timeout={300}>
-    <Switch location={location}>
-      <Redirect exact from="/" to="/signin" />
-
-      <AuthRoutes
-        // authenticated={authenticated}
-        exact
-        path="/signin"
-        component={SignIn}
-      ></AuthRoutes>
-      <AuthRoutes
-        // authenticated={authenticated}
-        exact
-        path="/signup"
-        component={SignUp}
-      ></AuthRoutes>
-      <Route exact path="/home" component={Home}></Route>
-      <Route exact path="/notifications" component={Notifications}></Route>
-      <Route exact path="/explore" component={Explore}></Route>
-      <Route exact path={`/${tweepHandle}`} component={Profile}></Route>
+    <Routes>
+      {/* <Navigate to="/signin" replace /> */}
+      <Route path="/" element={<Navigate to="/signin" />} />
       <Route
-        exact
-        path={`/tweet/${tweetSlugs}`}
-        component={TweetDetails}
-      ></Route>
-      {/* <Route exact path={`/${allTweets.slug}`} component={TweetDetails}></Route> */}
-    </Switch>
+        path="/signin"
+        element={!authenticated ? <SignIn /> : <Navigate to="/home" />}
+      />
+      <Route
+        path="/signup"
+        element={!authenticated ? <SignUp /> : <Navigate to="/home" />}
+      />
+      {/* <AuthRoutes index path="/signin" element={<SignIn />}></AuthRoutes> */}
+      {/* <AuthRoutes path="/signup" element={<SignUp />}></AuthRoutes> */}
+      <Route path="/home" element={<Home />}></Route>
+      <Route path="/notifications" element={<Notifications />}></Route>
+      <Route path="/explore" element={<Explore />}></Route>
+      <Route path={`/${tweepHandle}`} element={<Profile />}></Route>
+      <Route path={`/tweet/${tweetSlugs}`} element={TweetDetails}></Route>
+      {/* <Route  path={`/${allTweets.slug}`} element={TweetDetails}></Route> */}
+      <Route path="*" element={<NotFound />}></Route>
+    </Routes>
     //   </CSSTransition>
     // </TransitionGroup>
   );
 };
 
-export default Routes;
-// Routes.propTypes = {
-//   user: PropTypes.object.isRequired,
-//   tweetReducer: PropTypes.object.isRequired,
-// };
+LiteRoutes.propTypes = {
+  user: PropTypes.object.isRequired,
+};
 
-// const mapStateToProps = (state) => {
-//   return {
-//     user: state.user,
-//     tweetReducer: state.tweetReducer,
-//   };
-// };
+const mapStateToProps = (state) => {
+  return {
+    authenticated: state.user.authenticated,
+  };
+};
 
-// export default connect(mapStateToProps)(Routes);
+// export default LiteRoutes;
+export default connect(mapStateToProps)(LiteRoutes);
+

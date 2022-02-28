@@ -1,12 +1,11 @@
 import React from "react";
-import Container from "@material-ui/core/Container";
+import Container from "@mui/material/Container";
 // import { SignOutAction } from "../redux/actions/AuthActions";
 // import { useDispatch } from "react-redux";
 import {
-  useHistory,
+  useNavigate,
   useParams,
-  useRouteMatch,
-  Switch,
+  useMatch,
   Route,
   useLocation,
 } from "react-router-dom";
@@ -19,7 +18,7 @@ import Notifications from "../components/nests/Notifications";
 
 const Home = () => {
   // const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
 
   // let { path, url } = useRouteMatch();

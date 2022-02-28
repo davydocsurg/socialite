@@ -2,18 +2,18 @@ import React, { useEffect, useState } from "react";
 import TweetBox from "./TweetBox";
 import Tweet from "./tweets/Tweet";
 import FlipMove from "react-flip-move";
-import { Avatar, Button, TextField } from "@material-ui/core";
-import PhotoOutlinedIcon from "@material-ui/icons/PhotoOutlined";
-import GifOutlinedIcon from "@material-ui/icons/GifOutlined";
-import PollOutlinedIcon from "@material-ui/icons/PollOutlined";
-import ScheduleOutlinedIcon from "@material-ui/icons/ScheduleOutlined";
-import EmojiEmotionsOutlinedIcon from "@material-ui/icons/EmojiEmotionsOutlined";
-import FlareOutlinedIcon from "@material-ui/icons/FlareOutlined";
-import AssistantOutlinedIcon from "@material-ui/icons/AssistantOutlined";
-import { makeStyles } from "@material-ui/styles";
+import { Avatar, Button, TextField } from "@mui/material";
+import PhotoOutlinedIcon from "@mui/icons-material/PhotoOutlined";
+import GifOutlinedIcon from "@mui/icons-material/GifOutlined";
+import PollOutlinedIcon from "@mui/icons-material/PollOutlined";
+import ScheduleOutlinedIcon from "@mui/icons-material/ScheduleOutlined";
+import EmojiEmotionsOutlinedIcon from "@mui/icons-material/EmojiEmotionsOutlined";
+import FlareOutlinedIcon from "@mui/icons-material/FlareOutlined";
+import AssistantOutlinedIcon from "@mui/icons-material/AssistantOutlined";
+import { makeStyles } from "@mui/styles";
 import axios from "axios";
 import HttpService from "../services/HttpServices";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // redux
 import {
   CreateTweetAction,
@@ -22,8 +22,8 @@ import {
 } from "../redux/actions/TweetActions";
 import { useDispatch, connect } from "react-redux";
 import PropTypes from "prop-types";
-import Snackbar from "@material-ui/core/Snackbar";
-import MuiAlert from "@material-ui/lab/Alert";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 import { getUserData } from "../redux/actions/AuthActions";
 
 function Alert(props) {
@@ -48,7 +48,7 @@ const Feed = ({
 }) => {
   const [tweets, setTweets] = useState([]);
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // tweet box begins
   const classes = useStyles();
@@ -144,7 +144,7 @@ const Feed = ({
     dispatch(FetchTweetsAction());
     // dispatch(FetchTweetsLikeAction());
     return () => {};
-  }, []);
+  }, [FetchTweetsAction()]);
 
   // const fetchAuthUser = () => {
   //   let authUserUrl = "authUser";
@@ -235,7 +235,7 @@ const Feed = ({
   };
 
   const goToProfile = () => {
-    history.push(`/${handle}`);
+    navigate(`/${handle}`);
   };
 
   const closeTweetSuccessMessage = () => {

@@ -1,17 +1,17 @@
 import * as React from "react";
-import Routes from "./routes/Routes";
-// import Container from "@material-ui/core/Container";
-// import Typography from "@material-ui/core/Typography";
-// import Box from "@material-ui/core/Box";
+import LiteRoutes from "./routes/LiteRoutes";
+// import Container from "@mui/material/Container";
+// import Typography from "@mui/material/Typography";
+// import Box from "@mui/material/Box";
 
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { ThemeProvider, createTheme } from "@material-ui/core/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { useState } from "react";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import ThemeSwitcherComponent from "./components/ThemeSwitcher";
 // import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 import { useLocation } from "react-router-dom";
-import Container from "@material-ui/core/Container";
+import Container from "@mui/material/Container";
 // components
 import Sidebar from "./components/Sidebar";
 import Widgets from "./components/Widgets";
@@ -56,16 +56,11 @@ const App = ({}) => {
         ) : null}
 
         <CssBaseline>
-          <Container
-            className="m-0"
-            component="main"
-            className="app"
-            maxWidth="xl"
-          >
+          <Container className="m-0" component="main" maxWidth="xl">
             {!location.pathname.match(`/signin|/signup`) ? (
               <Sidebar></Sidebar>
             ) : null}
-            <Routes></Routes>
+            <LiteRoutes></LiteRoutes>
             {!location.pathname.match(`/signin|/signup`) ? (
               <Widgets></Widgets>
             ) : null}

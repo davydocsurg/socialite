@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from "react";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-// import FormControlLabel from "@material-ui/core/FormControlLabel";
-// import Checkbox from "@material-ui/core/Checkbox";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { Link, useHistory } from "react-router-dom";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
+import { CssBaseline } from '@mui/material';
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+// import FormControlLabel from "@mui/material/FormControlLabel";
+// import Checkbox from "@mui/material/Checkbox";
+import CircularProgress from "@mui/material/CircularProgress";
+import { Link, useNavigate } from "react-router-dom";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import { makeStyles } from "@mui/styles";
+import Container from "@mui/material/Container";
 import { useDispatch, connect } from "react-redux";
 import { SignUpAction } from "../redux/actions/AuthActions";
 import axios from "axios";
-import { Alert, AlertTitle } from "@material-ui/lab";
-import IconButton from "@material-ui/core/IconButton";
-import Collapse from "@material-ui/core/Collapse";
-import CloseIcon from "@material-ui/icons/Close";
+import { Alert, AlertTitle } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import Collapse from "@mui/material/Collapse";
+import CloseIcon from "@mui/icons-material/Close";
 import PropTypes from "prop-types";
-import Snackbar from "@material-ui/core/Snackbar";
+import Snackbar from "@mui/material/Snackbar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 const SignUp = ({ UI }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [fields, setState] = useState({
     first_name: "",
@@ -114,7 +114,7 @@ const SignUp = ({ UI }) => {
     e.preventDefault();
     setSpinner(true);
 
-    dispatch(SignUpAction(fields, history));
+    dispatch(SignUpAction(fields, navigate));
 
     if (UI.errors) {
       setOpen(true);
@@ -151,7 +151,7 @@ const SignUp = ({ UI }) => {
     //       res.data.success === true
     //     ) {
     //       // localStorage.setItem("user-token", res.data.access_token);
-    //       history.push("/signin");
+    //       navigate("/signin");
     //       // LoginAfterRegistration();
     //       // console.log(res.data.message);
     //       setOpen(false);

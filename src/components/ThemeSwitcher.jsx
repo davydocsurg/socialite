@@ -1,10 +1,10 @@
 import * as React from "react";
 import { useState } from "react";
-import Switch from "@material-ui/core/Switch";
-import Tooltip from "@material-ui/core/Tooltip";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@mui/material/Switch";
+import Tooltip from "@mui/material/Tooltip";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
 export default function ThemeSwitcherComponent(props) {
   //const { prompt, useOs, useDark } = props;
