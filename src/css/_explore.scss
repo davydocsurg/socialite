@@ -1,0 +1,34 @@
+.explore {
+  flex: 0.5 !important;
+  border-right: 1px solid $twitter-background;
+  // min-width: fit-content !important;
+  overflow-y: scroll !important;
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+
+  &__header {
+    position: sticky !important;
+    top: 0;
+    background-color: $twitter-header-bg !important;
+    z-index: 100;
+    border-bottom: 1px solid $twitter-background;
+    padding: 15px 20px;
+  }
+
+  & h2 {
+    font-size: 20px !important;
+    font-weight: 700;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .explore {
+    flex: 0.86 !important;
+  }
+}

@@ -1,0 +1,112 @@
+@import "./_variables";
+@import "./sidebar";
+@import "./feed";
+@import "./widget";
+@import "./tweetBox";
+@import "./post";
+@import "./notifications";
+@import "./explore";
+@import "./animations";
+@import "./profile";
+@import "./tweetDetails";
+//  "build:integration": "env-cmd -f .env.integration yarn run build"
+// * {
+//   margin: 0% !important;
+// }
+html {
+  scroll-behavior: smooth !important;
+  transition: all 1s ease-in-out !important;
+}
+
+body {
+  max-height: 100vh !important;
+  transition: all 1s ease-in-out !important;
+}
+
+.app {
+  display: flex !important;
+  height: 100vh !important;
+}
+
+.signin_link {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.px-7 {
+  padding-left: 5rem !important;
+  padding-right: 5rem !important;
+}
+
+.text-twitter-color {
+  color: $tweet-color !important;
+}
+
+.errors-alert {
+  transition: all 1s ease-in-out !important;
+}
+
+.btn-twitter {
+  &:hover {
+    background: $sidebar-hover-option !important;
+    border-radius: 50%;
+  }
+}
+
+.btn-remove-img {
+  // &:hover {
+  background: $sidebar-hover-option !important;
+  border-radius: 50% !important;
+  // }
+}
+
+.fit-block {
+  object-fit: cover;
+}
+
+.transform-o {
+  transform-origin: 0.5em 0.625em !important;
+  margin-bottom: 12rem !important;
+}
+
+svg:not(:root).svg-inline--fa {
+  overflow: visible;
+}
+
+.svg-inline--fa.fa-w-16 {
+  width: 1em;
+  margin-bottom: 0.19rem;
+}
+
+.bg-twitter-bg {
+  background-color: $twitter-background !important;
+}
+
+.go-back-button {
+  .go-back {
+    font-size: 1.2rem !important;
+  }
+
+  &:hover {
+    // padding: 0.92rem;
+    transition: all 100ms ease-out;
+    border-radius: 50%;
+    background-color: $sidebar-hover-option;
+    cursor: pointer;
+  }
+}
+
+.img-preview {
+  img {
+    transition: all 1.95s ease-in-out !important;
+    border-radius: 2rem !important;
+  }
+}
+
+.ml-7 {
+  margin-left: 20px !important;
+}

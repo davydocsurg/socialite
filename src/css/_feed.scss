@@ -1,0 +1,54 @@
+.feed {
+  flex: 0.5 !important;
+  border-right: 1px solid $twitter-background;
+  // min-width: fit-content !important;
+  overflow-y: scroll !important;
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+
+  &__header {
+    position: sticky !important;
+    top: 0;
+    background-color: $twitter-header-bg !important;
+    z-index: 100;
+    border-bottom: 1px solid $twitter-background;
+    padding: 15px 20px;
+  }
+
+  & h2 {
+    font-size: 20px !important;
+    font-weight: 700;
+  }
+}
+
+.border-none {
+  border: transparent !important;
+}
+
+@media screen and (max-width: 992px) {
+  .feed {
+    flex: 0.86 !important;
+  }
+}
+
+.emoji-row {
+  margin-left: 5rem !important;
+  justify-content: space-between !important;
+}
+
+.fileUpld {
+  font-size: 2rem !important;
+
+  &:hover {
+    background-color: $sidebar-hover-option;
+    border-radius: 70rem !important;
+    padding: 0.3rem !important;
+    transition: all 1s ease-in-out !important;
+  }
+}

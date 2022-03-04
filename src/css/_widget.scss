@@ -1,0 +1,90 @@
+.widgets {
+  flex: 0.3 !important;
+  overflow-y: scroll !important;
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+
+  &__input {
+    display: flex;
+    align-items: center;
+    background-color: $twitter-background;
+    padding: 10px;
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-left: 20px;
+    position: sticky !important;
+    z-index: 100;
+    top: 0;
+  }
+
+  &__input > input {
+    border: none;
+    background-color: $twitter-background;
+  }
+
+  &__searchIcon {
+    color: gray;
+  }
+
+  &__widgetContainer {
+    margin-top: 15px;
+    margin-left: 20px;
+    padding: 20px;
+    background-color: #f5f8fa;
+    border-radius: 20px;
+  }
+
+  &__widgetContainer > h2 {
+    font-size: 18px;
+    font-weight: 800;
+  }
+}
+
+.followBtn {
+  background-color: $tweet-color !important;
+  border: none !important;
+  color: $btn-color !important;
+  font-weight: 800 !important;
+  text-transform: inherit !important;
+  border-radius: 25px !important;
+  height: 45px !important;
+  margin-top: 10px !important;
+
+  :hover {
+    background-color: $tweet-color !important;
+  }
+}
+
+.tweeps-suggestions {
+  cursor: pointer;
+
+  :hover {
+    background-color: $twitter-background;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .widgets {
+    // flex: 0.2 !important;
+    display: none !important;
+
+    &__input {
+      // padding: 1px !important;
+      margin-left: 10% !important;
+    }
+
+    &__widgetContainer {
+      margin-top: 15px;
+      margin-left: 10% !important;
+      // padding: 0px !;
+      background-color: #f5f8fa;
+      border-radius: 20px;
+    }
+  }
+}

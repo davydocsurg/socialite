@@ -1,0 +1,56 @@
+.singleTweet {
+  flex: 0.5 !important;
+  border-right: 1px solid $twitter-background;
+  overflow-y: scroll !important;
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+
+  &__header {
+    position: sticky !important;
+    top: 0 !important;
+    background-color: $twitter-header-bg !important;
+    z-index: 100 !important;
+    border-bottom: 1px solid $twitter-background !important;
+    padding: 10px 10px !important;
+  }
+
+  & h2 {
+    font-size: 20px !important;
+    font-weight: 700;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .singleTweet {
+    flex: 0.86 !important;
+  }
+}
+
+.bg-holder {
+  // background-image: url("../assets/images/avatar.png");
+  position: absolute;
+  width: 100%;
+  min-height: 100%;
+  top: 0;
+  left: 0;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  will-change: transform, opacity, filter;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+@media screen and(min-width:900px) {
+  .ml-lg-7 {
+    margin-left: 25rem;
+  }
+}
