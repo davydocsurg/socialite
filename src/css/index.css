@@ -913,4 +913,9 @@ svg:not(:root).svg-inline--fa {
 .ml-7 {
   margin-left: 20px !important;
 }
+
+.errors-alert {
+  -webkit-transition: all 1s ease-in-out !important;
+  transition: all 1s ease-in-out !important;
+}
 /*# sourceMappingURL=index.css.map */
