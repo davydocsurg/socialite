@@ -1,6 +1,6 @@
 import * as ActionTypes from "../../types/ActionTypes";
 
-const UserReducer = (state = initState, action) => {
+const UserReducer = (state, action) => {
   switch (action.type) {
     case ActionTypes.SET_AUTHENTICATED:
       return {

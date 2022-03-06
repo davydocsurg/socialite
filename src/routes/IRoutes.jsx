@@ -9,11 +9,11 @@ import Home from "../pages/home";
 export const IRoutes = () => {
   const { authenticated } = useContext(IndexContext);
 
-  // useEffect(() => {
-  //   console.log("====================================");
-  //   console.log(authenticated);
-  //   console.log("====================================");
-  // }, []);
+  useEffect(() => {
+    console.log("====================================");
+    console.log(authenticated);
+    console.log("====================================");
+  }, []);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 // mui
 import Container from "@mui/material/Container";
@@ -34,7 +34,21 @@ import CircularProgress from "@mui/material/CircularProgress";
 // colors
 import { deepOrange, green } from "@mui/material/colors";
 
+// react-router
+import { useNavigate } from "react-router-dom";
+
+// context && services
+import { AuthContext } from "../contexts/AuthContext";
+import { IndexContext } from "../contexts/IndexContext";
+import HttpService from "../services/HttpServices";
+import axios from "axios";
+
 const SignIn = () => {
+  const navigate = useNavigate();
+
+  const { SignInAction } = useContext(AuthContext);
+  // const { getUserData } = useContext(IndexContext);
+
   const [open, setOpen] = useState({
     open: false,
   });
@@ -64,11 +78,6 @@ const SignIn = () => {
 
   // funcs
   const handleClickShowPassword = () => {
-    // setPwdVisibility({
-    //   ...pwdVisibility,
-    //   pwdVisibility: !pwdVisibility,
-    // });
-
     setFields({
       ...fields,
       showPassword: !fields.showPassword,
@@ -96,13 +105,50 @@ const SignIn = () => {
 
   const SignInUser = (e) => {
     e.preventDefault();
+    const http = new HttpService();
 
-    setOpen(true);
+    axios
+      .post(http.url + "/signin", fields)
+      .then((res) => {
+        if (res.data.hasOwnProperty("success") && res.data.success === false) {
+          setOpen(true);
+          setErrors({
+            ...errors,
+            errorMsg: {
+              login: res.data.message.login,
+              password: res.data.message.password,
+            },
+          });
+        } else if (
+          res.data.hasOwnProperty("success") &&
+          res.data.success === true
+        ) {
+          setAuthToken(res.data.access_token);
+          SignInAction();
+          setShowSuccess(true);
+
+          navigate("/home");
+        }
+      })
+      .catch((err) => {
+        setOpen(true);
+        if (err.errors > 1) {
+          setErrors({
+            ...errors,
+            errorMsg: {
+              login: err.errors.login,
+              password: err.errors.password,
+            },
+          });
+        }
+      });
     setSpinner(true);
+  };
 
-    console.log("====================================");
-    console.log("user");
-    console.log("====================================");
+  const setAuthToken = (token) => {
+    const authToken = `Bearer ${token}`;
+    localStorage.setItem("user-token", authToken);
+    axios.defaults.headers.common["Authorization"] = authToken;
   };
 
   return (
@@ -209,6 +255,11 @@ const SignIn = () => {
                       }
                       label="Password"
                     />
+                    {errors.errorMsg.password ? (
+                      <small className="text-danger">
+                        {errors.errorMsg.password}
+                      </small>
+                    ) : null}
                   </FormControl>
 
                   {/* <TextField
@@ -261,9 +312,6 @@ const SignIn = () => {
                         size={20}
                       />
                     ) : (
-                      // <i className="ml-3 spinner-border text-white">
-                      //   <span class="sr-only">Loading...</span>
-                      // </i>
                       <LoginIcon />
                     )}
                   </Button>

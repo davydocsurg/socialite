@@ -1,18 +1,23 @@
 import React, { useState, useEffect, useDispatch, useContext } from "react";
 import IRoutes from "./routes/IRoutes";
-import { IndexContext } from "./contexts/IndexContext";
+import { IndexContext, IndexContextProvider } from "./contexts/IndexContext";
+import { AuthContext, AuthContextProvider } from "./contexts/AuthContext";
 
 function App() {
-  const { getUserData } = useContext(IndexContext);
+  // const { getUserData } = useContext(IndexContext);
   // const dispatch = useDispatch;
 
-  useEffect(() => {
-    getUserData;
-  }, [getUserData]);
+  // useEffect(() => {
+  //   getUserData;
+  // }, [getUserData]);
 
   return (
     <>
-      <IRoutes />
+      <IndexContextProvider>
+        <AuthContextProvider>
+          <IRoutes />
+        </AuthContextProvider>
+      </IndexContextProvider>
     </>
   );
 }

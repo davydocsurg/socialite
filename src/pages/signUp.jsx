@@ -117,10 +117,7 @@ const SignUp = () => {
 
   const RegisterUser = (e) => {
     e.preventDefault();
-    // return (dispatch) => {
     const http = new HttpService();
-    console.log("signup");
-    // dispatch({ type: ActionTypes.LOADING_UI });
 
     axios
       .post(http.url + "/signup", fields)
@@ -163,7 +160,6 @@ const SignUp = () => {
         });
       });
     // };
-    SignUpAction;
     setSpinner(true);
   };
 

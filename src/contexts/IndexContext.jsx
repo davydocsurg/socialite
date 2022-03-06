@@ -16,32 +16,36 @@ const initState = {
 
 export const IndexContext = createContext(initState);
 
-export const IndexProvider = ({ children }) => {
+export const IndexContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(UserReducer, initState);
 
   const getUserData = () => (dispatch) => {
-    dispatch({ type: ActionTypes.LOADING_UI });
-    let token = localStorage.getItem("user-token");
-    const http = new HttpService();
-    const headers = {
-      Authorization: `${token}`,
-      "Content-type": "application/json",
-    };
-    console.log("====================================");
-    console.log("get");
-    console.log("====================================");
-    axios
-      .get(http.url + "/authUser", { headers: headers })
-      .then((res) => {
-        dispatch({
-          type: ActionTypes.SET_USER,
-          payload: res.data,
-        });
-        dispatch({ type: ActionTypes.STOP_LOADING_UI });
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    dispatch({
+      type: ActionTypes.SET_AUTHENTICATED,
+      // payload: res.data,
+    });
+    // dispatch({ type: ActionTypes.LOADING_UI });
+    // let token = localStorage.getItem("user-token");
+    // const http = new HttpService();
+    // const headers = {
+    //   Authorization: `${token}`,
+    //   "Content-type": "application/json",
+    // };
+    // console.log("====================================");
+    // console.log("get");
+    // console.log("====================================");
+    // axios
+    //   .get(http.url + "/authUser", { headers: headers })
+    //   .then((res) => {
+    //     dispatch({
+    //       type: ActionTypes.SET_USER,
+    //       payload: res.data,
+    //     });
+    //     dispatch({ type: ActionTypes.STOP_LOADING_UI });
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //   });
   };
 
   return (
