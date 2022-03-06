@@ -1,6 +1,7 @@
 import { createContext, useReducer } from "react";
 // reducers
 import UserReducer from "./reducers/UserReducer";
+import UIReducer from "./reducers/UIReducer";
 import * as ActionTypes from "../types/ActionTypes";
 import HttpService from "../services/HttpServices";
 import axios from "axios";
@@ -49,50 +50,59 @@ export const AuthContextProvider = ({ children }) => {
     };
   };
 
-  // const SignInAction = (fields, history) => {
   const SignInAction = () => {
-    console.log("====================================");
-    console.log("got it");
-    console.log("====================================");
     dispatch({
       type: ActionTypes.SET_AUTHENTICATED,
     });
-    // return (dispatch) => {
-    //   const http = new HttpService();
-    //   dispatch({ type: ActionTypes.LOADING_UI });
-    //   axios
-    //     .post(http.url + "/signin", fields)
-    //     .then((res) => {
-    //       if (res.data.hasOwnProperty("success") && res.data.success === false) {
-    //         dispatch({
-    //           type: ActionTypes.SET_ERRORS,
-    //           payload: res.data.message,
-    //         });
-    //       } else if (
-    //         res.data.hasOwnProperty("success") &&
-    //         res.data.success === true
-    //       ) {
-    //         // console.log(res.data);
-    //         setAuthToken(res.data.access_token);
+  };
 
-    //         dispatch(getUserData());
-    //         dispatch({
-    //           type: ActionTypes.CLEAR_ERRORS,
-    //         });
-    //         dispatch({
-    //           type: ActionTypes.SET_AUTHENTICATED,
-    //         });
-    //         history.push("/home");
-    //         // dispatch(FetchTweetsAction());
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       dispatch({
-    //         type: ActionTypes.SET_ERRORS,
-    //         payload: err,
-    //       });
-    //     });
-    //   };
+  // const SignInAction = (fields) => {
+  //   return (dispatch) => {
+  //     const http = new HttpService();
+  //     const navigate = useNavigate();
+
+  //     axios
+  //       .post(http.url + "/signin", fields)
+  //       .then((res) => {
+  //         if (
+  //           res.data.hasOwnProperty("success") &&
+  //           res.data.success === false
+  //         ) {
+  //           dispatch({
+  //             type: ActionTypes.DISPLAY_ERROR_MSG,
+  //           });
+  //           dispatch({
+  //             type: ActionTypes.SET_LOGIN_ERRORS,
+  //             payload: res.data.message,
+  //           });
+  //         } else if (
+  //           res.data.hasOwnProperty("success") &&
+  //           res.data.success === true
+  //         ) {
+  //           setAuthToken(res.data.access_token);
+  //           dispatch({
+  //             type: ActionTypes.SET_AUTHENTICATED,
+  //           });
+
+  //           navigate("/home");
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         setOpen(true);
+  //         if (err.errors > 1) {
+  //           dispatch({
+  //             type: ActionTypes.SET_LOGIN_ERRORS,
+  //             payload: err.errors,
+  //           });
+  //         }
+  //       });
+  //   };
+  // };
+
+  const setAuthToken = (token) => {
+    const authToken = `Bearer ${token}`;
+    localStorage.setItem("user-token", authToken);
+    axios.defaults.headers.common["Authorization"] = authToken;
   };
 
   return (

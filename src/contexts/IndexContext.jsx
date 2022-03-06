@@ -1,10 +1,11 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useEffect } from "react";
 // reducers
 import UserReducer from "./reducers/UserReducer";
 import * as ActionTypes from "../types/ActionTypes";
 import HttpService from "../services/HttpServices";
 import axios from "axios";
 import { SignInUserService } from "../services/AuthServices";
+import { useNavigate } from "react-router-dom";
 
 const initState = {
   credentials: {},
@@ -12,6 +13,11 @@ const initState = {
   loading: false,
   likes: [],
   notifications: [],
+  loginErrorMsg: {
+    login: "",
+    password: "",
+  },
+  showErrMsg: false,
 };
 
 export const IndexContext = createContext(initState);
@@ -19,10 +25,22 @@ export const IndexContext = createContext(initState);
 export const IndexContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(UserReducer, initState);
 
+  // const CheckAuthMode = () => {
+  // };
+  const navigate = useNavigate();
+  useEffect(() => {
+    let token = localStorage.getItem("user-token");
+    if (token) {
+      dispatch({
+        type: ActionTypes.SET_AUTHENTICATED,
+      });
+      navigate("/home");
+    }
+  }, [state.authenticated]);
+
   const getUserData = () => (dispatch) => {
     dispatch({
       type: ActionTypes.SET_AUTHENTICATED,
-      // payload: res.data,
     });
     // dispatch({ type: ActionTypes.LOADING_UI });
     // let token = localStorage.getItem("user-token");
@@ -50,7 +68,13 @@ export const IndexContextProvider = ({ children }) => {
 
   return (
     <IndexContext.Provider
-      value={{ authenticated: state.authenticated, getUserData }}
+      value={{
+        authenticated: state.authenticated,
+        loginErrorMsg: state.loginErrorMsg,
+        showErrMsg: state.showErrMsg,
+        // CheckAuthMode,
+        getUserData,
+      }}
     >
       {children}
     </IndexContext.Provider>

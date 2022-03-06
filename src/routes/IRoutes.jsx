@@ -7,13 +7,14 @@ import { IndexContext } from "../contexts/IndexContext";
 import Home from "../pages/home";
 
 export const IRoutes = () => {
-  const { authenticated } = useContext(IndexContext);
+  const { authenticated, CheckAuthMode } = useContext(IndexContext);
 
   useEffect(() => {
-    console.log("====================================");
-    console.log(authenticated);
-    console.log("====================================");
-  }, []);
+    // CheckAuthMode();
+    // console.log("====================================");
+    // console.log(authenticated);
+    // console.log("====================================");
+  }, [authenticated]);
 
   return (
     <>
@@ -21,7 +22,11 @@ export const IRoutes = () => {
         <Route
           path="/"
           element={
-            !authenticated ? <Navigate to="signin" /> : <Navigate to="home" />
+            authenticated === true ? (
+              <Navigate to="home" />
+            ) : (
+              <Navigate to="signin" />
+            )
           }
         />
         <Route path="signin" element={<SignIn />} />

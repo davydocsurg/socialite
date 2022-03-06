@@ -46,7 +46,7 @@ import axios from "axios";
 const SignIn = () => {
   const navigate = useNavigate();
 
-  const { SignInAction } = useContext(AuthContext);
+  const { loginErrorMsg, showErrMsg, SignInAction } = useContext(AuthContext);
   // const { getUserData } = useContext(IndexContext);
 
   const [open, setOpen] = useState({
@@ -124,9 +124,8 @@ const SignIn = () => {
           res.data.success === true
         ) {
           setAuthToken(res.data.access_token);
-          SignInAction();
           setShowSuccess(true);
-
+          SignInAction();
           navigate("/home");
         }
       })
