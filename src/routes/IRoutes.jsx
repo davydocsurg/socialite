@@ -4,7 +4,12 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import SignIn from "../pages/signIn";
 import SignUp from "../pages/signUp";
 import { IndexContext } from "../contexts/IndexContext";
+// pages
 import Home from "../pages/home";
+import Explore from "../pages/Explore";
+import Messages from "../pages/Messages";
+import Bookmarks from "../pages/Bookmarks";
+import Notifications from "../pages/Notfications";
 
 export const IRoutes = () => {
   const { authenticated, CheckAuthMode } = useContext(IndexContext);
@@ -28,10 +33,15 @@ export const IRoutes = () => {
               <Navigate to="signin" />
             )
           }
-        />
-        <Route path="signin" element={<SignIn />} />
+        ></Route>
+        <Route index path="home" element={<Home />} />
+        <Route path="explore" element={<Explore />} />
+        <Route path="notifications" element={<Notifications />} />
+        <Route path="messages" element={<Messages />} />
+        <Route path="bookmarks" element={<Bookmarks />} />
+
         <Route path="signup" element={<SignUp />} />
-        <Route path="home" element={<Home />} />
+        <Route path="signin" element={<SignIn />} />
       </Routes>
     </>
   );
