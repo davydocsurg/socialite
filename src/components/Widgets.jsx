@@ -1,9 +1,8 @@
 import React from "react";
+// utils
+import { SearchComp } from "../utils/SearchComp";
 
 // mui
-
-// utils
-import SearchComp from "../utils/SearchComp";
 
 const Widgets = () => {
   return (

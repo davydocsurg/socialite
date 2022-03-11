@@ -9,11 +9,11 @@ import { grey } from "@mui/material/colors";
 export const SearchComp = () => {
   const Search = styled("div")(({ theme }) => ({
     position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: grey,
+    borderRadius: "20px",
+    backgroundColor: grey[300],
     // backgroundColor: alpha(theme.palette.common.grey, 0.15),
     "&:hover": {
-      backgroundColor: grey,
+      backgroundColor: grey[350],
       // backgroundColor: alpha(theme.palette.common.grey, 500),
     },
     marginLeft: 0,
@@ -43,10 +43,10 @@ export const SearchComp = () => {
       transition: theme.transitions.create("width"),
       width: "100%",
       [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "13ch",
-        },
+        width: "34ch",
+        // "&:focus": {
+        //   width: "13ch",
+        // },
       },
     },
   }));

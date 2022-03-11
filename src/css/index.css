@@ -144,9 +144,9 @@
 }
 
 .feed {
-  -webkit-box-flex: 0.5 !important;
-      -ms-flex: 0.5 !important;
-          flex: 0.5 !important;
+  -webkit-box-flex: 0.7 !important;
+      -ms-flex: 0.7 !important;
+          flex: 0.7 !important;
   border-right: 1px solid #e2e2dc;
   overflow-y: scroll !important;
   /* Hide scrollbar for IE, Edge and Firefox */
@@ -818,6 +818,7 @@
 
 html {
   scroll-behavior: smooth !important;
+  margin: 0% !important;
   -webkit-transition: all 1s ease-in-out !important;
   transition: all 1s ease-in-out !important;
 }
