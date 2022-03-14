@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 // mui
@@ -22,35 +22,32 @@ import { SuccessSnackBar } from "../utils/SnackBars";
 
 // components
 import TweetBox from "./tweets/TweetBox";
+import { IndexContext } from "../contexts/IndexContext";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
 const Feed = () => {
-  // const [openTweetSuccessMessage, set0penTweetSuccessMessage] = useState(false);
-  // const [closeTweetSuccessMessage, setCloseTweetSuccessMessage] = useState(false);
-
-  const handleCloseTM = () => {
-    setOPenTweetSuccessMessage(false);
-  };
-
-  const handleOpenTM = () => {
-    setOPenTweetSuccessMessage(true);
-  };
+  const {
+    state = initState,
+    dispatch,
+    openTweetSuccessMessage,
+    closeTweetSM,
+  } = useContext(IndexContext);
 
   return (
     <div>
       {/* tweet success message */}
-      {/* <Snackbar
+      <Snackbar
         open={openTweetSuccessMessage}
         autoHideDuration={6000}
-        onClose={closeTweetSuccessMessage}
+        onClose={closeTweetSM}
       >
-        <Alert onClose={closeTweetSuccessMessage} severity="success">
+        <Alert onClose={closeTweetSM} severity="success">
           Tweet sent!
         </Alert>
-      </Snackbar> */}
+      </Snackbar>
 
       {/* <SuccessSnackBar
         openTweetSuccessMessage={handleOpenTM}

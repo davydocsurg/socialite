@@ -20,9 +20,9 @@ const UserReducer = (state = initState, action) => {
       );
       return {
         ...state,
-        authenticated: true,
-        loading: false,
         credentials: action.payload,
+        // authenticated: true,
+        loading: false,
       };
 
     case ActionTypes.LIKE_TWEET:

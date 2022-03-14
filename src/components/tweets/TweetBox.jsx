@@ -1,10 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 // services
 import HttpService from "../../services/HttpServices";
 import { IndexContext } from "../../contexts/IndexContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import { initState } from "../../contexts/IndexContext";
+import { TweetContext } from "../../contexts/TweetContext";
 // import { GetAuthUserData } from "../../contexts/actions/AuthActions";
 
 // mui icons
@@ -23,29 +25,30 @@ import MuiAlert from "@mui/material/Alert";
 
 // libs
 import FlipMove from "react-flip-move";
+import { CloseIcon } from "@mui/icons-material/Close";
 
 const TweetBox = () => {
-  const { authUser } = useContext(AuthContext);
-  // const { state = initState, dispatch } = useContext(IndexContext);
+  // const { state } = useContext(AuthContext);
+  const {
+    state = initState,
+    dispatch,
+    tweet,
+    setTweet,
+    tweetErr,
+    SetTweetErr,
+    tweetImageRemover,
+    setTweetImageRemover,
+    removeImg,
+    sendTweet,
+  } = useContext(IndexContext);
 
-  useEffect(() => {
-    console.log("====================================");
-    console.log(authUser.profile_picture);
-    console.log("====================================");
-  }, [authUser]);
+  // const { tweet, setTweet, tweetErr, SetTweetErr } = useContext(TweetContext);
 
-  const http = new HttpService();
+  useEffect(() => {}, []);
+
+  const navigate = useNavigate();
 
   const profilePicsUrl = "http://localhost:8000/profile/photos/";
-
-  // tweets
-  const [tweetText, setTweet] = useState("");
-
-  const [tweetImageF, setTweetImage] = useState("");
-
-  const [tweetImageRemover, setTweetImageRemover] = useState(false);
-
-  const [openTweetSuccessMessage, setOpenTweetSuccessMessage] = useState(false);
 
   // auth user
   // const [authUser, setAuthUser] = useState({
@@ -59,13 +62,10 @@ const TweetBox = () => {
     },
   });
 
-  const handleChange = (e) => {
-    setTweet(e.target.value);
-
-    // clear error message
-    setTweetErrors({
-      ...tweetErrors,
-      tweetErrorMsg: {},
+  const handleTweetTextChange = (e) => {
+    setTweet({
+      ...tweet,
+      tweetText: e.target.value,
     });
   };
 
@@ -80,17 +80,24 @@ const TweetBox = () => {
 
     let limit = 1024 * 1024 * 2;
     if (file["size"] > limit) {
-      setTweetImage({
-        ...tweetImageF,
-        tweetImageF: "",
+      setTweet({
+        ...tweet,
+        tweetPhoto: "",
       });
+      // setTweetImage({
+      //   ...tweetImageF,
+      //   tweetImageF: "",
+      // });
       alert("File is too large! It must be less than 2MB.");
 
       return false;
     }
 
     reader.onloadend = (file) => {
-      setTweetImage(reader.result);
+      setTweet({
+        ...tweet,
+        tweetPhoto: reader.result,
+      });
     };
     reader.readAsDataURL(file);
 
@@ -104,106 +111,28 @@ const TweetBox = () => {
     // });
   };
 
-  const removeImg = () => {
-    setTweetImage({
-      ...tweetImageF,
-      tweetImageF: "",
-    });
-    setTweetImageRemover(false);
-  };
-
-  const sendTweet = (e) => {
-    e.preventDefault();
-
-    axios
-      .post(
-        "http://localhost:8000/api/tweet/create",
-        { tweet_text: tweetText, tweet_photo: tweetImageF },
-        {
-          headers: headers,
-        }
-      )
-      .then((res) => {
-        if (res.data.hasOwnProperty("success") && res.data.success === false) {
-          setTweetErrors({
-            ...tweetErrors,
-            tweetErrorMsg: res.data.message,
-          });
-        } else if (
-          res.data.hasOwnProperty("success") &&
-          res.data.success === true
-        ) {
-          setTweetImage("");
-          setTweet("");
-
-          setTweetImageRemover(false);
-          setOpenTweetSuccessMessage(true);
-        }
-        return res;
-      })
-      .catch((err) => {
-        console.error(err);
-        setTweetErrors({
-          ...tweetErrors,
-          tweetErrorMsg: err,
-        });
-      });
-  };
-
-  const goToProfile = () => {
-    history.push(`/${handle}`);
-  };
-
-  const closeTweetSuccessMessage = () => {
-    setOpenTweetSuccessMessage(false);
-  };
-
-  // tweet box ends
-
-  const fetchTweetsFromServer = () => {
-    // if (tweetReducer.tweets !== []) {
-    //   setTweets(tweetReducer.tweets);
-    // }
-
-    const http = new HttpService();
-    let tweetsUrl = "tweets";
-
-    return http
-      .getData(tweetsUrl)
-      .then((res) => {
-        setTweets(res);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
   return (
     <>
       <div className="tweetBox">
-        <form
-          noValidate
-          autoComplete="off"
-          // onSubmit={sendTweet}
-        >
+        <form noValidate autoComplete="off" onSubmit={sendTweet}>
           <div className="tweetBox__input">
             <Avatar
-              src={profilePicsUrl + authUser.profile_picture}
+              src={profilePicsUrl + state.credentials.profile_picture}
               className="shadow-sm mr-5 cursor-pointer"
-              // onClick={navigate()}
+              // onClick={navigate(`/${state.credentials.handle}`)}
             />
             <TextField
               id="tweet_text"
-              value={tweetText}
-              helperText={tweetErrors.tweetErrorMsg.tweet_text}
-              error={tweetErrors.tweetErrorMsg.tweet_text ? true : false}
+              value={tweet.tweetText}
+              helperText={tweetErr.tweet_text}
+              error={tweetErr.tweet_text ? true : false}
               multiline
               maxRows={5}
               className="border-none"
               sx={{ ml: 3, mt: 1 }}
               fullWidth
               placeholder="What's happening?"
-              onChange={handleChange}
+              onChange={handleTweetTextChange}
               variant="standard"
             />
           </div>
@@ -218,7 +147,7 @@ const TweetBox = () => {
               </button>
             )}
             <img
-              src={tweetImageF}
+              src={tweet.tweetPhoto}
               alt=""
               className="py-2 shadow-sm img-fluid"
             />

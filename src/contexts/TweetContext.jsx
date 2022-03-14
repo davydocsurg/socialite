@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useState } from "react";
 // reducers
 import UserReducer from "./reducers/UserReducer";
 import UIReducer from "./reducers/UIReducer";
@@ -14,8 +14,22 @@ export const TweetContext = createContext();
 export const TweetContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(UserReducer, TweetReducer);
 
+  const [tweet, setTweet] = useState({
+    tweetText: "",
+    tweetPhoto: "",
+  });
+
+  const [tweetErr, setTweetErr] = useState({
+    tweetErr: {
+      tweet_text: "",
+      tweet_photo: "",
+    },
+  });
+
   return (
-    <TweetContext.Provider value={{ HandleTweetText }}>
+    <TweetContext.Provider
+      value={{ tweet, setTweet, tweetErr, setTweetErr, HandleTweetText }}
+    >
       {children}
     </TweetContext.Provider>
   );

@@ -14,12 +14,12 @@ export const AuthContext = createContext();
 export const AuthContextProvider = ({ children }) => {
   const [state = initState, dispatch] = useReducer(UserReducer);
 
-  const [authUser, setauthUser] = useState({
-    authUser: {},
-  });
+  // const [authUser, setauthUser] = useState({
+  //   authUser: {},
+  // });
 
   useEffect(() => {
-    GetAuthUserData();
+    // GetAuthUserData();
     console.log("====================================");
     console.log(state.credentials);
     console.log("====================================");
@@ -38,17 +38,11 @@ export const AuthContextProvider = ({ children }) => {
       .get(http.url + "/authUser", { headers: headers })
       .then((res) => {
         console.log(res.data.credentials.profile_picture);
-        setauthUser({
-          ...authUser,
-          authUser: res.data.credentials,
+
+        dispatch({
+          type: ActionTypes.SET_USER,
+          payload: res.data.credentials,
         });
-        console.log("====================================");
-        console.log(authUser);
-        console.log("====================================");
-        // dispatch({
-        //   type: ActionTypes.SET_USER,
-        //   payload: res.data.credentials,
-        // });
 
         dispatch({ type: ActionTypes.STOP_LOADING_UI });
       })
@@ -151,7 +145,7 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ SignUpAction, SignInAction, authUser }}>
+    <AuthContext.Provider value={{ SignUpAction, SignInAction }}>
       {children}
     </AuthContext.Provider>
   );

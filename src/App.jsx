@@ -6,6 +6,7 @@ import { AuthContext, AuthContextProvider } from "./contexts/AuthContext";
 import SideBar from "./components/SideBar";
 import Widgets from "./components/Widgets";
 import { Container } from "@mui/material";
+import { TweetContextProvider } from "./contexts/TweetContext";
 
 function App() {
   // const { getUserData } = useContext(IndexContext);
@@ -22,7 +23,9 @@ function App() {
         <Container className={`m-0 app`} component="main" maxWidth="xl">
           {!location.pathname.match(`/signin|/signup`) ? <SideBar /> : null}
           <AuthContextProvider>
-            <IRoutes />
+            <TweetContextProvider>
+              <IRoutes />
+            </TweetContextProvider>
           </AuthContextProvider>
           {!location.pathname.match(`/signin|/signup`) ? <Widgets /> : null}
         </Container>
