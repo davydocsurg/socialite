@@ -369,9 +369,6 @@ const SignUp = () => {
                         size={20}
                       />
                     ) : (
-                      // <i className="ml-3 spinner-border text-white">
-                      //   <span class="sr-only">Loading...</span>
-                      // </i>
                       <EditIcon />
                     )}
                   </Button>

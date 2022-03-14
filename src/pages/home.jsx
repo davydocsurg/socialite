@@ -4,6 +4,8 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 // mui icons
 import FlareOutlinedIcon from "@mui/icons-material/FlareOutlined";
+// components
+import Feed from "../components/Feed";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -23,6 +25,8 @@ const Home = () => {
               {" "}
             </FlareOutlinedIcon>
           </div>
+
+          <Feed />
         </div>
       </div>
     </>

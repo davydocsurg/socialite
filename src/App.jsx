@@ -19,13 +19,13 @@ function App() {
   return (
     <>
       <IndexContextProvider>
-        <AuthContextProvider>
-          <Container className={`m-0 app`} component="main" maxWidth="xl">
-            {!location.pathname.match(`/signin|/signup`) ? <SideBar /> : null}
+        <Container className={`m-0 app`} component="main" maxWidth="xl">
+          {!location.pathname.match(`/signin|/signup`) ? <SideBar /> : null}
+          <AuthContextProvider>
             <IRoutes />
-            {!location.pathname.match(`/signin|/signup`) ? <Widgets /> : null}
-          </Container>
-        </AuthContextProvider>
+          </AuthContextProvider>
+          {!location.pathname.match(`/signin|/signup`) ? <Widgets /> : null}
+        </Container>
       </IndexContextProvider>
     </>
   );

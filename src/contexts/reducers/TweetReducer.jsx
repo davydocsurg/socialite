@@ -1,7 +1,7 @@
 import * as ActionTypes from "../../types/ActionTypes";
 import { initState } from "../IndexContext";
 
-const UserReducer = (state = initState, action) => {
+const TweetReducer = (state = initState, action) => {
   switch (action.type) {
     case ActionTypes.SET_AUTHENTICATED:
       return {
@@ -14,15 +14,16 @@ const UserReducer = (state = initState, action) => {
         initState,
       };
 
-    case ActionTypes.SET_USER:
-      console.log(
-        "http://localhost:8000/profile/photos/" + action.payload.profile_picture
-      );
+    case ActionTypes.SET_TWEET_TEXT:
       return {
         ...state,
-        authenticated: true,
-        loading: false,
-        credentials: action.payload,
+        tweet: { tweetText: action.payload },
+      };
+
+    case ActionTypes.SET_TWEET_PHOTO:
+      return {
+        ...state,
+        tweet: { tweetPhoto: action.payload },
       };
 
     case ActionTypes.LIKE_TWEET:
@@ -47,4 +48,4 @@ const UserReducer = (state = initState, action) => {
   }
 };
 
-export default UserReducer;
+export default TweetReducer;

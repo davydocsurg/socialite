@@ -7,8 +7,9 @@ import axios from "axios";
 import { SignInUserService } from "../services/AuthServices";
 import { useNavigate } from "react-router-dom";
 
-const initState = {
+export const initState = {
   credentials: {},
+  // authUser: [],
   authenticated: false,
   loading: false,
   likes: [],
@@ -18,6 +19,10 @@ const initState = {
     password: "",
   },
   showErrMsg: false,
+  tweet: {
+    tweetText: "",
+    tweetPhoto: "",
+  },
 };
 
 export const IndexContext = createContext(initState);
@@ -38,42 +43,17 @@ export const IndexContextProvider = ({ children }) => {
     }
   }, [state.authenticated]);
 
-  const getUserData = () => (dispatch) => {
-    dispatch({
-      type: ActionTypes.SET_AUTHENTICATED,
-    });
-    // dispatch({ type: ActionTypes.LOADING_UI });
-    // let token = localStorage.getItem("user-token");
-    // const http = new HttpService();
-    // const headers = {
-    //   Authorization: `${token}`,
-    //   "Content-type": "application/json",
-    // };
-    // console.log("====================================");
-    // console.log("get");
-    // console.log("====================================");
-    // axios
-    //   .get(http.url + "/authUser", { headers: headers })
-    //   .then((res) => {
-    //     dispatch({
-    //       type: ActionTypes.SET_USER,
-    //       payload: res.data,
-    //     });
-    //     dispatch({ type: ActionTypes.STOP_LOADING_UI });
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //   });
-  };
-
   return (
     <IndexContext.Provider
       value={{
-        authenticated: state.authenticated,
-        loginErrorMsg: state.loginErrorMsg,
-        showErrMsg: state.showErrMsg,
-        // CheckAuthMode,
-        getUserData,
+        state,
+        dispatch,
+        credentials: state.credentials,
+        // authenticated: state.authenticated,
+        // loginErrorMsg: state.loginErrorMsg,
+        // showErrMsg: state.showErrMsg,
+        // // CheckAuthMode,
+        // authUser: state.authUser,
       }}
     >
       {children}

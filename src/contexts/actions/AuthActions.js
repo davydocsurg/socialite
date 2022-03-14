@@ -1,10 +1,10 @@
-import * as ActionTypes from "../ActionTypes";
+import * as ActionTypes from "../../types/ActionTypes";
 import {
   SignUpUserService,
   SignInUserService,
   SignOutUserService,
-} from "../services/AuthServices";
-import HttpService from "../services/HttpServices";
+} from "../../services/AuthServices";
+import HttpService from "../../services/HttpServices";
 import axios from "axios";
 // import { FetchTweetsAction } from "./TweetActions";
 
@@ -40,47 +40,56 @@ export const SignUpAction = (credentials, history) => {
   };
 };
 
-export const SignInAction = (fields, history) => {
+export const SignInAction = () => {
   return (dispatch) => {
-    const http = new HttpService();
-    dispatch({ type: ActionTypes.LOADING_UI });
-    axios
-      .post(http.url + "/signin", fields)
-      .then((res) => {
-        if (res.data.hasOwnProperty("success") && res.data.success === false) {
-          dispatch({
-            type: ActionTypes.SET_ERRORS,
-            payload: res.data.message,
-          });
-        } else if (
-          res.data.hasOwnProperty("success") &&
-          res.data.success === true
-        ) {
-          // console.log(res.data);
-          setAuthToken(res.data.access_token);
-
-          dispatch(getUserData());
-          dispatch({
-            type: ActionTypes.CLEAR_ERRORS,
-          });
-          dispatch({
-            type: ActionTypes.SET_AUTHENTICATED,
-          });
-          history.push("/home");
-          // dispatch(FetchTweetsAction());
-        }
-      })
-      .catch((err) => {
-        dispatch({
-          type: ActionTypes.SET_ERRORS,
-          payload: err,
-        });
-      });
+    dispatch({
+      type: ActionTypes.SET_AUTHENTICATED,
+    });
   };
 };
 
-export const getUserData = () => (dispatch) => {
+// export const SignInAction = (fields, history) => {
+//   return (dispatch) => {
+//     const http = new HttpService();
+//     dispatch({ type: ActionTypes.LOADING_UI });
+//     axios
+//       .post(http.url + "/signin", fields)
+//       .then((res) => {
+//         if (res.data.hasOwnProperty("success") && res.data.success === false) {
+//           dispatch({
+//             type: ActionTypes.SET_ERRORS,
+//             payload: res.data.message,
+//           });
+//         } else if (
+//           res.data.hasOwnProperty("success") &&
+//           res.data.success === true
+//         ) {
+//           // console.log(res.data);
+//           setAuthToken(res.data.access_token);
+
+//           dispatch(getUserData());
+//           dispatch({
+//             type: ActionTypes.CLEAR_ERRORS,
+//           });
+//           dispatch({
+//             type: ActionTypes.SET_AUTHENTICATED,
+//           });
+//           history.push("/home");
+//           // dispatch(FetchTweetsAction());
+//         }
+//       })
+//       .catch((err) => {
+//         dispatch({
+//           type: ActionTypes.SET_ERRORS,
+//           payload: err,
+//         });
+//       });
+//   };
+// };
+
+export const GetAuthUserData = () => (dispatch) => {
   dispatch({ type: ActionTypes.LOADING_UI });
+  console.log("get");
   let token = localStorage.getItem("user-token");
   const http = new HttpService();
   const headers = {
@@ -91,11 +100,11 @@ export const getUserData = () => (dispatch) => {
     .get(http.url + "/authUser", { headers: headers })
     .then((res) => {
       console.log(res.data);
-      // dispatch({
-      //   type: ActionTypes.SET_USER,
-      //   payload: res.data,
-      // });
-      // dispatch({ type: ActionTypes.STOP_LOADING_UI });
+      dispatch({
+        type: ActionTypes.SET_USER,
+        payload: res.data,
+      });
+      dispatch({ type: ActionTypes.STOP_LOADING_UI });
     })
     .catch((err) => {
       console.error(err);

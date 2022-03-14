@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useEffect, useState } from "react";
 // reducers
 import UserReducer from "./reducers/UserReducer";
 import UIReducer from "./reducers/UIReducer";
@@ -6,11 +6,56 @@ import * as ActionTypes from "../types/ActionTypes";
 import HttpService from "../services/HttpServices";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+// import { GetAuthUserData } from "./actions/AuthActions";
+import { initState } from "./IndexContext";
 
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(UserReducer);
+  const [state = initState, dispatch] = useReducer(UserReducer);
+
+  const [authUser, setauthUser] = useState({
+    authUser: {},
+  });
+
+  useEffect(() => {
+    GetAuthUserData();
+    console.log("====================================");
+    console.log(state.credentials);
+    console.log("====================================");
+  }, []);
+
+  const GetAuthUserData = () => {
+    dispatch({ type: ActionTypes.LOADING_UI });
+
+    let token = localStorage.getItem("user-token");
+    const http = new HttpService();
+    const headers = {
+      Authorization: `${token}`,
+      "Content-type": "application/json",
+    };
+    axios
+      .get(http.url + "/authUser", { headers: headers })
+      .then((res) => {
+        console.log(res.data.credentials.profile_picture);
+        setauthUser({
+          ...authUser,
+          authUser: res.data.credentials,
+        });
+        console.log("====================================");
+        console.log(authUser);
+        console.log("====================================");
+        // dispatch({
+        //   type: ActionTypes.SET_USER,
+        //   payload: res.data.credentials,
+        // });
+
+        dispatch({ type: ActionTypes.STOP_LOADING_UI });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   const SignUpAction = (credentials) => {
     return (dispatch) => {
@@ -106,7 +151,7 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ SignUpAction, SignInAction }}>
+    <AuthContext.Provider value={{ SignUpAction, SignInAction, authUser }}>
       {children}
     </AuthContext.Provider>
   );
