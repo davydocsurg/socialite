@@ -6,7 +6,7 @@
   <!-- <a href="https://socialite.netlify.app">Demo</a> -->
 </div>
 
-<h1 align="center">Socialite</h1>
+<h1 align="center">Socialite (Context API)</h1>
 
 <div align="center">
   <img alt="Github top language" src="https://img.shields.io/github/languages/top/davydocsurg/socialite?color=56BEB8">
