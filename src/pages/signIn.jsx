@@ -38,15 +38,12 @@ import { deepOrange, green } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 
 // context && services
-import { AuthContext } from "../contexts/AuthContext";
 import { IndexContext } from "../contexts/IndexContext";
 import HttpService from "../services/HttpServices";
 import axios from "axios";
 
 const SignIn = () => {
   const navigate = useNavigate();
-
-  const { loginErrorMsg, showErrMsg, SignInAction } = useContext(AuthContext);
   // const { getUserData } = useContext(IndexContext);
 
   const [open, setOpen] = useState({

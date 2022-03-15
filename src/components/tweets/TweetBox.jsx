@@ -4,9 +4,6 @@ import { useNavigate } from "react-router-dom";
 // services
 import HttpService from "../../services/HttpServices";
 import { IndexContext } from "../../contexts/IndexContext";
-import { AuthContext } from "../../contexts/AuthContext";
-import { initState } from "../../contexts/IndexContext";
-import { TweetContext } from "../../contexts/TweetContext";
 // import { GetAuthUserData } from "../../contexts/actions/AuthActions";
 
 // mui icons
@@ -30,8 +27,9 @@ import { CloseIcon } from "@mui/icons-material/Close";
 const TweetBox = () => {
   // const { state } = useContext(AuthContext);
   const {
-    state = initState,
-    dispatch,
+    // state = initState,
+    // dispatch,
+    authState: { credentials },
     tweet,
     setTweet,
     tweetErr,
@@ -117,7 +115,7 @@ const TweetBox = () => {
         <form noValidate autoComplete="off" onSubmit={sendTweet}>
           <div className="tweetBox__input">
             <Avatar
-              src={profilePicsUrl + state.credentials.profile_picture}
+              src={profilePicsUrl + credentials.profile_picture}
               className="shadow-sm mr-5 cursor-pointer"
               // onClick={navigate(`/${state.credentials.handle}`)}
             />

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useDispatch } from "react";
 import { connect } from "react-redux";
 import { Routes, Route, Navigate } from "react-router-dom";
 import SignIn from "../pages/signIn";
@@ -10,15 +10,19 @@ import Explore from "../pages/Explore";
 import Messages from "../pages/Messages";
 import Bookmarks from "../pages/Bookmarks";
 import Notifications from "../pages/Notfications";
+import { checkAuthState } from "../contexts/actions/auth/checkAuthState";
 
 export const IRoutes = () => {
-  const { authenticated, CheckAuthMode } = useContext(IndexContext);
+  const {
+    authState: { authenticated },
+  } = useContext(IndexContext);
 
+  // const dispatch = useDispatch();
   useEffect(() => {
-    // CheckAuthMode();
-    // console.log("====================================");
-    // console.log(authenticated);
-    // console.log("====================================");
+    // dispatch(checkAuthState());
+    console.log("====================================");
+    console.log(authenticated);
+    console.log("====================================");
   }, [authenticated]);
 
   return (

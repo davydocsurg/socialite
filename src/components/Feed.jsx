@@ -23,6 +23,7 @@ import { SuccessSnackBar } from "../utils/SnackBars";
 // components
 import TweetBox from "./tweets/TweetBox";
 import { IndexContext } from "../contexts/IndexContext";
+import { Tweet } from "./tweets/Tweet";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -30,10 +31,14 @@ function Alert(props) {
 
 const Feed = () => {
   const {
-    state = initState,
-    dispatch,
+    authState: { loading, authenticated, errors },
+    tweetsState,
+    // state = initState,
+    // dispatch,
     openTweetSuccessMessage,
     closeTweetSM,
+    // loading,
+    // tweets,
   } = useContext(IndexContext);
 
   return (
@@ -55,6 +60,43 @@ const Feed = () => {
       /> */}
 
       <TweetBox></TweetBox>
+
+      {loading && (
+        <div className="mb-auto mt-5 text-center mx-auto text-twitter-color">
+          <i className="spinner-border spinner-border-md "></i>
+        </div>
+      )}
+
+      {tweetsState.tweets.length > 0 && loading == false ? (
+        <FlipMove>
+          {tweetsState.tweets.map((tweet) => (
+            <Tweet
+              key={tweet.slug}
+              slug={tweet.slug}
+              tweepName={tweet.tweep.first_name + " " + tweet.tweep.last_name}
+              username={tweet.tweep.handle}
+              verified={tweet.tweep.is_verified}
+              text={tweet.tweet_text}
+              tweetTime={tweet.created_at}
+              avatar={profilePicsUrl + tweet.tweep.profile_picture}
+              tweetImage={
+                tweet.tweet_photo
+                  ? "http://localhost:8000/tweets/photos/" + tweet.tweet_photo
+                  : null
+              }
+              likesCount={tweet.likes.length}
+              tweepLikeId={tweet.likes.map((l) => l.user_id)}
+              authUserId={id}
+            ></Tweet>
+          ))}
+        </FlipMove>
+      ) : (
+        (allTweets.length = 0 && UI.loading == false && (
+          <div className="text-center mt-5">
+            <h2>No Tweets Found</h2>
+          </div>
+        ))
+      )}
     </div>
   );
 };

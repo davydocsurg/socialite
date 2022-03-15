@@ -1,29 +1,23 @@
 import * as ActionTypes from "../../types/ActionTypes";
-import { initState } from "../IndexContext";
 
-const TweetReducer = (state = initState, action) => {
-  switch (action.type) {
-    case ActionTypes.SET_AUTHENTICATED:
+const tweet = (state, { payload, type }) => {
+  switch (type) {
+    case ActionTypes.SET_TWEET_DATA:
       return {
         ...state,
-        authenticated: true,
-      };
-
-    case ActionTypes.SET_UNAUTHENTICATED:
-      return {
-        initState,
+        tweets: payload,
       };
 
     case ActionTypes.SET_TWEET_TEXT:
       return {
         ...state,
-        tweet: { tweetText: action.payload },
+        tweet: { tweetText: payload },
       };
 
     case ActionTypes.SET_TWEET_PHOTO:
       return {
         ...state,
-        tweet: { tweetPhoto: action.payload },
+        tweet: { tweetPhoto: payload },
       };
 
     case ActionTypes.LIKE_TWEET:
@@ -33,7 +27,7 @@ const TweetReducer = (state = initState, action) => {
           // ...state.likes,
           {
             tweepHandle: state.credentials.handle,
-            slug: action.payload.slug,
+            slug: payload.slug,
           },
         ],
       };
@@ -41,11 +35,11 @@ const TweetReducer = (state = initState, action) => {
     case ActionTypes.UNLIKE_TWEET:
       return {
         ...state,
-        likes: state.likes.filter((like) => like.slug === action.payload.slug),
+        likes: state.likes.filter((like) => like.slug === payload.slug),
       };
     default:
       return state;
   }
 };
 
-export default TweetReducer;
+export default tweet;

@@ -40,10 +40,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { deepOrange, green } from "@mui/material/colors";
 
 // context
-import { AuthContext } from "../contexts/AuthContext";
 
 const SignUp = () => {
-  const SignUpAction = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [open, setOpen] = useState({
