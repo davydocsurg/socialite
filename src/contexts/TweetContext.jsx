@@ -11,6 +11,7 @@ import { useContext } from "react";
 export const tweetState = {
   tweets: [],
   likes: [],
+  loading: false,
 };
 
 const TweetContext = createContext(tweetState);
@@ -18,6 +19,13 @@ export const useTweetContext = () => useContext(TweetContext);
 
 export const TweetProvider = ({ children }) => {
   const [tstate, dispatch] = useReducer(TweetReducer, tweetState);
+
+  useEffect(() => {
+    FetchTweets();
+    console.log("====================================");
+    console.log(tweetErr);
+    console.log("====================================");
+  }, []);
 
   const [tweet, setTweet] = useState({
     tweetText: "",
@@ -63,8 +71,11 @@ export const TweetProvider = ({ children }) => {
         if (res.data.hasOwnProperty("success") && res.data.success === false) {
           setTweetErr({
             ...tweetErr,
-            tweetErrg: res.data.message,
+            tweet_text: res.data.message.tweet_text,
+            tweet_photo: res.data.message.tweet_photo,
           });
+
+          console.log(tweetErr);
         } else if (
           res.data.hasOwnProperty("success") &&
           res.data.success === true
@@ -89,6 +100,27 @@ export const TweetProvider = ({ children }) => {
       });
   };
 
+  const FetchTweets = () => {
+    const http = new HttpService();
+    dispatch({ type: ActionTypes.LOADING_UI });
+
+    axios
+      .get(http.url + "/tweets")
+      .then((res) => {
+        dispatch({
+          type: ActionTypes.SET_TWEET_DATA,
+          payload: res.data,
+        });
+
+        dispatch({
+          type: ActionTypes.STOP_LOADING_UI,
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   const closeTweetSM = () => {
     setOpenTweetSuccessMessage(false);
   };
@@ -98,6 +130,7 @@ export const TweetProvider = ({ children }) => {
       value={{
         tstate,
         dispatch,
+        loading: tstate.loading,
         tweets: tstate.tweets,
         tweet,
         setTweet,

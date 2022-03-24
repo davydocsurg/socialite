@@ -45,17 +45,14 @@ const TweetBox = () => {
   // const { tweet, setTweet, tweetErr, SetTweetErr } = useContext(TweetContext);
 
   useEffect(() => {
-    console.log(astate);
+    // console.log(astate);
   }, []);
 
   const navigate = useNavigate();
 
   const profilePicsUrl = "http://localhost:8000/profile/photos/";
 
-  // auth user
-  // const [authUser, setAuthUser] = useState({
-  //   authUserDetails: {},
-  // });
+  const [tBtn, settBtn] = useState(false);
 
   const [tweetErrors, setTweetErrors] = useState({
     tweetErrorMsg: {
@@ -69,6 +66,8 @@ const TweetBox = () => {
       ...tweet,
       tweetText: e.target.value,
     });
+
+    settBtn(true);
   };
 
   const handleFileInput = () => {
@@ -187,7 +186,11 @@ const TweetBox = () => {
             <div className="col-4"></div>
 
             <div className="col-2 ml-auto float-right">
-              <Button type="submit" className="tweetBox__tweetButton ">
+              <Button
+                type="submit"
+                className="tweetBox__tweetButton "
+                disabled={tBtn == false}
+              >
                 Tweet
               </Button>
             </div>

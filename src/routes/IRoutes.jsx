@@ -25,7 +25,7 @@ export const IRoutes = () => {
     <>
       <Routes>
         <Route
-          path="/"
+          path="/*"
           element={
             authenticated === true ? (
               <Navigate to="home" />

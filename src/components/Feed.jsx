@@ -22,11 +22,10 @@ import { SuccessSnackBar } from "../utils/SnackBars";
 
 // components
 import TweetBox from "./tweets/TweetBox";
-import { IndexContext, initState } from "../contexts/IndexContext";
 import { Tweet } from "./tweets/Tweet";
 
 // services
-import { FetchTweets } from "../contexts/actions/tweet/fetchTweets";
+import { useTweetContext } from "../contexts/TweetContext";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -34,16 +33,15 @@ function Alert(props) {
 
 const Feed = () => {
   const {
-    // authState: { loading, authenticated, errors },
-    // tweetsState,
-    // tweetsDispatch,
-    state = initState,
+    tstate,
     dispatch,
     openTweetSuccessMessage,
     closeTweetSM,
     loading,
     tweets,
-  } = useContext(IndexContext);
+  } = useTweetContext();
+
+  const profilePicsUrl = "http://localhost:8000/profile/photos/";
 
   useEffect(() => {
     // tweetsDispatch(FetchTweets());
@@ -53,62 +51,65 @@ const Feed = () => {
   }, []);
 
   return (
-    <div>
-      {/* tweet success message */}
-      <Snackbar
-        open={openTweetSuccessMessage}
-        autoHideDuration={6000}
-        onClose={closeTweetSM}
-      >
-        <Alert onClose={closeTweetSM} severity="success">
-          Tweet sent!
-        </Alert>
-      </Snackbar>
+    <>
+      <div>
+        {/* tweet success message */}
+        <Snackbar
+          open={openTweetSuccessMessage}
+          autoHideDuration={6000}
+          onClose={closeTweetSM}
+        >
+          <Alert onClose={closeTweetSM} severity="success">
+            Tweet sent!
+          </Alert>
+        </Snackbar>
 
-      {/* <SuccessSnackBar
+        {/* <SuccessSnackBar
         openTweetSuccessMessage={handleOpenTM}
         handleCloseTM={handleCloseTM}
       /> */}
 
-      <TweetBox></TweetBox>
+        <TweetBox></TweetBox>
 
-      {loading && (
-        <div className="mb-auto mt-5 text-center mx-auto text-twitter-color">
-          <i className="spinner-border spinner-border-md "></i>
-        </div>
-      )}
-
-      {/* {tweets.length > 0 && loading == false ? (
-        <FlipMove>
-          {tweets.map((tweet) => (
-            <Tweet
-              key={tweet.slug}
-              slug={tweet.slug}
-              tweepName={tweet.tweep.first_name + " " + tweet.tweep.last_name}
-              username={tweet.tweep.handle}
-              verified={tweet.tweep.is_verified}
-              text={tweet.tweet_text}
-              tweetTime={tweet.created_at}
-              avatar={profilePicsUrl + tweet.tweep.profile_picture}
-              tweetImage={
-                tweet.tweet_photo
-                  ? "http://localhost:8000/tweets/photos/" + tweet.tweet_photo
-                  : null
-              }
-              likesCount={tweet.likes.length}
-              tweepLikeId={tweet.likes.map((l) => l.user_id)}
-              authUserId={id}
-            ></Tweet>
-          ))}
-        </FlipMove>
-      ) : (
-        (tweets.length = 0 && UI.loading == false && (
-          <div className="text-center mt-5">
-            <h2>No Tweets Found</h2>
+        {loading && (
+          <div className="mb-auto mt-5 text-center mx-auto text-twitter-color">
+            <i className="spinner-border spinner-border-md "></i>
           </div>
-        ))
-      )} */}
-    </div>
+        )}
+
+        {tweets.length > 0 && loading == false ? (
+          <FlipMove>
+            {tweets.map((tweet) => (
+              <Tweet
+                key={tweet.slug}
+                slug={tweet.slug}
+                tweepName={tweet.tweep.first_name + " " + tweet.tweep.last_name}
+                username={tweet.tweep.handle}
+                verified={tweet.tweep.is_verified}
+                text={tweet.tweet_text}
+                tweetTime={tweet.created_at}
+                avatar={profilePicsUrl + tweet.tweep.profile_picture}
+                tweetImage={
+                  tweet.tweet_photo
+                    ? "http://localhost:8000/tweets/photos/" + tweet.tweet_photo
+                    : null
+                }
+                likesCount={tweet.likes.length}
+                tweepLikeId={tweet.likes.map((l) => l.user_id)}
+                authUserId={tweet.tweep.id}
+              ></Tweet>
+            ))}
+          </FlipMove>
+        ) : (
+          tweets.length < 1 &&
+          loading == false && (
+            <div className="text-center mt-5">
+              <h2>No Tweets Found</h2>
+            </div>
+          )
+        )}
+      </div>
+    </>
   );
 };
 

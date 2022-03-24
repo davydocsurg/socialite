@@ -26,6 +26,15 @@ import ListAltIcon from "@mui/icons-material/ListAlt";
 // context && services
 import axios from "axios";
 import HttpService from "../services/HttpServices";
+import {
+  Bookmarks,
+  Explore,
+  Home,
+  Lists,
+  Messages,
+  Notifications,
+  Profile,
+} from "../utils/baseIcons/sideBarIcons";
 
 const SideBar = () => {
   const http = new HttpService();
@@ -45,7 +54,7 @@ const SideBar = () => {
           }`}
           to="/home"
         >
-          <SideBarOption Icon={HomeIcon} text="Home" />
+          <SideBarOption Icon={Home} text="Home" />
         </Link>
 
         <Link
@@ -54,7 +63,7 @@ const SideBar = () => {
           }`}
           to={`/explore`}
         >
-          <SideBarOption Icon={SearchIcon} text="Explore" />
+          <SideBarOption Icon={Explore} text="Explore" />
         </Link>
 
         <Link
@@ -63,12 +72,12 @@ const SideBar = () => {
           }`}
           to={`/notifications`}
         >
-          <SideBarOption Icon={NotificationsNoneIcon} text="Notifications" />
+          <SideBarOption Icon={Notifications} text="Notifications" />
         </Link>
 
-        <SideBarOption Icon={MailOutlineIcon} text="Messages" />
-        <SideBarOption Icon={BookmarkBorderIcon} text="Bookmarks" />
-        <SideBarOption Icon={ListAltIcon} text="Lists" />
+        <SideBarOption Icon={Messages} text="Messages" />
+        <SideBarOption Icon={Bookmarks} text="Bookmarks" />
+        <SideBarOption Icon={Lists} text="Lists" />
 
         <Link
           className={`side_text ${
@@ -78,7 +87,7 @@ const SideBar = () => {
           // to={`/${handle}`}
           to="/profile"
         >
-          <SideBarOption Icon={PermIdentityIcon} text="Profile" />
+          <SideBarOption Icon={Profile} text="Profile" />
         </Link>
         <SideBarOption Icon={MoreHorizIcon} text="More" />
       </div>

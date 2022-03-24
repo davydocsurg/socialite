@@ -15,6 +15,25 @@ const TweetReducer = (state = tweetState, action) => {
         initState,
       };
 
+    case ActionTypes.SET_TWEET_DATA:
+      return {
+        ...state,
+        tweets: action.payload,
+        loading: false,
+      };
+
+    case ActionTypes.LOADING_UI:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case ActionTypes.STOP_LOADING_UI:
+      return {
+        ...state,
+        loading: false,
+      };
+
     case ActionTypes.SET_TWEET_TEXT:
       return {
         ...state,

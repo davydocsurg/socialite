@@ -1,6 +1,12 @@
 import React, { forwardRef } from "react";
-import { isMoment } from "moment";
+import moment from "moment";
 import { Avatar } from "@mui/material";
+import { ChatBubbleOutline } from "@mui/icons-material";
+import Comment from "../../utils/baseIcons/comment";
+import { useAuthContext } from "../../contexts/AuthContext";
+import Retweet from "../../utils/baseIcons/retweet";
+import Like from "../../utils/baseIcons/like";
+import Share from "../../utils/baseIcons/share";
 
 export const Tweet = forwardRef(
   (
@@ -19,9 +25,11 @@ export const Tweet = forwardRef(
     },
     ref
   ) => {
+    const { authenticated } = useAuthContext();
+
     return (
       <>
-        <div className="post" ref={ref}>
+        <div className="post">
           <div className="post__avatar">
             <Avatar src={avatar} className="shadow-lg" />
           </div>
@@ -48,7 +56,7 @@ export const Tweet = forwardRef(
                 </h3>
 
                 <div className="tweet_time col-lg-3 col-md-4">
-                  <b>{isMoment(tweetTime).fromNow()}</b>
+                  <b>{moment(tweetTime).fromNow()}</b>
                 </div>
               </div>
               <div className="post__headerDescription">
@@ -59,12 +67,15 @@ export const Tweet = forwardRef(
               <img src={tweetImage} alt="" className="py-2 img-fluid" />
             ) : null}
 
-            {/* <ChatBubbleOutlineIcon fontSize="small" /> */}
-            {/* {authenticated && (
-            <div className="post__footer">
-              <i className="far fa-comment"></i>
-              <RepeatIcon fontSize="small" />
-              <div className="">
+            {/* <ChatBubbleOutline fontSize="small" /> */}
+            {authenticated && (
+              <div className="post__footer">
+                <Comment />
+                <Retweet />
+                <Like />
+                <Share />
+                {/* <RepeatIcon fontSize="small" /> */}
+                {/* <div className="">
                 {showLikedBtn ? (
                   <i
                     className="fas fa-heart text-danger"
@@ -77,10 +88,10 @@ export const Tweet = forwardRef(
                   />
                 )}{" "}
                 {likesCount > 0 && likesCount}
+              </div> */}
+                {/* <i className="fas fa-share-alt"></i> */}
               </div>
-              <i className="fas fa-share-alt"></i>
-            </div>
-          )} */}
+            )}
           </div>
         </div>
       </>

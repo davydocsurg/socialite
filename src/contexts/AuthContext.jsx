@@ -36,10 +36,8 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     GetAuthUserData();
-    console.log("====================================");
-    console.log(astate.credentials);
-    console.log("====================================");
-  }, []);
+    SignInAction();
+  }, [astate.authenticated]);
 
   const GetAuthUserData = () => {
     dispatch({ type: ActionTypes.LOADING_UI });

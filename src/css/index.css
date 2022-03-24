@@ -919,4 +919,8 @@ svg:not(:root).svg-inline--fa {
   -webkit-transition: all 1s ease-in-out !important;
   transition: all 1s ease-in-out !important;
 }
+
+.customIcon {
+  width: 1.6rem !important;
+}
 /*# sourceMappingURL=index.css.map */
