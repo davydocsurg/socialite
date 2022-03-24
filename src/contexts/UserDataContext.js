@@ -1,6 +1,6 @@
 import { createContext, useReducer, useEffect, useState } from "react";
 // reducers
-import UserReducer from "./reducers/User";
+import UserReducer from "./reducers/UserReducer";
 import * as ActionTypes from "../types/ActionTypes";
 import HttpService from "../services/HttpServices";
 import axios from "axios";

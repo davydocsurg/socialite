@@ -1,7 +1,8 @@
 import * as ActionTypes from "../../types/ActionTypes";
-import { initState } from "../IndexContext";
+import { authState } from "../AuthContext";
+// import { initState } from "../IndexContext";
 
-const UserReducer = (state = initState, action) => {
+const UserReducer = (state = authState, action) => {
   switch (action.type) {
     case ActionTypes.SET_AUTHENTICATED:
       return {
@@ -15,9 +16,6 @@ const UserReducer = (state = initState, action) => {
       };
 
     case ActionTypes.SET_USER:
-      console.log(
-        "http://localhost:8000/profile/photos/" + action.payload.profile_picture
-      );
       return {
         ...state,
         credentials: action.payload,

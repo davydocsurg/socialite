@@ -1,25 +1,21 @@
-import React, { useContext, useEffect, useDispatch } from "react";
+import React, { useEffect, useDispatch } from "react";
 import { connect } from "react-redux";
 import { Routes, Route, Navigate } from "react-router-dom";
 import SignIn from "../pages/signIn";
 import SignUp from "../pages/signUp";
-import { IndexContext } from "../contexts/IndexContext";
 // pages
 import Home from "../pages/home";
 import Explore from "../pages/Explore";
 import Messages from "../pages/Messages";
 import Bookmarks from "../pages/Bookmarks";
 import Notifications from "../pages/Notfications";
-import { checkAuthState } from "../contexts/actions/auth/checkAuthState";
+import { useAuthContext } from "../contexts/AuthContext";
 
 export const IRoutes = () => {
-  const {
-    authState: { authenticated },
-  } = useContext(IndexContext);
+  const { authenticated } = useAuthContext();
 
   // const dispatch = useDispatch();
   useEffect(() => {
-    // dispatch(checkAuthState());
     console.log("====================================");
     console.log(authenticated);
     console.log("====================================");

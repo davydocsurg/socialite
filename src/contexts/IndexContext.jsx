@@ -1,20 +1,39 @@
-import React, { createContext, useEffect, useReducer, useState } from "react";
-import auth from "./reducers/auth";
-import authInitState from "./initStates/authInitState";
-import tweets from "./reducers/tweets";
-import tweetsInitState from "./initStates/tweetsInitState";
+import { createContext, useReducer, useEffect, useState } from "react";
+// reducers
+// import UserReducer from "./reducers/UserReducer";
 
-export const IndexContext = createContext({});
+import * as ActionTypes from "../types/ActionTypes";
+import HttpService from "../services/HttpServices";
+import axios from "axios";
+
+import { useNavigate } from "react-router-dom";
+import CombineReducers from "./reducers/CombineReducers";
+
+export const initState = {
+  likes: [],
+  notifications: [],
+  loginErrorMsg: {
+    login: "",
+    password: "",
+  },
+  showErrMsg: false,
+  tweets: [],
+  // tweet: {
+  //   tweetText: "",
+  //   tweetPhoto: "",
+  // },
+  // tweetErrorMsgs: {},
+};
+
+export const IndexContext = createContext(initState);
 
 export const IndexContextProvider = ({ children }) => {
-  const [authState, authDispatch] = useReducer(auth, authInitState);
-  const [tweetsState, tweetsDispatch] = useReducer(tweets, tweetsInitState);
+  const [state = initState, dispatch] = useReducer(CombineReducers, initState);
+
   const [tweet, setTweet] = useState({
     tweetText: "",
     tweetPhoto: "",
   });
-
-  useEffect(() => {}, []);
 
   const [tweetErr, setTweetErr] = useState({
     tweetErr: {
@@ -25,6 +44,52 @@ export const IndexContextProvider = ({ children }) => {
 
   const [tweetImageRemover, setTweetImageRemover] = useState(false);
   const [openTweetSuccessMessage, setOpenTweetSuccessMessage] = useState(false);
+
+  // const CheckAuthMode = () => {
+  // };
+  const navigate = useNavigate();
+  useEffect(() => {
+    let token = localStorage.getItem("user-token");
+    if (token) {
+      dispatch({
+        type: ActionTypes.SET_AUTHENTICATED,
+      });
+      navigate("/home");
+    }
+
+    // GetAuthUserData();
+
+    FetchTweets();
+    console.log("====================================");
+    console.log(state.tweets);
+    console.log("====================================");
+  }, [state.authenticated]);
+
+  const GetAuthUserData = () => {
+    dispatch({ type: ActionTypes.LOADING_UI });
+
+    let token = localStorage.getItem("user-token");
+    const http = new HttpService();
+    const headers = {
+      Authorization: `${token}`,
+      "Content-type": "application/json",
+    };
+    axios
+      .get(http.url + "/authUser", { headers: headers })
+      .then((res) => {
+        console.log(res.data.credentials.profile_picture);
+
+        dispatch({
+          type: ActionTypes.SET_USER,
+          payload: res.data.credentials,
+        });
+
+        dispatch({ type: ActionTypes.STOP_LOADING_UI });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   const FetchTweets = () => {
     const http = new HttpService();
@@ -109,10 +174,11 @@ export const IndexContextProvider = ({ children }) => {
   return (
     <IndexContext.Provider
       value={{
-        authState,
-        authDispatch,
-        tweetsState,
-        tweetsDispatch,
+        state,
+        dispatch,
+        // credentials: state.credentials,
+        // loading: state.loading,
+        tweets: state.tweets,
         tweet,
         setTweet,
         tweetErr,
@@ -123,6 +189,11 @@ export const IndexContextProvider = ({ children }) => {
         sendTweet,
         openTweetSuccessMessage,
         closeTweetSM,
+        // authenticated: state.authenticated,
+        // loginErrorMsg: state.loginErrorMsg,
+        // showErrMsg: state.showErrMsg,
+        // // CheckAuthMode,
+        // authUser: state.authUser,
       }}
     >
       {children}

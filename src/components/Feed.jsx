@@ -22,8 +22,11 @@ import { SuccessSnackBar } from "../utils/SnackBars";
 
 // components
 import TweetBox from "./tweets/TweetBox";
-import { IndexContext } from "../contexts/IndexContext";
+import { IndexContext, initState } from "../contexts/IndexContext";
 import { Tweet } from "./tweets/Tweet";
+
+// services
+import { FetchTweets } from "../contexts/actions/tweet/fetchTweets";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -31,15 +34,23 @@ function Alert(props) {
 
 const Feed = () => {
   const {
-    authState: { loading, authenticated, errors },
-    tweetsState,
-    // state = initState,
-    // dispatch,
+    // authState: { loading, authenticated, errors },
+    // tweetsState,
+    // tweetsDispatch,
+    state = initState,
+    dispatch,
     openTweetSuccessMessage,
     closeTweetSM,
-    // loading,
-    // tweets,
+    loading,
+    tweets,
   } = useContext(IndexContext);
+
+  useEffect(() => {
+    // tweetsDispatch(FetchTweets());
+    console.log("====================================");
+    console.log(tweets);
+    console.log("====================================");
+  }, []);
 
   return (
     <div>
@@ -67,9 +78,9 @@ const Feed = () => {
         </div>
       )}
 
-      {tweetsState.tweets.length > 0 && loading == false ? (
+      {/* {tweets.length > 0 && loading == false ? (
         <FlipMove>
-          {tweetsState.tweets.map((tweet) => (
+          {tweets.map((tweet) => (
             <Tweet
               key={tweet.slug}
               slug={tweet.slug}
@@ -91,12 +102,12 @@ const Feed = () => {
           ))}
         </FlipMove>
       ) : (
-        (allTweets.length = 0 && UI.loading == false && (
+        (tweets.length = 0 && UI.loading == false && (
           <div className="text-center mt-5">
             <h2>No Tweets Found</h2>
           </div>
         ))
-      )}
+      )} */}
     </div>
   );
 };

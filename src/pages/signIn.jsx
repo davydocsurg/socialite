@@ -38,13 +38,14 @@ import { deepOrange, green } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 
 // context && services
-import { IndexContext } from "../contexts/IndexContext";
 import HttpService from "../services/HttpServices";
 import axios from "axios";
+import { useAuthContext } from "../contexts/AuthContext";
 
 const SignIn = () => {
   const navigate = useNavigate();
-  // const { getUserData } = useContext(IndexContext);
+
+  const { SignInAction } = useAuthContext();
 
   const [open, setOpen] = useState({
     open: false,
@@ -123,7 +124,6 @@ const SignIn = () => {
           setAuthToken(res.data.access_token);
           setShowSuccess(true);
           SignInAction();
-          navigate("/home");
         }
       })
       .catch((err) => {

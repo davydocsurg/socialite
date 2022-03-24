@@ -19,6 +19,9 @@ export const checkAuthState = () => (dispatch) => {
 };
 
 export const fetchUserData = () => (dispatch) => {
+  console.log("====================================");
+  console.log("hey");
+  console.log("====================================");
   let token = localStorage.getItem("user-token");
   const http = new HttpService();
   const headers = {

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 // services
 import HttpService from "../../services/HttpServices";
-import { IndexContext } from "../../contexts/IndexContext";
+import { initState, IndexContext } from "../../contexts/IndexContext";
 // import { GetAuthUserData } from "../../contexts/actions/AuthActions";
 
 // mui icons
@@ -23,13 +23,15 @@ import MuiAlert from "@mui/material/Alert";
 // libs
 import FlipMove from "react-flip-move";
 import { CloseIcon } from "@mui/icons-material/Close";
+import { useAuthContext } from "../../contexts/AuthContext";
+import { useTweetContext } from "../../contexts/TweetContext";
 
 const TweetBox = () => {
   // const { state } = useContext(AuthContext);
+  const { astate, credentials, dispatch } = useAuthContext();
+
   const {
-    // state = initState,
-    // dispatch,
-    authState: { credentials },
+    tstate,
     tweet,
     setTweet,
     tweetErr,
@@ -38,11 +40,13 @@ const TweetBox = () => {
     setTweetImageRemover,
     removeImg,
     sendTweet,
-  } = useContext(IndexContext);
+  } = useTweetContext();
 
   // const { tweet, setTweet, tweetErr, SetTweetErr } = useContext(TweetContext);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log(astate);
+  }, []);
 
   const navigate = useNavigate();
 
