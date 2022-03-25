@@ -10,9 +10,10 @@ import Messages from "../pages/Messages";
 import Bookmarks from "../pages/Bookmarks";
 import Notifications from "../pages/Notfications";
 import { useAuthContext } from "../contexts/AuthContext";
+import Profile from "../components/Profile";
 
 export const IRoutes = () => {
-  const { authenticated } = useAuthContext();
+  const { authenticated, credentials } = useAuthContext();
 
   // const dispatch = useDispatch();
   useEffect(() => {
@@ -25,7 +26,7 @@ export const IRoutes = () => {
     <>
       <Routes>
         <Route
-          path="/*"
+          path="/"
           element={
             authenticated === true ? (
               <Navigate to="home" />
@@ -38,6 +39,7 @@ export const IRoutes = () => {
         <Route path="explore" element={<Explore />} />
         <Route path="notifications" element={<Notifications />} />
         <Route path="messages" element={<Messages />} />
+        <Route path={`/${credentials.handle}`} element={<Profile />} />
         <Route path="bookmarks" element={<Bookmarks />} />
 
         <Route path="signup" element={<SignUp />} />

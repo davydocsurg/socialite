@@ -77,6 +77,10 @@
   color: #50b7f5;
 }
 
+.customIcon {
+  width: 1.6rem !important;
+}
+
 .sidebarOption {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -104,8 +108,17 @@
   color: #50b7f5 !important;
 }
 
-.sidebarOption > h2 {
+.sidebarOption:hover h2 {
   font-weight: 600;
+}
+
+.sidebarOption:hover .customIcon {
+  font-weight: 600;
+  fill: #50b7f5 !important;
+}
+
+.sidebarOption > h2 {
+  font-weight: 400;
   font-size: 20px;
   margin-right: 0px;
   padding-left: 10px;
@@ -117,6 +130,11 @@
 
 .active {
   color: #50b7f5 !important;
+  fill: #50b7f5;
+}
+
+.active .customIcon {
+  width: 1.78rem !important;
 }
 
 @media screen and (max-width: 992px) {
@@ -819,8 +837,6 @@
 html {
   scroll-behavior: smooth !important;
   margin: 0% !important;
-  -webkit-transition: all 1s ease-in-out !important;
-  transition: all 1s ease-in-out !important;
 }
 
 body {
@@ -920,7 +936,20 @@ svg:not(:root).svg-inline--fa {
   transition: all 1s ease-in-out !important;
 }
 
-.customIcon {
-  width: 1.6rem !important;
+.customTwitterIcon {
+  fill: #50b7f5 !important;
+  width: 2.5rem;
+  margin-bottom: 13px !important;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 992px) {
+  .customTwitterIcon {
+    margin-left: 1.7rem !important;
+  }
+}
+
+.mt-7 {
+  margin-top: 12rem;
 }
 /*# sourceMappingURL=index.css.map */

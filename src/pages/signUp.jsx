@@ -252,7 +252,6 @@ const SignUp = () => {
                     label="Last Name"
                     name="last_name"
                     autoComplete="last_name"
-                    autoFocus
                   />
 
                   <TextField
@@ -267,7 +266,6 @@ const SignUp = () => {
                     label="Email Address"
                     name="email"
                     autoComplete="email"
-                    autoFocus
                   />
 
                   <TextField
@@ -282,7 +280,6 @@ const SignUp = () => {
                     label="Handle"
                     name="handle"
                     autoComplete="handle"
-                    autoFocus
                   />
 
                   <FormControl sx={{ my: 1 }} fullWidth variant="outlined">

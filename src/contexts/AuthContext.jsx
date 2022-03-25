@@ -35,9 +35,9 @@ export const AuthProvider = ({ children }) => {
   // });
 
   useEffect(() => {
-    GetAuthUserData();
-    SignInAction();
-  }, [astate.authenticated]);
+    checkAuthState();
+    //
+  }, []);
 
   const GetAuthUserData = () => {
     dispatch({ type: ActionTypes.LOADING_UI });
@@ -63,6 +63,63 @@ export const AuthProvider = ({ children }) => {
       .catch((err) => {
         console.error(err);
       });
+  };
+
+  const SignOut = () => {
+    localStorage.removeItem("user-token");
+    delete axios.defaults.headers.common["Authorization"];
+    dispatch({ type: ActionTypes.SET_UNAUTHENTICATED });
+    navigate("/signin");
+
+    // let token = localStorage.getItem("user-token");
+    // const http = new HttpService();
+    // const headers = {
+    //   Authorization: `${token}`,
+    //   "Content-type": "application/json",
+    // };
+    // axios
+    //   .post(http.url + "/signout", headers, headers)
+    //   .then((res) => {
+    //     if (res.data.hasOwnProperty("success") && res.data.success === false) {
+    //       dispatch({
+    //         type: ActionTypes.SET_ERRORS,
+    //         payload: res.data.message,
+    //       });
+    //     } else if (
+    //       res.data.hasOwnProperty("success") &&
+    //       res.data.success === true
+    //     ) {
+    // localStorage.removeItem("user-token");
+    // delete axios.defaults.headers.common["Authorization"];
+    // dispatch({ type: ActionTypes.SET_UNAUTHENTICATED });
+    // navigate("/signin");
+    //       dispatch({
+    //         type: ActionTypes.CLEAR_ERRORS,
+    //       });
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     dispatch({
+    //       type: ActionTypes.SET_ERRORS,
+    //       payload: err,
+    //     });
+    //   });
+  };
+
+  const checkAuthState = () => {
+    let token = localStorage.getItem("user-token");
+    if (token) {
+      dispatch({
+        type: ActionTypes.SET_AUTHENTICATED,
+      });
+      navigate("/home");
+      GetAuthUserData();
+    } else {
+      dispatch({
+        type: ActionTypes.SET_UNAUTHENTICATED,
+      });
+      navigate("/signin");
+    }
   };
 
   const SignUpAction = (credentials) => {
@@ -166,6 +223,7 @@ export const AuthProvider = ({ children }) => {
         authenticated: astate.authenticated,
         SignUpAction,
         SignInAction,
+        SignOut,
       }}
     >
       {children}

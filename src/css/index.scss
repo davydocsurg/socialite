@@ -15,7 +15,6 @@
 html {
   scroll-behavior: smooth !important;
   margin: 0% !important;
-  transition: all 1s ease-in-out !important;
 }
 
 body {
@@ -115,6 +114,19 @@ svg:not(:root).svg-inline--fa {
   transition: all 1s ease-in-out !important;
 }
 
-.customIcon {
-  width: 1.6rem !important;
+.customTwitterIcon {
+  fill: $tweet-color !important;
+  width: 2.5rem;
+  margin-bottom: 13px !important;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 992px) {
+  .customTwitterIcon {
+    margin-left: 1.7rem !important;
+  }
+}
+
+.mt-7 {
+  margin-top: 12rem;
 }

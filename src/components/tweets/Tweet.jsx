@@ -2,11 +2,13 @@ import React, { forwardRef } from "react";
 import moment from "moment";
 import { Avatar } from "@mui/material";
 import { ChatBubbleOutline } from "@mui/icons-material";
-import Comment from "../../utils/baseIcons/comment";
 import { useAuthContext } from "../../contexts/AuthContext";
-import Retweet from "../../utils/baseIcons/retweet";
-import Like from "../../utils/baseIcons/like";
-import Share from "../../utils/baseIcons/share";
+import {
+  Comment,
+  Like,
+  Retweet,
+  Share,
+} from "../../utils/baseIcons/tweetCompIcons";
 
 export const Tweet = forwardRef(
   (
@@ -31,15 +33,15 @@ export const Tweet = forwardRef(
       <>
         <div className="post">
           <div className="post__avatar">
-            <Avatar src={avatar} className="shadow-lg" />
+            <Avatar src={avatar} className="shadow-sm" />
           </div>
           <div className="post__body">
             <div className="post__header">
               <div
-                className="post__headerText row d-flex"
+                className="post__headerText row mr-auto justify-content-between"
                 // onClick={viewTweet}
               >
-                <h3 className="col-lg-9 col-md-8">
+                <h3 className="col-lg-9 col-md-6">
                   {tweepName}{" "}
                   <span className="post__headerSpecial">
                     {verified ? (
@@ -55,8 +57,8 @@ export const Tweet = forwardRef(
                   </span>
                 </h3>
 
-                <div className="tweet_time col-lg-3 col-md-4">
-                  <b>{moment(tweetTime).fromNow()}</b>
+                <div className="tweet_time col-lg-3 col-md-6">
+                  <b className="float-end">{moment(tweetTime).fromNow()}</b>
                 </div>
               </div>
               <div className="post__headerDescription">

@@ -35,7 +35,7 @@ const TweetBox = () => {
     tweet,
     setTweet,
     tweetErr,
-    SetTweetErr,
+    setTweetErr,
     tweetImageRemover,
     setTweetImageRemover,
     removeImg,
@@ -67,6 +67,11 @@ const TweetBox = () => {
       tweetText: e.target.value,
     });
 
+    setTweetErr({
+      ...tweetErr,
+      tweet_text: "",
+      tweet_photo: "",
+    });
     settBtn(true);
   };
 
@@ -112,6 +117,10 @@ const TweetBox = () => {
     // });
   };
 
+  const visitProf = () => {
+    navigate(`/${credentials.handle}`);
+  };
+
   return (
     <>
       <div className="tweetBox">
@@ -120,7 +129,7 @@ const TweetBox = () => {
             <Avatar
               src={profilePicsUrl + credentials.profile_picture}
               className="shadow-sm mr-5 cursor-pointer"
-              // onClick={navigate(`/${state.credentials.handle}`)}
+              onClick={visitProf}
             />
             <TextField
               id="tweet_text"

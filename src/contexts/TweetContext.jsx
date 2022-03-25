@@ -22,9 +22,6 @@ export const TweetProvider = ({ children }) => {
 
   useEffect(() => {
     FetchTweets();
-    console.log("====================================");
-    console.log(tweetErr);
-    console.log("====================================");
   }, []);
 
   const [tweet, setTweet] = useState({
@@ -85,11 +82,14 @@ export const TweetProvider = ({ children }) => {
             tweetText: "",
             tweetPhoto: "",
           });
-
+          dispatch({
+            type: ActionTypes.SET_TWEET_DATA,
+            payload: res.data,
+          });
           setTweetImageRemover(false);
-          setOpenTweetSuccessMessage(true);
+          FetchTweets();
+          // setOpenTweetSuccessMessage(true);
         }
-        return res;
       })
       .catch((err) => {
         console.error(err);
