@@ -19,7 +19,8 @@ const UserReducer = (state = authState, action) => {
     case ActionTypes.SET_USER:
       return {
         ...state,
-        credentials: action.payload,
+        credentials: action.payload.credentials,
+        authUserTweetsCount: action.payload.authUserTweetsCount,
         // authenticated: true,
         loading: false,
       };

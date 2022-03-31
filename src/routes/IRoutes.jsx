@@ -12,7 +12,7 @@ import Notifications from "../pages/Notfications";
 import { useAuthContext } from "../contexts/AuthContext";
 import Profile from "../components/Profile";
 
-export const IRoutes = () => {
+export const IRoutes = ({ component: Component }) => {
   const { authenticated, credentials } = useAuthContext();
 
   // const dispatch = useDispatch();
@@ -29,7 +29,7 @@ export const IRoutes = () => {
           path="/"
           element={
             authenticated === true ? (
-              <Navigate to="home" />
+              <Navigate to="home" /> || <Component />
             ) : (
               <Navigate to="signin" />
             )

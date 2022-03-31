@@ -4,6 +4,7 @@ import {
   useEffect,
   useState,
   useContext,
+  useMemo,
 } from "react";
 // reducers
 import UserReducer from "./reducers/UserReducer";
@@ -17,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 
 export const authState = {
   credentials: {},
+  authUserTweetsCount: null,
   // authUser: [],
   authenticated: false,
   loading: false,
@@ -55,7 +57,7 @@ export const AuthProvider = ({ children }) => {
 
         dispatch({
           type: ActionTypes.SET_USER,
-          payload: res.data.credentials,
+          payload: res.data,
         });
 
         dispatch({ type: ActionTypes.STOP_LOADING_UI });
@@ -215,12 +217,15 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("user-token", authToken);
     axios.defaults.headers.common["Authorization"] = authToken;
   };
+  const authDetails = useMemo(() => [astate.credentials], [astate.credentials]);
 
   return (
     <AuthContext.Provider
       value={{
-        credentials: astate.credentials,
+        credentials: authDetails[0],
         authenticated: astate.authenticated,
+        authUserTweetsCount: astate.authUserTweetsCount,
+        GetAuthUserData,
         SignUpAction,
         SignInAction,
         SignOut,

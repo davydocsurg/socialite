@@ -27,10 +27,6 @@ import { Tweet } from "./tweets/Tweet";
 // services
 import { useTweetContext } from "../contexts/TweetContext";
 
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
-
 const Feed = () => {
   const {
     tstate,
@@ -39,35 +35,19 @@ const Feed = () => {
     closeTweetSM,
     loading,
     tweets,
+    FetchTweets,
   } = useTweetContext();
 
   const profilePicsUrl = "http://localhost:8000/profile/photos/";
 
   useEffect(() => {
-    // tweetsDispatch(FetchTweets());
-    console.log("====================================");
-    console.log(tweets);
-    console.log("====================================");
+    FetchTweets();
   }, []);
 
   return (
     <>
       <div>
         {/* tweet success message */}
-        <Snackbar
-          open={openTweetSuccessMessage}
-          autoHideDuration={6000}
-          onClose={closeTweetSM}
-        >
-          <Alert onClose={closeTweetSM} severity="success">
-            Tweet sent!
-          </Alert>
-        </Snackbar>
-
-        {/* <SuccessSnackBar
-        openTweetSuccessMessage={handleOpenTM}
-        handleCloseTM={handleCloseTM}
-      /> */}
 
         <TweetBox></TweetBox>
 

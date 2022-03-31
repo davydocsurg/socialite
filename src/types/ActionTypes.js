@@ -12,6 +12,9 @@ export const DISPLAY_ERROR_MSG = "DISPLAY_ERROR_MSG";
 export const LOADING_UI = "LOADING_UI";
 export const STOP_LOADING_UI = "STOP_LOADING_UI";
 export const CLEAR_ERRORS = "CLEAR_ERRORS";
+export const SEND_TWEET_SUCCESS = "SEND_TWEET_SUCCESS";
+export const CLOSE_TWEET_SUCCESS = "CLOSE_TWEET_SUCCESS";
+export const SEND_TWEET_ERROR = "SEND_TWEET_ERROR";
 // Tweet reducer types
 export const SET_TWEET_TEXT = "SET_TWEET_TEXT";
 export const SET_TWEET_PHOTO = "SET_TWEET_PHOTO";

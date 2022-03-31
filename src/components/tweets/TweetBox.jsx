@@ -128,7 +128,8 @@ const TweetBox = () => {
           <div className="tweetBox__input">
             <Avatar
               src={profilePicsUrl + credentials.profile_picture}
-              className="shadow-sm mr-5 cursor-pointer"
+              sx={{ width: 45, height: 45 }}
+              className="shadow-sm mr-4 cursor-pointer"
               onClick={visitProf}
             />
             <TextField
@@ -198,7 +199,7 @@ const TweetBox = () => {
               <Button
                 type="submit"
                 className="tweetBox__tweetButton "
-                disabled={tBtn == false}
+                disabled={tBtn === false}
               >
                 Tweet
               </Button>

@@ -1,4 +1,4 @@
-import { createContext, useReducer, useEffect, useState } from "react";
+import { createContext, useReducer, useEffect, useState, useMemo } from "react";
 import * as ActionTypes from "../types/ActionTypes";
 import HttpService from "../services/HttpServices";
 import axios from "axios";
@@ -12,6 +12,9 @@ export const tweetState = {
   tweets: [],
   likes: [],
   loading: false,
+  openTSM: false,
+  openTEM: false,
+  // closeTweetSM: false,
 };
 
 const TweetContext = createContext(tweetState);
@@ -19,10 +22,12 @@ export const useTweetContext = () => useContext(TweetContext);
 
 export const TweetProvider = ({ children }) => {
   const [tstate, dispatch] = useReducer(TweetReducer, tweetState);
+  const http = new HttpService();
 
   useEffect(() => {
-    FetchTweets();
-  }, []);
+    // FetchTweets();
+    console.log(tstate.openTSM);
+  }, [tstate.openTSM]);
 
   const [tweet, setTweet] = useState({
     tweetText: "",
@@ -36,8 +41,8 @@ export const TweetProvider = ({ children }) => {
     },
   });
 
+  const [closeTSM, setCloseTSM] = useState(false);
   const [tweetImageRemover, setTweetImageRemover] = useState(false);
-  const [openTweetSuccessMessage, setOpenTweetSuccessMessage] = useState(false);
 
   const removeImg = () => {
     setTweet({
@@ -50,7 +55,6 @@ export const TweetProvider = ({ children }) => {
   const sendTweet = (e) => {
     e.preventDefault();
     let token = localStorage.getItem("user-token");
-    const http = new HttpService();
 
     const headers = {
       Authorization: `${token}`,
@@ -77,7 +81,11 @@ export const TweetProvider = ({ children }) => {
           res.data.hasOwnProperty("success") &&
           res.data.success === true
         ) {
-          // setTweetImage("");
+          // setTSM(true);
+          dispatch({
+            type: ActionTypes.SEND_TWEET_SUCCESS,
+          });
+
           setTweet({
             tweetText: "",
             tweetPhoto: "",
@@ -87,8 +95,7 @@ export const TweetProvider = ({ children }) => {
             payload: res.data,
           });
           setTweetImageRemover(false);
-          FetchTweets();
-          // setOpenTweetSuccessMessage(true);
+          UpdateTweets();
         }
       })
       .catch((err) => {
@@ -101,7 +108,6 @@ export const TweetProvider = ({ children }) => {
   };
 
   const FetchTweets = () => {
-    const http = new HttpService();
     dispatch({ type: ActionTypes.LOADING_UI });
 
     axios
@@ -121,9 +127,22 @@ export const TweetProvider = ({ children }) => {
       });
   };
 
-  const closeTweetSM = () => {
-    setOpenTweetSuccessMessage(false);
+  const UpdateTweets = () => {
+    axios
+      .get(http.url + "/tweets")
+      .then((res) => {
+        dispatch({
+          type: ActionTypes.SET_TWEET_DATA,
+          payload: res.data,
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
+
+  const tweetsVal = useMemo(() => [tstate.tweets], [tstate.tweets]);
+  console.log(tweetsVal[0]);
 
   return (
     <TweetContext.Provider
@@ -131,16 +150,22 @@ export const TweetProvider = ({ children }) => {
         tstate,
         dispatch,
         loading: tstate.loading,
-        tweets: tstate.tweets,
+        tweets: tweetsVal[0],
+        // tweets: tstate.tweets,
         tweet,
+        tweetsVal,
         setTweet,
         tweetErr,
         setTweetErr,
         tweetImageRemover,
         setTweetImageRemover,
+        openTSM: tstate.openTSM,
+        closeTSM,
+        setCloseTSM,
+        // setTSM,
         removeImg,
         sendTweet,
-        openTweetSuccessMessage,
+        FetchTweets,
       }}
     >
       {children}

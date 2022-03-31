@@ -34,6 +34,24 @@ const TweetReducer = (state = tweetState, action) => {
         loading: false,
       };
 
+    case ActionTypes.SEND_TWEET_SUCCESS:
+      return {
+        ...state,
+        openTSM: true,
+      };
+
+    case ActionTypes.CLOSE_TWEET_SUCCESS:
+      return {
+        ...state,
+        closeTweetSM: true,
+      };
+
+    case ActionTypes.SEND_TWEET_ERROR:
+      return {
+        ...state,
+        openTEM: true,
+      };
+
     case ActionTypes.SET_TWEET_TEXT:
       return {
         ...state,

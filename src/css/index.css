@@ -335,7 +335,7 @@
 }
 
 .tweetBox__input {
-  padding: 20px;
+  padding: 20px 0 0 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -836,10 +836,11 @@
 
 html {
   scroll-behavior: smooth !important;
-  margin: 0% !important;
 }
 
 body {
+  margin: 0 !important;
+  padding: 0 !important;
   max-height: 100vh !important;
   -webkit-transition: all 1s ease-in-out !important;
   transition: all 1s ease-in-out !important;
