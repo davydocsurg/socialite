@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 export const authState = {
   credentials: {},
   authUserTweetsCount: null,
+  authUserTweets: {},
   // authUser: [],
   authenticated: false,
   loading: false,
@@ -218,6 +219,10 @@ export const AuthProvider = ({ children }) => {
     axios.defaults.headers.common["Authorization"] = authToken;
   };
   const authDetails = useMemo(() => [astate.credentials], [astate.credentials]);
+  const authTweepTweets = useMemo(
+    () => [astate.authUserTweets],
+    [astate.authUserTweets]
+  );
 
   return (
     <AuthContext.Provider
@@ -225,6 +230,7 @@ export const AuthProvider = ({ children }) => {
         credentials: authDetails[0],
         authenticated: astate.authenticated,
         authUserTweetsCount: astate.authUserTweetsCount,
+        authUserTweets: authTweepTweets[0],
         GetAuthUserData,
         SignUpAction,
         SignInAction,

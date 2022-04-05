@@ -21,6 +21,7 @@ const UserReducer = (state = authState, action) => {
         ...state,
         credentials: action.payload.credentials,
         authUserTweetsCount: action.payload.authUserTweetsCount,
+        authUserTweets: action.payload.authUserTweets,
         // authenticated: true,
         loading: false,
       };

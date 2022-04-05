@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { ProfModal } from "./ProfModal";
 
-export const Card = () => {
+export const Card = ({ profilePicsUrl, coverPicsUrl }) => {
   const { credentials, authUserTweetsCount, GetAuthUserData } =
     useAuthContext();
 
@@ -24,9 +24,6 @@ export const Card = () => {
     GetAuthUserData();
     console.log(coverPicsUrl + tweepCoverPhoto);
   }, []);
-
-  const profilePicsUrl = "http://localhost:8000/profile/photos/";
-  const coverPicsUrl = "http://localhost:8000/profile/photos/";
 
   let fullName = firstName + " " + lastName + " ";
 
