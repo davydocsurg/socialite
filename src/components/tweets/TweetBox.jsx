@@ -135,8 +135,8 @@ const TweetBox = () => {
             <TextField
               id="tweet_text"
               value={tweet.tweetText}
-              helperText={tweetErr.tweet_text}
-              error={tweetErr.tweet_text ? true : false}
+              helpertext={tweetErr.tweet_text}
+              error={tweetErr.tweet_text && true}
               multiline
               maxRows={5}
               className="border-none"
@@ -164,8 +164,8 @@ const TweetBox = () => {
             />
           </div>
           <input
-            helperText={tweetErrors.tweetErrorMsg.tweet_photo}
-            error={tweetErrors.tweetErrorMsg.tweet_photo ? true : false}
+            helpertext={tweetErrors.tweetErrorMsg.tweet_photo}
+            error={tweetErrors.tweetErrorMsg.tweet_photo && true}
             id="tweet_photo"
             onChange={handleFileChange}
             className="tweetBox__imageInput d-none"

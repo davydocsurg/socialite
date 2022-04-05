@@ -24,11 +24,6 @@ export const TweetProvider = ({ children }) => {
   const [tstate, dispatch] = useReducer(TweetReducer, tweetState);
   const http = new HttpService();
 
-  useEffect(() => {
-    // FetchTweets();
-    console.log(tstate.openTSM);
-  }, [tstate.openTSM]);
-
   const [tweet, setTweet] = useState({
     tweetText: "",
     tweetPhoto: "",

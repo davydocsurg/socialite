@@ -41,7 +41,9 @@ const Feed = () => {
   const profilePicsUrl = "http://localhost:8000/profile/photos/";
 
   useEffect(() => {
-    FetchTweets();
+    setTimeout(() => {
+      FetchTweets();
+    }, 1000);
   }, []);
 
   return (

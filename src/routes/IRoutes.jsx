@@ -10,7 +10,7 @@ import Messages from "../pages/Messages";
 import Bookmarks from "../pages/Bookmarks";
 import Notifications from "../pages/Notfications";
 import { useAuthContext } from "../contexts/AuthContext";
-import Profile from "../components/Profile";
+import Profile from "../components/profile/Profile";
 
 export const IRoutes = ({ component: Component }) => {
   const { authenticated, credentials } = useAuthContext();
