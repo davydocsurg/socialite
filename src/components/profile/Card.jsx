@@ -27,9 +27,11 @@ export const Card = ({ profilePicsUrl, coverPicsUrl }) => {
 
   let fullName = firstName + " " + lastName + " ";
 
+  const [coverPhoto, setCoverPhoto] = useState("");
+  const [transition, setSetTransition] = useState(undefined);
+
   const [openModal, setOpenModal] = useState(false);
-  const [openProfPicsModal, setOpenProfPicsModal] = useState(false);
-  const [openCoverPhotoModal, setOpenCoverPhotoModal] = useState(false);
+
   const [profileDetails, setProfileDetails] = useState({
     first_name: "",
     last_name: "",
@@ -39,10 +41,6 @@ export const Card = ({ profilePicsUrl, coverPicsUrl }) => {
     profile_picture: "",
     cover_picture: "",
   });
-
-  const [profPics, setProfPics] = useState("");
-  const [coverPhoto, setCoverPhoto] = useState("");
-  const [transition, setSetTransition] = useState(undefined);
 
   const [errors, setErrors] = useState({
     errorMsg: {
@@ -83,165 +81,6 @@ export const Card = ({ profilePicsUrl, coverPicsUrl }) => {
     });
   };
 
-  const handleChange = (e) => {
-    setProfileDetails({
-      ...profileDetails,
-      [e.target.id]: e.target.value,
-    });
-    clearAllErrors();
-  };
-
-  const handleProfFileChange = (e) => {
-    setOpenProfPicsModal(true);
-    setTimeout(() => {
-      document.getElementById("profile_picture").click();
-
-      let file = e.target.files[0];
-      let reader = new FileReader();
-
-      let limit = 1024 * 1024 * 2;
-      if (file["size"] > limit) {
-        setProfPics({
-          ...profPics,
-          profPics: "",
-        });
-        alert("File is too large! It must be less than 2MB.");
-
-        return false;
-      }
-
-      reader.onloadend = (file) => {
-        setProfPics(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }, 1000);
-  };
-
-  const handleCoverFileChange = (e) => {
-    setOpenCoverPhotoModal(true);
-    setTimeout(() => {
-      document.getElementById("cover_picture").click();
-
-      let file = e.target.files[0];
-      let reader = new FileReader();
-
-      let limit = 1024 * 1024 * 2;
-      if (file["size"] > limit) {
-        setCoverPhoto({
-          ...coverPhoto,
-          coverPhoto: "",
-        });
-        alert("File is too large! It must be less than 2MB.");
-
-        return false;
-      }
-
-      reader.onloadend = (file) => {
-        setCoverPhoto(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }, 1000);
-  };
-
-  const changeProfPics = () => {
-    axios
-      .post(
-        "http://localhost:8000/api/update-profile-picture",
-        { profile_picture: profPics },
-        {
-          headers: headers,
-        }
-      )
-      .then((res) => {
-        if (res.data.hasOwnProperty("success") && res.data.success === false) {
-          setOpenProfileUpdateErrorMessage(true);
-        } else if (
-          res.data.hasOwnProperty("success") &&
-          res.data.success === true
-        ) {
-          closeProfPicsModal();
-          setOpenProfilePicsUpdateSuccessMessage(true);
-          dispatch(getUserData());
-        }
-        return res;
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
-  const changeCoverPhoto = () => {
-    axios
-      .post(
-        "http://localhost:8000/api/update-cover-picture",
-        { cover_picture: coverPhoto },
-        {
-          headers: headers,
-        }
-      )
-      .then((res) => {
-        if (res.data.hasOwnProperty("success") && res.data.success === false) {
-          setOpenProfileUpdateErrorMessage(true);
-        } else if (
-          res.data.hasOwnProperty("success") &&
-          res.data.success === true
-        ) {
-          closeCoverPhotoModal();
-          setOpenCoverPhotoUpdateSuccessMessage(true);
-          dispatch(getUserData());
-        }
-        return res;
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
-  // close profile pics modal
-  const closeProfPicsModal = () => {
-    setProfPics("");
-    setOpenProfPicsModal(false);
-  };
-
-  // close cover photo modal
-  const closeCoverPhotoModal = () => {
-    setCoverPhoto("");
-    setOpenCoverPhotoModal(false);
-  };
-
-  // open cover photo modal
-  const openCoverPhotoPreviewModal = () => {
-    handleCoverFileChange();
-  };
-
-  const closeProfileDetailsUpdateSuccessMessage = () => {
-    setOpenProfileDetailsUpdateSuccessMessage(false);
-  };
-
-  const closeProfilePicsUpdateSuccessMessage = () => {
-    setOpenProfilePicsUpdateSuccessMessage(false);
-  };
-
-  const closeCoverPhotoUpdateSuccessMessage = () => {
-    setOpenCoverPhotoUpdateSuccessMessage(false);
-  };
-
-  const closeProfileUpdateErrorMessage = () => {
-    setOpenProfileUpdateErrorMessage(false);
-  };
-
-  // open profile pics modal
-  const openProfPicsPreviewModal = () => {
-    handleProfFileChange();
-    // document.getElementById("profile_picture").click();
-    // setOpenProfPicsModal(true);
-  };
-
-  const handleDetailsSubmit = (e) => {
-    e.preventDefault();
-    console.log("submit");
-  };
-
   const clearAllErrors = () => {
     setErrors({
       ...errors,
@@ -254,8 +93,8 @@ export const Card = ({ profilePicsUrl, coverPicsUrl }) => {
       <ProfModal
         openModal={openModal}
         errors={errors}
-        closeProfPicsModal={closeProfPicsModal}
-        handleDetailsSubmit={handleDetailsSubmit}
+        // closeProfPicsModal={closeProfPicsModal}
+        // handleDetailsSubmit={handleDetailsSubmit}
         firstName={firstName}
         lastName={lastName}
         tweepHandle={tweepHandle}
@@ -266,17 +105,19 @@ export const Card = ({ profilePicsUrl, coverPicsUrl }) => {
         profilePicsUrl={profilePicsUrl}
         tweepProfPics={tweepProfPics}
         fullName={fullName}
-        closeCoverPhotoModal={closeCoverPhotoModal}
         closeProfileModal={closeProfileModal}
-        handleCoverFileChange={handleCoverFileChange}
-        handleProfFileChange={handleProfFileChange}
-        openCoverPhotoModal={openCoverPhotoModal}
-        openCoverPhotoPreviewModal={openCoverPhotoPreviewModal}
-        openProfPicsModal={openProfPicsModal}
-        openProfPicsPreviewModal={openProfPicsPreviewModal}
-        handleChange={handleChange}
+        // closeCoverPhotoModal={closeCoverPhotoModal}
+        // handleCoverFileChange={handleCoverFileChange}
+        // handleProfFileChange={handleProfFileChange}
+        // openCoverPhotoModal={openCoverPhotoModal}
+        // openCoverPhotoPreviewModal={openCoverPhotoPreviewModal}
+        // openProfPicsModal={openProfPicsModal}
+        // openProfPicsPreviewModal={openProfPicsPreviewModal}
+        // handleChange={handleChange}
         coverPicsUrl={coverPicsUrl}
         tweepEmail={tweepEmail}
+        GetAuthUserData={GetAuthUserData}
+        // profPics={profPics}
       />
 
       <div className="card mb-3">

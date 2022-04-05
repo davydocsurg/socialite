@@ -1,5 +1,10 @@
 import { Avatar, Button, Modal, TextField, Tooltip } from "@mui/material";
 import React from "react";
+import { useState } from "react";
+import axios from "axios";
+import HttpService from "../../services/HttpServices";
+import SuccessMsg from "../../utils/snackBars/SuccessMsg";
+import ErrorMsg from "../../utils/snackBars/ErrorMsg";
 
 export const ProfModal = ({
   coverPicsUrl,
@@ -15,23 +20,214 @@ export const ProfModal = ({
   profilePicsUrl,
   tweepProfPics,
   fullName,
-  openModal,
-  closeCoverPhotoModal,
-  closeProfPicsModal,
   closeProfileModal,
-  handleCoverFileChange,
-  handleDetailsSubmit,
-  handleProfFileChange,
-  openCoverPhotoModal,
-  openCoverPhotoPreviewModal,
-  openProfPicsModal,
-  openProfPicsPreviewModal,
-  handleChange,
+  openModal,
+  // closeCoverPhotoModal,
+  // closeProfPicsModal,
+  // handleCoverFileChange,
+  // handleDetailsSubmit,
+  // handleProfFileChange,
+  // openCoverPhotoModal,
+  // openCoverPhotoPreviewModal,
+  // openProfPicsModal,
+  // openProfPicsPreviewModal,
+  // handleChange,
+  // profPics,
+  GetAuthUserData,
 }) => {
+  const [openProfPicsModal, setOpenProfPicsModal] = useState(false);
+  const [openCoverPhotoModal, setOpenCoverPhotoModal] = useState(false);
+
+  const [openProfSucMsg, setOpenProfSucMsg] = useState(false);
+  const [openProfErrMsg, setOpenProfErrMsg] = useState(false);
+  const [profPics, setProfPics] = useState("");
+  const [coverPhoto, setCoverPhoto] = useState("");
+
+  let sucMsg = "Profile Updated Successfully";
+  let errMsg = "Oops! something went wrong. Check your details and try again.";
+
+  const http = new HttpService();
+  const token = localStorage.getItem("user-token");
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `${token}`,
+  };
+
+  const handleChange = (e) => {
+    setProfileDetails({
+      ...profileDetails,
+      [e.target.id]: e.target.value,
+    });
+    clearAllErrors();
+  };
+
+  // close profile pics modal
+  const closeProfPicsModal = () => {
+    setProfPics("");
+    setOpenProfPicsModal(false);
+  };
+
+  // close cover photo modal
+  const closeCoverPhotoModal = () => {
+    setCoverPhoto("");
+    setOpenCoverPhotoModal(false);
+  };
+
+  // open cover photo modal
+  const openCoverPhotoPreviewModal = () => {
+    handleCoverFileChange();
+  };
+
+  const closeProfDetUpdateSucMsg = () => {
+    setOpenProfSucMsg(false);
+  };
+
+  const closeProfDetUpdateErrMsg = () => {
+    setOpenProfErrMsg(false);
+  };
+
+  const closeProfErrMsg = () => {
+    setOpenProfErrMsg(false);
+  };
+
+  const handleDetailsSubmit = (e) => {
+    e.preventDefault();
+    console.log("submit");
+  };
+
+  const handleProfFileChange = (e) => {
+    // e.preventDefault();
+    setOpenProfPicsModal(true);
+    setTimeout(() => {
+      document.getElementById("profile_picture").click();
+
+      let file = e.target.files[0];
+      let reader = new FileReader();
+
+      let limit = 1024 * 1024 * 2;
+      if (file["size"] > limit) {
+        setProfPics({
+          ...profPics,
+          profPics: "",
+        });
+        alert("File is too large! It must be less than 2MB.");
+
+        return false;
+      }
+
+      reader.onloadend = (file) => {
+        setProfPics(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }, 500);
+  };
+
+  const handleCoverFileChange = (e) => {
+    setOpenCoverPhotoModal(true);
+    setTimeout(() => {
+      document.getElementById("cover_picture").click();
+
+      let file = e.target.files[0];
+      let reader = new FileReader();
+
+      let limit = 1024 * 1024 * 2;
+      if (file["size"] > limit) {
+        setCoverPhoto({
+          ...coverPhoto,
+          coverPhoto: "",
+        });
+        alert("File is too large! It must be less than 2MB.");
+
+        return false;
+      }
+
+      reader.onloadend = (file) => {
+        setCoverPhoto(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }, 500);
+  };
+
+  const changeProfPics = () => {
+    axios
+      .post(
+        http.url + "/update-profile-picture",
+        { profile_picture: profPics },
+        { headers: headers }
+      )
+      .then((res) => {
+        if (res.data.hasOwnProperty("success") && res.data.success === false) {
+          setOpenProfErrMsg(true);
+        } else if (
+          res.data.hasOwnProperty("success") &&
+          res.data.success === true
+        ) {
+          closeProfPicsModal();
+          setOpenProfSucMsg(true);
+          GetAuthUserData();
+        }
+        return res;
+      })
+      .catch((err) => {
+        setOpenProfErrMsg(true);
+        console.error(err);
+      });
+  };
+
+  const changeCoverPhoto = () => {
+    axios
+      .post(
+        "http://localhost:8000/api/update-cover-picture",
+        { cover_picture: coverPhoto },
+        {
+          headers: headers,
+        }
+      )
+      .then((res) => {
+        if (res.data.hasOwnProperty("success") && res.data.success === false) {
+          setOpenProfErrMsg(true);
+        } else if (
+          res.data.hasOwnProperty("success") &&
+          res.data.success === true
+        ) {
+          closeCoverPhotoModal();
+          setOpenProfSucMsg(true);
+          GetAuthUserData();
+        }
+        return res;
+      })
+      .catch((err) => {
+        setOpenProfErrMsg(true);
+        console.error(err);
+        console.log(openProfErrMsg);
+      });
+  };
+
+  // open profile pics modal
+  const openProfPicsPreviewModal = () => {
+    handleProfFileChange();
+  };
+
   return (
     <>
       <div className="mx-auto">
-        <Modal open={openModal} onClose={closeProfileModal} className="">
+        <SuccessMsg
+          openProfSucMsg={openProfSucMsg}
+          closeProfDetUpdateSucMsg={closeProfDetUpdateSucMsg}
+          sucMsg={sucMsg}
+        />
+
+        <ErrorMsg
+          openProfErrMsg={openProfErrMsg}
+          closeProfDetUpdateErrMsg={closeProfDetUpdateErrMsg}
+          errMsg={errMsg}
+        />
+        <Modal
+          open={openModal}
+          onClose={closeProfileModal}
+          // className="mx-auto"
+          // style={{ overflowX: scroll, maxHeight: "80vh" }}
+        >
           <div id="exampleModal" role="dialog">
             <div className="modal-dialog modal-lg" role="document">
               <div className="modal-content">
@@ -60,6 +256,7 @@ export const ProfModal = ({
                           open={openCoverPhotoModal}
                           onClose={closeCoverPhotoModal}
                           className="mt-auto"
+                          // style={{ overflowY: scroll, maxHeight: "80vh" }}
                         >
                           <div role="dialog">
                             <div
@@ -88,7 +285,7 @@ export const ProfModal = ({
                                 </div>
 
                                 <img
-                                  src={tweepCoverPhoto}
+                                  src={coverPhoto}
                                   alt=""
                                   className="p-5 shadow-sm img-fluid b-radius"
                                 />
@@ -141,13 +338,14 @@ export const ProfModal = ({
                           <Modal
                             open={openProfPicsModal}
                             onClose={closeProfPicsModal}
-                            className="mt-auto"
+                            // className="my-auto"
+                            // sx={{ maxHeight: "30vh", overflowY: scroll }}
                           >
-                            <div role="dialog">
-                              <div
-                                className="modal-dialog modal-md"
-                                role="document"
-                              >
+                            <div
+                              role="dialog"
+                              // style={{ maxHeight: "30vh", overflowY: scroll }}
+                            >
+                              <div className="modal-dialog modal-md">
                                 <div className="modal-content">
                                   <div className="modal-header">
                                     <h5
