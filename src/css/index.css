@@ -910,14 +910,14 @@ svg:not(:root).svg-inline--fa {
   background-color: #e2e2dc !important;
 }
 
-.go-back-button .go-back {
-  font-size: 1.2rem !important;
+.go-back-button svg {
+  width: 1.2rem !important;
 }
 
 .go-back-button:hover {
-  -webkit-transition: all 100ms ease-out;
-  transition: all 100ms ease-out;
-  border-radius: 50%;
+  -webkit-transition: all 100ms ease-in-out;
+  transition: all 100ms ease-in-out;
+  border-radius: 51%;
   background-color: #e8f5fe;
   cursor: pointer;
 }

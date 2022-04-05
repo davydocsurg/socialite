@@ -87,14 +87,17 @@ svg:not(:root).svg-inline--fa {
 }
 
 .go-back-button {
-  .go-back {
-    font-size: 1.2rem !important;
+  // .go-back {
+  //   font-size: 1.2rem !important;
+  // }
+  svg {
+    width: 1.2rem !important;
   }
 
   &:hover {
     // padding: 0.92rem;
-    transition: all 100ms ease-out;
-    border-radius: 50%;
+    transition: all 100ms ease-in-out;
+    border-radius: 51%;
     background-color: $sidebar-hover-option;
     cursor: pointer;
   }

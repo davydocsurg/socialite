@@ -16,12 +16,10 @@ const Profile = () => {
       <div className="profile">
         <div className="text-left profile__header">
           <div className=" row">
-            <div className="col-1">
-              <GoBack></GoBack>
-            </div>
+            <GoBack></GoBack>
             {"  "}
             <div className="col-4">
-              <h2 className="ml-4">{fullName}</h2>
+              <h2 className="ml-5">{fullName}</h2>
               <em className="font-weight-lighter">
                 {authUserTweetsCount < 1 ? "No" : authUserTweetsCount}{" "}
                 {authUserTweetsCount > 1 ? "Tweets" : "Tweet"}
@@ -66,8 +64,8 @@ const Profile = () => {
             </div>
           )}
         </FlipMove> */}
+        <Card />
       </div>
-      <Card />
     </>
   );
 };
