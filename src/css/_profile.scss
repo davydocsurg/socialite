@@ -1,8 +1,8 @@
 .profile {
-  flex: 0.7 !important;
+  flex: 0.6 !important;
   border-right: 1px solid $twitter-background;
-  // min-width: fit-content !important;
   overflow-y: scroll !important;
+  // min-width: fit-content !important;
 
   /* Hide scrollbar for IE, Edge and Firefox */
   &::-webkit-scrollbar {
@@ -152,6 +152,10 @@
 .b-radius {
   border: transparent solid 0.1rem;
   border-radius: 2rem !important;
+}
+
+.tweepPhoto {
+  // max-height: 5.92rem !important;
 }
 
 @media screen and(min-width:900px) {

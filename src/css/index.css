@@ -225,9 +225,9 @@
 }
 
 .widgets {
-  -webkit-box-flex: 0.3 !important;
-      -ms-flex: 0.3 !important;
-          flex: 0.3 !important;
+  -webkit-box-flex: 0.4 !important;
+      -ms-flex: 0.4 !important;
+          flex: 0.4 !important;
   overflow-y: scroll !important;
   /* Hide scrollbar for IE, Edge and Firefox */
   -ms-overflow-style: none;
@@ -612,9 +612,9 @@
 }
 
 .profile {
-  -webkit-box-flex: 0.7 !important;
-      -ms-flex: 0.7 !important;
-          flex: 0.7 !important;
+  -webkit-box-flex: 0.6 !important;
+      -ms-flex: 0.6 !important;
+          flex: 0.6 !important;
   border-right: 1px solid #e2e2dc;
   overflow-y: scroll !important;
   /* Hide scrollbar for IE, Edge and Firefox */

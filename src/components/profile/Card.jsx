@@ -3,6 +3,7 @@ import { Button } from "bootstrap";
 import moment from "moment";
 import React, { useState, useEffect } from "react";
 import { useAuthContext } from "../../contexts/AuthContext";
+import { Calendar, LinkIcon } from "../../utils/baseIcons/ProfileIcons";
 import { ProfModal } from "./ProfModal";
 
 export const Card = ({ profilePicsUrl, coverPicsUrl }) => {
@@ -191,16 +192,14 @@ export const Card = ({ profilePicsUrl, coverPicsUrl }) => {
               {tweepWeb && (
                 <div className="col-lg-5 col-md-7 col-sm-6">
                   <>
-                    {/* <LinkIcon></LinkIcon> */}
                     <div className="d-flex">
-                      <i className="fas fa-link profile-icons"> </i>
+                      <LinkIcon />{" "}
                       <a
                         href={tweepWeb}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className=""
+                        className="ml-3 font-weight-bold"
                       >
-                        {" "}
                         {tweepWeb}
                       </a>
                     </div>
@@ -209,8 +208,8 @@ export const Card = ({ profilePicsUrl, coverPicsUrl }) => {
               )}
 
               <div className="col-lg-4 col-md-6 col-sm-6 text-muted">
-                {/* <CalendarToday className="mb-2"></CalendarToday>{" "} */}
-                <i className="far fa-calendar-alt profile-icons"></i>
+                <Calendar className="mb-2" />{" "}
+                {/* <i className="far fa-calendar-alt profile-icons"></i> */}
                 <b className="mt-">
                   {" "}
                   Joined {moment(credentials.created_at).format("MMMM YYYY")}
