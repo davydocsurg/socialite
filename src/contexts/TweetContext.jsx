@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import TweetReducer from "./reducers/TweetReducer";
 import { Tweet } from "../components/tweets/Tweet";
 import { useContext } from "react";
+import { useLocation } from "react-router-dom";
+import { useAuthContext } from "./AuthContext";
 
 export const tweetState = {
   tweets: [],
@@ -23,6 +25,7 @@ export const useTweetContext = () => useContext(TweetContext);
 export const TweetProvider = ({ children }) => {
   const [tstate, dispatch] = useReducer(TweetReducer, tweetState);
   const http = new HttpService();
+  const { GetAuthUserData } = useAuthContext();
 
   const [tweet, setTweet] = useState({
     tweetText: "",
@@ -41,6 +44,8 @@ export const TweetProvider = ({ children }) => {
   const [openTweetModal, setOpenTweetModal] = useState(false);
   const [openTSM, setOpenTSM] = useState(false);
   const [openTEM, setOpenTEM] = useState(false);
+
+  // const location=  useLocation()
 
   const handleTweetModal = () => {
     // e.preventDefault();
@@ -108,6 +113,7 @@ export const TweetProvider = ({ children }) => {
           });
           setTweetImageRemover(false);
           UpdateTweets();
+          GetAuthUserData();
         }
       })
       .catch((err) => {

@@ -4,7 +4,7 @@ import IRoutes from "./routes/IRoutes";
 import SideBar from "./components/SideBar";
 import Widgets from "./components/Widgets";
 import { Container } from "@mui/material";
-import { AuthProvider } from "./contexts/AuthContext";
+import { AuthProvider, useAuthContext } from "./contexts/AuthContext";
 import { TweetProvider, useTweetContext } from "./contexts/TweetContext";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
@@ -16,10 +16,12 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 function App() {
   const { openTSM, closeTSM, setCloseTSM } = useTweetContext();
+  const { GetAuthUserData } = useAuthContext();
   // const dispatch = useDispatch;
   const location = useLocation();
   useEffect(() => {
     console.log(openTSM);
+    // GetAuthUserData;
   }, [openTSM]);
 
   const closeTweetSM = (e) => {

@@ -13,7 +13,14 @@ export const TweepPhotos = ({
 }) => {
   return (
     <>
-      <Box sx={{ width: 500, height: 450, overflowY: "scroll" }}>
+      <Box
+        sx={{
+          width: 500,
+          height: "auto",
+          bgcolor: "#e2e2dc",
+          overflowY: "scroll",
+        }}
+      >
         <ImageList variant="masonry" cols={3} gap={2}>
           {authUserTweets.slice(0, 3).map((item) => (
             <ImageListItem key={item.tweet_photo}>
