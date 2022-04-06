@@ -44,24 +44,20 @@ ithub forks" src="https://img.shields.io/github/forks/davydocsurg/socialite?colo
 
 ## :dart: About
 
-Socialite is a twitter clone built with ReactJS, Redux and Vite.
+Socialite is a twitter clone built with ReactJS, Context API and Vite.
 
 Preview:
-![social-preview](https://user-images.githubusercontent.com/57722026/150946172-3e4c4e2f-1a98-4f89-88bb-4fe2c1fa9cba.png)
-![Screenshot from 2022-01-25 10-17-40](https://user-images.githubusercontent.com/57722026/150948095-494b2288-2475-4eaf-a958-62960925dc3d.png)
+![Screenshot from 2022-04-06 17-27-37](https://user-images.githubusercontent.com/57722026/162012724-a9dc6b18-5452-4810-b7e1-014df5ba4b17.png)
+![Screenshot from 2022-04-06 17-26-55](https://user-images.githubusercontent.com/57722026/162012800-ba1bb74a-26d3-4f8f-9ff4-60acb7d0b7ed.png)
+![Screenshot from 2022-04-06 17-26-49](https://user-images.githubusercontent.com/57722026/162012861-3f6fe6ae-c3f9-49f6-bb78-c4d039c2a49d.png)
+![Screenshot from 2022-04-06 17-11-53](https://user-images.githubusercontent.com/57722026/162013064-c26f1cc6-acbb-4bd0-b57b-2667b2b5cff0.png)
+![Screenshot from 2022-04-06 17-12-17](https://user-images.githubusercontent.com/57722026/162012992-a1138f86-f7a3-40cb-af14-a5c2e26178d7.png)
+![Screenshot from 2022-04-06 17-24-12](https://user-images.githubusercontent.com/57722026/162012929-7968b3be-0079-426b-a7f8-74e188c1adf7.png)
 
-![Screenshot from 2022-01-25 10-17-56](https://user-images.githubusercontent.com/57722026/150948106-765d08f3-d671-4029-aa8c-d4fede4a56f0.png)
-![Screenshot from 2022-01-25 10-15-29](https://user-images.githubusercontent.com/57722026/150948257-8f8e612e-6b7e-4158-b229-86e780a0dd6b.png)
-![Screenshot from 2022-01-25 10-15-46](https://user-images.githubusercontent.com/57722026/150948281-41db4f47-3381-4250-a4b8-a785f9d89d91.png)
-![Screenshot from 2022-01-25 10-16-51](https://user-images.githubusercontent.com/57722026/150948294-05fd3a89-1a0c-45ec-801d-1207eac4796d.png)
-![Screenshot from 2022-01-25 10-16-59](https://user-images.githubusercontent.com/57722026/150948304-43e90b24-c3fc-4f96-9f9a-74e32c52b0b1.png)
 
-## ![Screenshot from 2022-01-25 10-16-59](https://user-images.githubusercontent.com/57722026/150948127-c6883622-c88b-442a-9dd3-e8f3dae271e0.png)
-
-![Screenshot from 2022-01-25 10-14-28](https://user-images.githubusercontent.com/57722026/150948647-dfef0d21-0a50-475f-b75d-5c53758e0c01.png)
-
-![Screenshot from 2022-01-25 10-14-12](https://user-images.githubusercontent.com/57722026/150948692-c59d099e-8b97-4bd7-8a1b-08eaccda9061.png)
-![Screenshot from 2022-01-25 10-14-30](https://user-images.githubusercontent.com/57722026/150948768-58890ee7-2d03-4d96-b5c3-f21fd7a7efce.png)
+![Screenshot from 2022-04-06 17-10-48](https://user-images.githubusercontent.com/57722026/162013135-42cd7ab6-06ec-43e7-8768-b51bd98f0a8f.png)
+![Screenshot from 2022-04-06 17-10-53](https://user-images.githubusercontent.com/57722026/162013149-3f0bf375-82a4-4699-b5f6-a8859b1d57a2.png)
+![Screenshot from 2022-04-06 17-11-35](https://user-images.githubusercontent.com/57722026/162013162-6b74ffbc-94b1-4fcc-9186-25f9052eb57b.png)
 
 The backend is built with Laravel: Link to Repo: [Twitter Clone API :link:](https://github.com/davydocsurg/twitter-clone-api/)
 
