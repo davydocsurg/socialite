@@ -73,8 +73,7 @@ The following tools were used in this project:
 
 - [Vite](https://vitejs.dev/)
 - [React](https://reactjs.org/)
-- [Redux](https://redux.js.org/)
-- [React-Redux](https://react-redux.js.org/)
+- [React-ContextAPI](https://reactjs.org/docs/legacy-context.html)
 - [Bootstrap](https://getbootstrap.com/)
 
 <h5>Backend</h5>
