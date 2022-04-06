@@ -25,6 +25,7 @@ const Profile = () => {
 
   let fullName = credentials.first_name + " " + credentials.last_name + " ";
   let authAvatar = credentials.profile_picture;
+  let handle = credentials.handle;
 
   return (
     <>
@@ -59,7 +60,7 @@ const Profile = () => {
                 authenticated={authenticated}
                 slug={authUserTweet.slug}
                 tweepName={fullName}
-                username={authUserTweet.handle}
+                username={handle}
                 verified={true}
                 text={authUserTweet.tweet_text}
                 tweetTime={authUserTweet.created_at}

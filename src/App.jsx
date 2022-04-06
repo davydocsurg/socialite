@@ -32,20 +32,20 @@ function App() {
       {/* <IndexContextProvider> */}
       <AuthProvider>
         <TweetProvider>
-          <Snackbar
-            open={openTSM}
-            autoHideDuration={6000}
-            onClose={closeTweetSM}
-          >
-            <Alert
-              onClose={closeTweetSM}
-              severity="success"
-              // sx={{ width: "100%" }}
-            >
-              Tweet sent!
-            </Alert>
-          </Snackbar>
           <Container className={`m-0 app`} component="main" maxWidth="xl">
+            <Snackbar
+              open={openTSM}
+              autoHideDuration={6000}
+              onClose={closeTweetSM}
+            >
+              <Alert
+                onClose={closeTweetSM}
+                severity="success"
+                sx={{ width: "100%" }}
+              >
+                Tweet sent!
+              </Alert>
+            </Snackbar>
             {!location.pathname.match(`/signin|/signup`) ? <SideBar /> : null}
             {/*
             <TweetContextProvider> */}

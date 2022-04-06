@@ -40,6 +40,8 @@ import {
   Twitter,
 } from "../utils/baseIcons/sideBarIcons";
 import { useAuthContext } from "../contexts/AuthContext";
+import { TweetModal } from "./tweets/TweetModal";
+import { useTweetContext } from "../contexts/TweetContext";
 
 const SideBar = () => {
   const http = new HttpService();
@@ -47,6 +49,8 @@ const SideBar = () => {
   const location = useLocation();
 
   const { SignOut, credentials } = useAuthContext();
+  const { closeTweetModal, openTweetModal, handleTweetModal } =
+    useTweetContext();
 
   const SignMeOut = (e) => {
     e.preventDefault();
@@ -57,6 +61,10 @@ const SideBar = () => {
 
   return (
     <>
+      <TweetModal
+      // openTweetModal={openTweetModal}
+      // closeTweetModal={closeTweetModal}
+      ></TweetModal>
       <div className="sidebar">
         <Twitter className="sidebar__twitterIcon cursor-pointer" />
 
@@ -100,10 +108,24 @@ const SideBar = () => {
           <SideBarOption Icon={Profile} text="Profile" />
         </Link>
         <SideBarOption Icon={More} text="More" />
+
+        <div className="mt-4 mx-auto">
+          <Fab
+            variant="extended"
+            onClick={handleTweetModal}
+            // size="medium"
+            color="primary"
+            // aria-label="add"
+          >
+            <Icon className="fas fa-feather-alt"></Icon>
+            <span className="d-none d-lg-block p-lg-2"> Tweet</span>
+          </Fab>
+        </div>
+
         <div className="mt-7 mx-auto" onClick={SignMeOut}>
           <Fab variant="extended">
             <LogoutIcon />
-            <span className="d-none d-lg-block"> Sign Out</span>
+            <span className="d-none d-lg-block p-lg-2"> Sign Out</span>
           </Fab>
         </div>
       </div>

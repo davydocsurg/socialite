@@ -12,8 +12,8 @@ export const tweetState = {
   tweets: [],
   likes: [],
   loading: false,
-  openTSM: false,
-  openTEM: false,
+  // openTSM: false,
+  // openTEM: false,
   // closeTweetSM: false,
 };
 
@@ -38,6 +38,19 @@ export const TweetProvider = ({ children }) => {
 
   const [closeTSM, setCloseTSM] = useState(false);
   const [tweetImageRemover, setTweetImageRemover] = useState(false);
+  const [openTweetModal, setOpenTweetModal] = useState(false);
+  const [openTSM, setOpenTSM] = useState(false);
+  const [openTEM, setOpenTEM] = useState(false);
+
+  const handleTweetModal = () => {
+    // e.preventDefault();
+    setOpenTweetModal(true);
+  };
+
+  const closeTweetModal = () => {
+    // e.preventDefault();
+    setOpenTweetModal(false);
+  };
 
   const removeImg = () => {
     setTweet({
@@ -76,10 +89,14 @@ export const TweetProvider = ({ children }) => {
           res.data.hasOwnProperty("success") &&
           res.data.success === true
         ) {
-          // setTSM(true);
-          dispatch({
-            type: ActionTypes.SEND_TWEET_SUCCESS,
-          });
+          setOpenTSM(true);
+          // dispatch({
+          //   type: ActionTypes.SEND_TWEET_SUCCESS,
+          // });
+
+          if (openTweetModal === true) {
+            closeTweetModal();
+          }
 
           setTweet({
             tweetText: "",
@@ -154,13 +171,16 @@ export const TweetProvider = ({ children }) => {
         setTweetErr,
         tweetImageRemover,
         setTweetImageRemover,
-        openTSM: tstate.openTSM,
+        openTSM,
         closeTSM,
         setCloseTSM,
         // setTSM,
         removeImg,
         sendTweet,
         FetchTweets,
+        handleTweetModal,
+        closeTweetModal,
+        openTweetModal,
       }}
     >
       {children}

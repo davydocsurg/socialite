@@ -168,6 +168,7 @@ export const AuthProvider = ({ children }) => {
       type: ActionTypes.SET_AUTHENTICATED,
     });
     navigate("/home");
+    GetAuthUserData();
   };
 
   // const SignInAction = (fields) => {
