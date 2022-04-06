@@ -32,16 +32,6 @@ export const Card = ({ profilePicsUrl, coverPicsUrl }) => {
 
   const [openModal, setOpenModal] = useState(false);
 
-  const [profileDetails, setProfileDetails] = useState({
-    first_name: "",
-    last_name: "",
-    bio: "",
-    website: "",
-    location: "",
-    profile_picture: "",
-    cover_picture: "",
-  });
-
   const [errors, setErrors] = useState({
     errorMsg: {
       first_name: "",
@@ -59,26 +49,12 @@ export const Card = ({ profilePicsUrl, coverPicsUrl }) => {
     console.log("====================================");
     console.log(errors);
     console.log("====================================");
-
-    setProfileDetails({
-      ...profileDetails,
-      firstName: firstName,
-      lastName: lastName,
-      tweepBio: tweepBio,
-      tweepWeb: tweepWeb,
-      tweepLocation: tweepLocation,
-      tweepHandle: tweepHandle,
-      tweepProfPics: tweepProfPics,
-    });
     setOpenModal(true);
   };
 
   const closeProfileModal = () => {
     setOpenModal(false);
     setErrors("");
-    setProfileDetails({
-      ...profileDetails,
-    });
   };
 
   const clearAllErrors = () => {
@@ -106,6 +82,7 @@ export const Card = ({ profilePicsUrl, coverPicsUrl }) => {
         tweepProfPics={tweepProfPics}
         fullName={fullName}
         closeProfileModal={closeProfileModal}
+        clearAllErrors={clearAllErrors}
         // closeCoverPhotoModal={closeCoverPhotoModal}
         // handleCoverFileChange={handleCoverFileChange}
         // handleProfFileChange={handleProfFileChange}

@@ -1,5 +1,5 @@
 import { Avatar, Button, Modal, TextField, Tooltip } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import HttpService from "../../services/HttpServices";
@@ -22,6 +22,7 @@ export const ProfModal = ({
   fullName,
   closeProfileModal,
   openModal,
+  clearAllErrors,
   // closeCoverPhotoModal,
   // closeProfPicsModal,
   // handleCoverFileChange,
@@ -43,6 +44,29 @@ export const ProfModal = ({
   const [profPics, setProfPics] = useState("");
   const [coverPhoto, setCoverPhoto] = useState("");
 
+  const [profileDetails, setProfileDetails] = useState({
+    first_name: "",
+    last_name: "",
+    bio: "",
+    website: "",
+    location: "",
+    profile_picture: "",
+    cover_picture: "",
+  });
+
+  useEffect(() => {
+    setProfileDetails({
+      ...profileDetails,
+      first_name: firstName,
+      last_name: lastName,
+      email: tweepEmail,
+      bio: tweepBio,
+      website: tweepWeb,
+      location: tweepLocation,
+      handle: tweepHandle,
+    });
+  }, []);
+
   let sucMsg = "Profile Updated Successfully";
   let errMsg = "Oops! something went wrong. Check your details and try again.";
 
@@ -57,6 +81,7 @@ export const ProfModal = ({
     setProfileDetails({
       ...profileDetails,
       [e.target.id]: e.target.value,
+      // first_name: e.target.value,
     });
     clearAllErrors();
   };
@@ -92,7 +117,25 @@ export const ProfModal = ({
 
   const handleDetailsSubmit = (e) => {
     e.preventDefault();
-    console.log("submit");
+    axios
+      .post(http.url + "/update-profile", profileDetails, { headers: headers })
+      .then((res) => {
+        if (res.data.hasOwnProperty("success") && res.data.success === false) {
+          setOpenProfErrMsg(true);
+        } else if (
+          res.data.hasOwnProperty("success") &&
+          res.data.success === true
+        ) {
+          setOpenProfSucMsg(true);
+          closeProfileModal();
+          GetAuthUserData();
+        }
+        return res;
+      })
+      .catch((err) => {
+        setOpenProfErrMsg(true);
+        console.error(err);
+      });
   };
 
   const handleProfFileChange = (e) => {
@@ -428,18 +471,15 @@ export const ProfModal = ({
                             required
                             id="first_name"
                             label="First Name"
-                            defaultValue={firstName}
-                            // value={profileDetails.first_name}
+                            // defaultValue={firstName}
+                            value={profileDetails.first_name}
+                            name="first_name"
                             variant="standard"
                             onChange={handleChange}
                             helperText={
                               errors.errorMsg && errors.errorMsg.first_name
                             }
-                            error={
-                              errors.errorMsg && errors.errorMsg.first_name
-                                ? true
-                                : false
-                            }
+                            // error={errors.errorMsg.first_name && true}
                             fullWidth
                           />
                         </div>
@@ -449,18 +489,15 @@ export const ProfModal = ({
                             required
                             id="last_name"
                             label="Last Name"
-                            defaultValue={lastName}
-                            // value={profileDetails.last_name}
+                            // defaultValue={lastName}
+                            value={profileDetails.last_name}
+                            name="last_name"
                             variant="standard"
                             onChange={handleChange}
                             helperText={
                               errors.errorMsg && errors.errorMsg.last_name
                             }
-                            error={
-                              errors.errorMsg && errors.errorMsg.last_name
-                                ? true
-                                : false
-                            }
+                            // error={errors.errorMsg.last_name && true}
                             fullWidth
                           />
                         </div>
@@ -470,17 +507,14 @@ export const ProfModal = ({
                         <TextField
                           id="handle"
                           label="Handle"
-                          defaultValue={tweepHandle && tweepHandle}
-                          // value={profileDetails.handle}
+                          // defaultValue={tweepHandle && tweepHandle}
+                          value={profileDetails.handle}
+                          name="handle"
                           variant="standard"
                           fullWidth
                           onChange={handleChange}
                           helperText={errors.errorMsg && errors.errorMsg.handle}
-                          error={
-                            errors.errorMsg && errors.errorMsg.handle
-                              ? true
-                              : false
-                          }
+                          // error={errors.errorMsg.handle && true}
                         />
                       </div>
 
@@ -488,17 +522,14 @@ export const ProfModal = ({
                         <TextField
                           id="email"
                           label="Email"
-                          defaultValue={tweepEmail && tweepEmail}
-                          // value={profileDetails.email}
+                          // defaultValue={tweepEmail && tweepEmail}
+                          value={profileDetails.email}
+                          name="email"
                           variant="standard"
                           fullWidth
                           onChange={handleChange}
                           helperText={errors.errorMsg && errors.errorMsg.email}
-                          error={
-                            errors.errorMsg && errors.errorMsg.email
-                              ? true
-                              : false
-                          }
+                          // error={errors.errorMsg.email && true}
                         />
                       </div>
 
@@ -509,16 +540,13 @@ export const ProfModal = ({
                           label="Bio"
                           multiline
                           maxRows={4}
-                          defaultValue={tweepBio && tweepBio}
-                          // value={profileDetails.bio}
+                          // defaultValue={tweepBio && tweepBio}
+                          value={profileDetails.bio}
+                          name="bio"
                           fullWidth
                           onChange={handleChange}
                           helperText={errors.errorMsg && errors.errorMsg.bio}
-                          error={
-                            errors.errorMsg && errors.errorMsg.bio
-                              ? true
-                              : false
-                          }
+                          // error={errors.errorMsg.bio && true}
                         />
                       </div>
 
@@ -526,19 +554,16 @@ export const ProfModal = ({
                         <TextField
                           id="website"
                           label="Website"
-                          defaultValue={tweepWeb && tweepWeb}
-                          // value={profileDetails.website}
+                          // defaultValue={tweepWeb && tweepWeb}
+                          value={profileDetails.website}
+                          name="website"
                           variant="standard"
                           fullWidth
                           onChange={handleChange}
                           helperText={
                             errors.errorMsg && errors.errorMsg.website
                           }
-                          error={
-                            errors.errorMsg && errors.errorMsg.website
-                              ? true
-                              : false
-                          }
+                          // error={errors.errorMsg.website && true}
                         />
                       </div>
 
@@ -546,19 +571,16 @@ export const ProfModal = ({
                         <TextField
                           id="location"
                           label="Location"
-                          defaultValue={tweepLocation && tweepLocation}
-                          // value={profileDetails.location}
+                          // defaultValue={tweepLocation && tweepLocation}
+                          name="location"
+                          value={profileDetails.location}
                           variant="standard"
                           fullWidth
                           onChange={handleChange}
                           helperText={
                             errors.errorMsg && errors.errorMsg.location
                           }
-                          error={
-                            errors.errorMsg && errors.errorMsg.location
-                              ? true
-                              : false
-                          }
+                          // error={errors.errorMsg.location && true}
                         />
                       </div>
                     </div>
