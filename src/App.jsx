@@ -1,23 +1,24 @@
 import * as React from "react";
-import LiteRoutes from "./routes/LiteRoutes";
-// import Container from "@mui/material/Container";
-// import Typography from "@mui/material/Typography";
-// import Box from "@mui/material/Box";
+import Routes from "./routes/Routes";
+// import Container from "@material-ui/core/Container";
+// import Typography from "@material-ui/core/Typography";
+// import Box from "@material-ui/core/Box";
 
-import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { ThemeProvider, createTheme } from "@material-ui/core/styles";
 import { useState } from "react";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import ThemeSwitcherComponent from "./components/ThemeSwitcher";
 // import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 import { useLocation } from "react-router-dom";
-import Container from "@mui/material/Container";
+import Container from "@material-ui/core/Container";
 // components
 import Sidebar from "./components/Sidebar";
 import Widgets from "./components/Widgets";
 // redux
 import { PropTypes } from "prop-types";
-import { connect } from "react-redux";
+import { connect, Provider } from "react-redux";
+import { store } from "./redux/store";
 
 const App = ({}) => {
   // Get OS-level preference for dark mode
@@ -50,23 +51,28 @@ const App = ({}) => {
 
   return (
     <>
-      <ThemeProvider theme={theme}>
-        {!location.pathname.match({ oddLocations }) ? (
-          <ThemeSwitcherComponent useOs={true} themeChanger={toggleDarkMode} />
-        ) : null}
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          {!location.pathname.match({ oddLocations }) ? (
+            <ThemeSwitcherComponent
+              useOs={true}
+              themeChanger={toggleDarkMode}
+            />
+          ) : null}
 
-        <CssBaseline>
-          <Container className="m-0" component="main" maxWidth="xl">
-            {!location.pathname.match(`/signin|/signup`) ? (
-              <Sidebar></Sidebar>
-            ) : null}
-            <LiteRoutes></LiteRoutes>
-            {!location.pathname.match(`/signin|/signup`) ? (
-              <Widgets></Widgets>
-            ) : null}
-          </Container>
-        </CssBaseline>
-      </ThemeProvider>
+          <CssBaseline>
+            <Container className="m-0 app" component="main" maxWidth="xl">
+              {!location.pathname.match(`/signin|/signup`) ? (
+                <Sidebar></Sidebar>
+              ) : null}
+              <Routes></Routes>
+              {!location.pathname.match(`/signin|/signup`) ? (
+                <Widgets></Widgets>
+              ) : null}
+            </Container>
+          </CssBaseline>
+        </ThemeProvider>
+      </Provider>
     </>
   );
 };

@@ -191,7 +191,7 @@ export const LikeTweet = (tweet) => (dispatch) => {
         type: ActionTypes.LIKE_TWEET,
         payload: res.data,
       });
-      dispatch(FetchTweetsAction());
+      dispatch(RefreshTweetsAction());
     })
     .catch((err) => {
       console.error("====================================");

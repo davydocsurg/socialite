@@ -2,28 +2,28 @@ import React, { useEffect, useState } from "react";
 import TweetBox from "./TweetBox";
 import Tweet from "./tweets/Tweet";
 import FlipMove from "react-flip-move";
-import { Avatar, Button, TextField } from "@mui/material";
-import PhotoOutlinedIcon from "@mui/icons-material/PhotoOutlined";
-import GifOutlinedIcon from "@mui/icons-material/GifOutlined";
-import PollOutlinedIcon from "@mui/icons-material/PollOutlined";
-import ScheduleOutlinedIcon from "@mui/icons-material/ScheduleOutlined";
-import EmojiEmotionsOutlinedIcon from "@mui/icons-material/EmojiEmotionsOutlined";
-import FlareOutlinedIcon from "@mui/icons-material/FlareOutlined";
-import AssistantOutlinedIcon from "@mui/icons-material/AssistantOutlined";
-import { makeStyles } from "@mui/styles";
+import { Avatar, Button, TextField } from "@material-ui/core";
+import PhotoOutlinedIcon from "@material-ui/icons/PhotoOutlined";
+import GifOutlinedIcon from "@material-ui/icons/GifOutlined";
+import PollOutlinedIcon from "@material-ui/icons/PollOutlined";
+import ScheduleOutlinedIcon from "@material-ui/icons/ScheduleOutlined";
+import EmojiEmotionsOutlinedIcon from "@material-ui/icons/EmojiEmotionsOutlined";
+import FlareOutlinedIcon from "@material-ui/icons/FlareOutlined";
+import AssistantOutlinedIcon from "@material-ui/icons/AssistantOutlined";
+import { makeStyles } from "@material-ui/styles";
 import axios from "axios";
 import HttpService from "../services/HttpServices";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 // redux
 import {
   CreateTweetAction,
   FetchTweetsAction,
   FetchTweetsLikeAction,
 } from "../redux/actions/TweetActions";
-import { useDispatch, connect } from "react-redux";
+import { useDispatch, connect, useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 import { getUserData } from "../redux/actions/AuthActions";
 
 function Alert(props) {
@@ -39,16 +39,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Feed = ({
-  UI,
-  tweetReducer: { allTweets },
-  user: {
-    credentials: { profile_picture, id, handle },
-  },
-}) => {
+const Feed = (
+  {
+    // UI,
+    // tweetReducer: { allTweets },
+    // user: {
+    //   credentials: { profile_picture, id, handle },
+    // },
+  }
+) => {
   const [tweets, setTweets] = useState([]);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const history = useHistory();
+
+  const user = useSelector((state) => state.user.credentials);
+  const allTweets = useSelector((state) => state.tweetReducer.allTweets);
+  const UI = useSelector((state) => state.UI);
 
   // tweet box begins
   const classes = useStyles();
@@ -142,9 +148,10 @@ const Feed = ({
     // fetchAuthUser();
     dispatch(getUserData());
     dispatch(FetchTweetsAction());
+    console.log(allTweets);
     // dispatch(FetchTweetsLikeAction());
     return () => {};
-  }, [FetchTweetsAction()]);
+  }, []);
 
   // const fetchAuthUser = () => {
   //   let authUserUrl = "authUser";
@@ -235,7 +242,7 @@ const Feed = ({
   };
 
   const goToProfile = () => {
-    navigate(`/${handle}`);
+    history.push(`/${user.handle}`);
   };
 
   const closeTweetSuccessMessage = () => {
@@ -299,7 +306,7 @@ const Feed = ({
             >
               <div className="tweetBox__input">
                 <Avatar
-                  src={profilePicsUrl + profile_picture}
+                  src={profilePicsUrl + user.profile_picture}
                   className="shadow-sm mr-5 cursor-pointer"
                   onClick={goToProfile}
                 />
@@ -389,7 +396,7 @@ const Feed = ({
           </div>
         )}
 
-        {allTweets.length > 0 && UI.loading == false ? (
+        {allTweets.length > 0 && UI.loading === false ? (
           <FlipMove>
             {allTweets.map((tweet) => (
               <Tweet
@@ -408,43 +415,44 @@ const Feed = ({
                 }
                 likesCount={tweet.likes.length}
                 tweepLikeId={tweet.likes.map((l) => l.user_id)}
-                authUserId={id}
+                authUserId={user.id}
               ></Tweet>
             ))}
           </FlipMove>
         ) : (
-          (allTweets.length = 0 && UI.loading == false && (
-            <div className="text-center mt-5">
-              <h2>No Tweets Found</h2>
-            </div>
-          ))
+          // (allTweets.length = 0 && UI.loading === false && (
+          <div className="text-center mt-5">
+            <h2>No Tweets Found</h2>
+          </div>
+          // ))
         )}
       </div>
     </>
   );
 };
 
-Feed.prototypes = {
-  CreateTweetAction: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
-  UI: PropTypes.object.isRequired,
-  tweetReducer: PropTypes.object.isRequired,
-};
+// Feed.prototypes = {
+//   CreateTweetAction: PropTypes.func.isRequired,
+//   // user: PropTypes.object.isRequired,
+//   // UI: PropTypes.object.isRequired,
+//   // tweetReducer: PropTypes.object.isRequired,
+// };
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.user,
-    UI: state.UI,
-    tweetReducer: state.tweetReducer,
-  };
-};
+// const mapStateToProps = (state) => {
+//   return {
+//     // user: state.user,
+//     // UI: state.UI,
+//     // tweetReducer: state.tweetReducer,
+//   };
+// };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    dispatch1: () => {
-      dispatch(CreateTweetAction);
-    },
-  };
-};
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     dispatch1: () => {
+//       dispatch(CreateTweetAction);
+//     },
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Feed);
+// export default connect(mapStateToProps, mapDispatchToProps)(Feed);
+export default Feed;

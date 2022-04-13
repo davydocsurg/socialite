@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, connect } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { Avatar, Button, Modal, TextField } from "@mui/material";
-import { makeStyles } from "@mui/styles";
-import PhotoOutlinedIcon from "@mui/icons-material/PhotoOutlined";
-import GifOutlinedIcon from "@mui/icons-material/GifOutlined";
-import PollOutlinedIcon from "@mui/icons-material/PollOutlined";
-import ScheduleOutlinedIcon from "@mui/icons-material/ScheduleOutlined";
-import EmojiEmotionsOutlinedIcon from "@mui/icons-material/EmojiEmotionsOutlined";
-import FlareOutlinedIcon from "@mui/icons-material/FlareOutlined";
+import { useDispatch, connect, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { Avatar, Button, Modal, TextField } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
+import PhotoOutlinedIcon from "@material-ui/icons/PhotoOutlined";
+import GifOutlinedIcon from "@material-ui/icons/GifOutlined";
+import PollOutlinedIcon from "@material-ui/icons/PollOutlined";
+import ScheduleOutlinedIcon from "@material-ui/icons/ScheduleOutlined";
+import EmojiEmotionsOutlinedIcon from "@material-ui/icons/EmojiEmotionsOutlined";
+import FlareOutlinedIcon from "@material-ui/icons/FlareOutlined";
 import HttpService from "../services/HttpServices";
 import axios from "axios";
 import { CloseTweetBox } from "../redux/actions/TweetActions";
@@ -24,11 +24,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TweetBox = (tweetReducer, openTweetBox, closeTweetBox) => {
+const TweetBox = (openTweetBox, closeTweetBox) => {
   const [tweets, setTweets] = useState([]);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const history = useHistory();
   const [tweetBoxVisibility, setTweetBoxVisibility] = useState(true);
+
+  const user = useSelector((state) => state.user.credentials);
+  const allTweets = useSelector((state) => state.tweetReducer.allTweets);
 
   // tweet box begins
   const classes = useStyles();
@@ -174,7 +177,7 @@ const TweetBox = (tweetReducer, openTweetBox, closeTweetBox) => {
   };
 
   const goToProfile = () => {
-    navigate("/profile");
+    history.push("/profile");
   };
 
   // tweet box ends
@@ -320,16 +323,17 @@ const TweetBox = (tweetReducer, openTweetBox, closeTweetBox) => {
   );
 };
 
-TweetBox.propTypes = {
-  user: PropTypes.object.isRequired,
-  tweetReducer: PropTypes.object.isRequired,
-};
+// TweetBox.propTypes = {
+//   user: PropTypes.object.isRequired,
+//   tweetReducer: PropTypes.object.isRequired,
+// };
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.user,
-    tweetReducer: state.tweetReducer,
-  };
-};
+// const mapStateToProps = (state) => {
+//   return {
+//     user: state.user,
+//     tweetReducer: state.tweetReducer,
+//   };
+// };
 
-export default connect(mapStateToProps)(TweetBox);
+// export default connect(mapStateToProps)(TweetBox);
+export default TweetBox;

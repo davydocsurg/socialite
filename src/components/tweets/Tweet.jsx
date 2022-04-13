@@ -1,12 +1,12 @@
 import React, { forwardRef, useEffect, useState } from "react";
-import { Avatar } from "@mui/material";
-import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
-import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import RepeatIcon from "@mui/icons-material/Repeat";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import PublishIcon from "@mui/icons-material/Publish";
+import { Avatar } from "@material-ui/core";
+import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
+import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
+import RepeatIcon from "@material-ui/icons/Repeat";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import PublishIcon from "@material-ui/icons/Publish";
 import moment from "moment";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useDispatch, connect } from "react-redux";
 import PropTypes from "prop-types";
 import {
@@ -33,7 +33,7 @@ const Tweet = forwardRef(
     },
     ref
   ) => {
-    const navigate = useNavigate();
+    const history = useHistory();
     const dispatch = useDispatch();
     const token = localStorage.getItem("user-token");
     const [showLikedBtn, setShowLikedBtn] = useState(false);
@@ -41,17 +41,19 @@ const Tweet = forwardRef(
     useEffect(() => {
       // fetchTweet();
       checkLikes();
-    }, []);
+    }, [likesCount]);
+
+    // const user = useSelector((state) => state.user.credentials);
 
     const checkLikes = () => {
+      if (likesCount < 1) {
+        setShowLikedBtn(false);
+      }
       const compAuthId = (value, index, array) => {
         value !== authUserId ? setShowLikedBtn(false) : setShowLikedBtn(true);
       };
       let ff = tweepLikeId.filter(compAuthId);
 
-      if (likesCount < 1) {
-        setShowLikedBtn(false);
-      }
       return ff;
     };
 
@@ -60,7 +62,7 @@ const Tweet = forwardRef(
     };
 
     const viewTweet = () => {
-      navigate(`/tweet/${slug}`);
+      history.push(`/tweet/${slug}`);
     };
 
     const handleLikeTweet = () => {
@@ -145,14 +147,4 @@ const Tweet = forwardRef(
   }
 );
 
-Tweet.prototypes = {
-  user: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => {
-  return {
-    user: state.user,
-  };
-};
-
-export default connect(mapStateToProps)(Tweet);
+export default Tweet;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Navigate } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
@@ -8,7 +8,7 @@ const AuthRoutes = ({ component: Component, authenticated, ...rest }) => (
     {...rest}
     render={(props) =>
       authenticated === true ? (
-        <Navigate to="/home"></Navigate>
+        <Redirect to="/home"></Redirect>
       ) : (
         <Component {...props} />
       )

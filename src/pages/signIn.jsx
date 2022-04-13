@@ -1,28 +1,28 @@
 import React, { useState, useEffect } from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
 import { Link } from "react-router-dom";
-import Grid from "@mui/material/Grid";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import { makeStyles } from "@mui/material/styles";
-import Container from "@mui/material/Container";
-import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
+import Grid from "@material-ui/core/Grid";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
 import { useDispatch, connect } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
-import { Alert, AlertTitle } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import Collapse from "@mui/material/Collapse";
-import CloseIcon from "@mui/icons-material/Close";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import InputAdornment from "@mui/material/InputAdornment";
-import CircularProgress from "@mui/material/CircularProgress";
+import { Alert, AlertTitle } from "@material-ui/lab";
+import IconButton from "@material-ui/core/IconButton";
+import Collapse from "@material-ui/core/Collapse";
+import CloseIcon from "@material-ui/icons/Close";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import CircularProgress from "@material-ui/core/CircularProgress";
 // redux
 import { SignInAction } from "../redux/actions/AuthActions";
 import PropTypes from "prop-types";
@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
 
 const SignIn = ({ UI }) => {
   const classes = useStyles();
-  const navigate = useNavigate();
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState({
@@ -140,7 +140,7 @@ const SignIn = ({ UI }) => {
       ...errors,
       errorMsg: {},
     });
-    dispatch(SignInAction(fields, navigate));
+    dispatch(SignInAction(fields, history));
     setSpinner(true);
     if (UI.errors) {
       setOpen(true);
@@ -170,7 +170,7 @@ const SignIn = ({ UI }) => {
     //       res.data.success === true
     //     ) {
     //       localStorage.setItem("user-token", res.data.access_token);
-    //       navigate("/home");
+    //       history.push("/home");
     //       // console.log(res.data.message);
     //       setOpen(false);
     //       setShowSuccess(true);
@@ -181,7 +181,7 @@ const SignIn = ({ UI }) => {
     //     setOpen(true);
     //     setErrors({ ...errors, errorMsg: err.response.data });
     //   });
-    // dispatch(SignInAction(fields, navigate));
+    // dispatch(SignInAction(fields, history));
     // console.log(authResponse);
   };
 
@@ -350,10 +350,10 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
 
 // import React from "react";
-// import { makeStyles } from "@mui/material/styles";
-// import Button from "@mui/material/Button";
-// import TextField from "@mui/material/TextField";
-// import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
+// import { makeStyles } from "@material-ui/core/styles";
+// import Button from "@material-ui/core/Button";
+// import TextField from "@material-ui/core/TextField";
+// import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
 // import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 // const useStyles = makeStyles((theme) => ({

@@ -4,15 +4,15 @@ import {
   TwitterShareButton,
   TwitterTweetEmbed,
 } from "react-twitter-embed";
-import SearchIcon from "@mui/icons-material/Search";
+import SearchIcon from "@material-ui/icons/Search";
 import AuthUserTweetPhoto from "./tweets/AuthUserTweetPhoto";
 import { connect } from "react-redux";
 import FlipMove from "react-flip-move";
 import { PropTypes } from "prop-types";
 import { useLocation } from "react-router-dom";
-import Paper from "@mui/material/Paper";
-import { Avatar, Button } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import Paper from "@material-ui/core/Paper";
+import { Avatar, Button } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   root: {
