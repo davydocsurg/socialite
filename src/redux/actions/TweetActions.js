@@ -127,6 +127,7 @@ export const FetchTweetsLikeAction = () => {
         });
       })
       .catch((err) => {
+        //
         console.error(err);
       });
   };
