@@ -151,6 +151,9 @@ export const CloseTweetBox = () => {
 };
 
 export const FetchTweet = (tweet) => (dispatch) => {
+  const http = new HttpService();
+  dispatch({ type: ActionTypes.LOADING_UI });
+
   const token = localStorage.getItem("user-token");
 
   const headers = {
@@ -162,10 +165,23 @@ export const FetchTweet = (tweet) => (dispatch) => {
       headers,
     })
     .then((res) => {
-      dispatch({
-        type: ActionTypes.FETCH_TWEET,
-        payload: res.data,
-      });
+      if (res.data.hasOwnProperty("success") && res.data.success === false) {
+        dispatch({
+          type: ActionTypes.SET_ERRORS,
+          payload: res.data.message,
+        });
+      } else if (
+        res.data.hasOwnProperty("success") &&
+        res.data.success === true
+      ) {
+        dispatch({
+          type: ActionTypes.FETCH_TWEET,
+          payload: res.data,
+        });
+        console.log(res.data);
+        dispatch({ type: ActionTypes.STOP_LOADING_UI });
+      }
+      return res;
     })
     .catch((err) => {
       console.error("====================================");

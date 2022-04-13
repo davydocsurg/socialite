@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import Routes from "./routes/Routes";
 // import Container from "@material-ui/core/Container";
 // import Typography from "@material-ui/core/Typography";
@@ -17,10 +17,20 @@ import Sidebar from "./components/Sidebar";
 import Widgets from "./components/Widgets";
 // redux
 import { PropTypes } from "prop-types";
-import { connect, Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import { store } from "./redux/store";
+import { checkAuthState } from "./redux/actions/AuthActions";
 
 const App = ({}) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(checkAuthState());
+    return () => {
+      dispatch(checkAuthState());
+    };
+  }, []);
+
   // Get OS-level preference for dark mode
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 

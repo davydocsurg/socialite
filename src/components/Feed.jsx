@@ -64,6 +64,7 @@ const Feed = (
   const token = localStorage.getItem("user-token");
 
   const profilePicsUrl = "http://localhost:8000/profile/photos/";
+  const tweetPhotoUrl = "http://localhost:8000/tweets/photos/";
 
   const headers = {
     "Content-Type": "application/json",
@@ -127,13 +128,6 @@ const Feed = (
     reader.readAsDataURL(file);
 
     setTweetImageRemover(true);
-
-    // const formData = new FormData();
-    // formData.append("file", file);
-    // setTweetImage({
-    //   ...file,
-    //   [e.target.id]: e.target.files[0],
-    // });
   };
 
   const removeImg = () => {
@@ -148,7 +142,7 @@ const Feed = (
     // fetchAuthUser();
     dispatch(getUserData());
     dispatch(FetchTweetsAction());
-    console.log(allTweets);
+    // console.log(allTweets);
     // dispatch(FetchTweetsLikeAction());
     return () => {};
   }, []);
@@ -313,7 +307,7 @@ const Feed = (
                 <TextField
                   id="tweet_text"
                   value={tweetText}
-                  helperText={tweetErrors.tweetErrorMsg.tweet_text}
+                  helpertext={tweetErrors.tweetErrorMsg.tweet_text}
                   error={tweetErrors.tweetErrorMsg.tweet_text ? true : false}
                   multiline
                   maxRows={5}
@@ -339,7 +333,7 @@ const Feed = (
                 />
               </div>
               <input
-                helperText={tweetErrors.tweetErrorMsg.tweet_photo}
+                helpertext={tweetErrors.tweetErrorMsg.tweet_photo}
                 error={tweetErrors.tweetErrorMsg.tweet_photo ? true : false}
                 id="tweet_photo"
                 onChange={handleFileChange}
@@ -409,9 +403,7 @@ const Feed = (
                 tweetTime={tweet.created_at}
                 avatar={profilePicsUrl + tweet.tweep.profile_picture}
                 tweetImage={
-                  tweet.tweet_photo
-                    ? "http://localhost:8000/tweets/photos/" + tweet.tweet_photo
-                    : null
+                  tweet.tweet_photo ? tweetPhotoUrl + tweet.tweet_photo : null
                 }
                 likesCount={tweet.likes.length}
                 tweepLikeId={tweet.likes.map((l) => l.user_id)}
@@ -420,39 +412,16 @@ const Feed = (
             ))}
           </FlipMove>
         ) : (
-          // (allTweets.length = 0 && UI.loading === false && (
-          <div className="text-center mt-5">
-            <h2>No Tweets Found</h2>
-          </div>
-          // ))
+          allTweets.length < 1 &&
+          UI.loading === false && (
+            <div className="text-center mt-5">
+              <h2>No Tweets Found</h2>
+            </div>
+          )
         )}
       </div>
     </>
   );
 };
 
-// Feed.prototypes = {
-//   CreateTweetAction: PropTypes.func.isRequired,
-//   // user: PropTypes.object.isRequired,
-//   // UI: PropTypes.object.isRequired,
-//   // tweetReducer: PropTypes.object.isRequired,
-// };
-
-// const mapStateToProps = (state) => {
-//   return {
-//     // user: state.user,
-//     // UI: state.UI,
-//     // tweetReducer: state.tweetReducer,
-//   };
-// };
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     dispatch1: () => {
-//       dispatch(CreateTweetAction);
-//     },
-//   };
-// };
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Feed);
 export default Feed;

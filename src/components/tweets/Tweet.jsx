@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useState } from "react";
+import React, { createRef, forwardRef, useEffect, useState } from "react";
 import { Avatar } from "@material-ui/core";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
@@ -6,7 +6,7 @@ import RepeatIcon from "@material-ui/icons/Repeat";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import PublishIcon from "@material-ui/icons/Publish";
 import moment from "moment";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useDispatch, connect } from "react-redux";
 import PropTypes from "prop-types";
 import {
@@ -14,29 +14,28 @@ import {
   UnlikeTweet,
   FetchTweetsAction,
   RefreshTweetsAction,
+  FetchTweet,
 } from "../../redux/actions/TweetActions";
 
 const Tweet = forwardRef(
-  (
-    {
-      tweepName,
-      username,
-      verified,
-      text,
-      tweetImage,
-      avatar,
-      tweetTime,
-      likesCount,
-      tweepLikeId,
-      authUserId,
-      slug,
-    },
-    ref
-  ) => {
+  ({
+    tweepName,
+    username,
+    verified,
+    text,
+    tweetImage,
+    avatar,
+    tweetTime,
+    likesCount,
+    tweepLikeId,
+    authUserId,
+    slug,
+  }) => {
     const history = useHistory();
     const dispatch = useDispatch();
     const token = localStorage.getItem("user-token");
     const [showLikedBtn, setShowLikedBtn] = useState(false);
+    const tweetRef = createRef();
 
     useEffect(() => {
       // fetchTweet();
@@ -44,6 +43,7 @@ const Tweet = forwardRef(
     }, [likesCount]);
 
     // const user = useSelector((state) => state.user.credentials);
+    // const allTweets = useSelector((state) => state.tweetReducer.allTweets);
 
     const checkLikes = () => {
       if (likesCount < 1) {
@@ -63,6 +63,9 @@ const Tweet = forwardRef(
 
     const viewTweet = () => {
       history.push(`/tweet/${slug}`);
+      dispatch(FetchTweet(slug));
+      // setTimeout(() => {
+      // }, 200);
     };
 
     const handleLikeTweet = () => {
@@ -84,13 +87,13 @@ const Tweet = forwardRef(
     };
 
     return (
-      <div className="post" ref={ref}>
+      <div className="post" ref={tweetRef}>
         <div className="post__avatar">
           <Avatar src={avatar} className="shadow-lg" />
         </div>
         <div className="post__body">
           <div className="post__header">
-            <div className="post__headerText row d-flex" onClick={viewTweet}>
+            <div className="post__headerText row d-flex">
               <h3 className="col-lg-9 col-md-8">
                 {tweepName}{" "}
                 <span className="post__headerSpecial">
@@ -111,7 +114,8 @@ const Tweet = forwardRef(
                 <b>{moment(tweetTime).fromNow()}</b>
               </div>
             </div>
-            <div className="post__headerDescription">
+            {/* <Link to={slug}> */}
+            <div className="post__headerDescription" onClick={viewTweet}>
               <p>{text}</p>
             </div>
           </div>
@@ -119,6 +123,7 @@ const Tweet = forwardRef(
             <img src={tweetImage} alt="" className="py-2 img-fluid" />
           ) : null}
 
+          {/* </Link> */}
           {token && (
             <div className="post__footer">
               {/* <ChatBubbleOutlineIcon fontSize="small" /> */}

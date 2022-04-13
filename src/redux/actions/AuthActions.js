@@ -144,6 +144,13 @@ export const getUserData = () => (dispatch) => {
     });
 };
 
+export const checkAuthState = () => (dispatch) => {
+  let token = localStorage.getItem("user-token");
+  if (token) {
+    dispatch({ type: ActionTypes.SET_AUTHENTICATED });
+  }
+};
+
 export const SignOutAction = (history) => {
   return (dispatch) => {
     // return (dispatch) => {
