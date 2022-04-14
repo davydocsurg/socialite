@@ -18,19 +18,22 @@ import {
 } from "../../redux/actions/TweetActions";
 
 const Tweet = forwardRef(
-  ({
-    tweepName,
-    username,
-    verified,
-    text,
-    tweetImage,
-    avatar,
-    tweetTime,
-    likesCount,
-    tweepLikeId,
-    authUserId,
-    slug,
-  }) => {
+  (
+    {
+      tweepName,
+      username,
+      verified,
+      text,
+      tweetImage,
+      avatar,
+      tweetTime,
+      likesCount,
+      tweepLikeId,
+      authUserId,
+      slug,
+    },
+    ref
+  ) => {
     const history = useHistory();
     const dispatch = useDispatch();
     const token = localStorage.getItem("user-token");
@@ -62,8 +65,9 @@ const Tweet = forwardRef(
     };
 
     const viewTweet = () => {
+      // dispatch(FetchTweet(slug));
+
       history.push(`/tweet/${slug}`);
-      dispatch(FetchTweet(slug));
       // setTimeout(() => {
       // }, 200);
     };

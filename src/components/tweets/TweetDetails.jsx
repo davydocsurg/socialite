@@ -1,38 +1,54 @@
 import { Avatar } from "@material-ui/core";
+import axios from "axios";
 import moment from "moment";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import { FetchTweet } from "../../redux/actions/TweetActions";
+import HttpService from "../../services/HttpServices";
 import { Comment, Like, Retweet } from "../../utils/baseIcons/tweetCompIcons";
 import GoBack from "../constants/GoBack";
 
 const TweetDetails = () => {
-  const dispatch = useDispatch();
+  const http = new HttpService();
 
-  useEffect(() => {
-    // dispatch(FetchTweet());
-    // return () => {
-    //   dispatch(FetchTweet());
-    // };
-  }, []);
+  // const dispatch = useDispatch();
+  let { slug } = useParams();
+  //console.log(slug);
+  // const tweetDetails = useSelector((state) => state.tweetReducer.tweetDetails);
+  const [showLikedBtn, setShowLikedBtn] = useState(false);
+  const [tweetDetails, setTweetDetails] = useState({});
 
-  const tweetDetails = useSelector((state) => state.tweetReducer.tweetDetails);
   const user = useSelector((state) => state.user);
-  const loading = useSelector((state) => state.UI.loading);
+  // const loading = useSelector((state) => state.UI.loading);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    console.log("tweetDetails");
+    FetchTweet();
+
+    // dispatch(FetchTweet(slug));
+  }, [slug]);
+
+  const FetchTweet = async () => {
+    setLoading(true);
+    await axios
+      .get(http.url + `/tweet/${slug}`)
+      .then((res) => {
+        console.log(res.data);
+        setTweetDetails(res.data);
+
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err, "erroooor");
+        setLoading(false);
+      });
+  };
 
   const profilePicsUrl = "http://localhost:8000/profile/photos/";
   const tweetPhotoUrl = "http://localhost:8000/tweets/photos/";
 
-  let avatar = tweetDetails.tweep.profile_picture;
-  let tweepName =
-    tweetDetails.tweep.first_name + " " + tweetDetails.tweep.last_name;
-  let verified = tweetDetails.tweep.verified;
-  let handle = tweetDetails.tweep.handle;
-  // tweet
-  let text = tweetDetails.tweet_text;
-  let tweetTime = tweetDetails.created_at;
   let authenticated = user.authenticated;
-  let tweetImage = tweetPhotoUrl + tweetDetails.tweet_photo;
 
   return (
     <div className="singleTweet text-left">
@@ -45,22 +61,27 @@ const TweetDetails = () => {
         </div>
       </div>
 
-      {loading ? (
+      {loading && tweetDetails !== null ? (
         <div className="mb-auto mt-5 text-center mx-auto text-twitter-color">
           <i className="spinner-border spinner-border-md "></i>
         </div>
       ) : (
         <div className="post">
           <div className="post__avatar">
-            <Avatar src={profilePicsUrl + avatar} className="shadow-sm" />
+            <Avatar
+              src={profilePicsUrl + tweetDetails.tweep.profile_picture}
+              className="shadow-sm"
+            />
           </div>
           <div className="post__body">
             <div className="post__header">
               <div className="post__headerText row d-flex">
                 <h3 className="col-lg-9 col-md-8">
-                  {tweepName}{" "}
+                  {tweetDetails.tweep.first_name +
+                    " " +
+                    tweetDetails.tweep.last_name}{" "}
                   <span className="post__headerSpecial">
-                    {verified ? (
+                    {tweetDetails.tweep.verified ? (
                       <small
                         className="fas fa-check-circle text-twitter-color ml-5"
                         data-toggle="tooltip"
@@ -69,25 +90,29 @@ const TweetDetails = () => {
                         data-fa-transform="shrink-4 down-2"
                       ></small>
                     ) : null}{" "}
-                    @{handle}
+                    @{tweetDetails.tweep.handle}
                   </span>
                 </h3>
 
                 <div className="tweet_time col-lg-3 col-md-4">
-                  <b>{moment(tweetTime).fromNow()}</b>
+                  <b>{moment(tweetDetails.created_at).fromNow()}</b>
                 </div>
               </div>
               <div className="post__headerDescription">
-                <p>{text}</p>
+                <p>{tweetDetails.tweet_text}</p>
               </div>
             </div>
-            {tweetImage ? (
-              <img src={tweetImage} alt="" className="py-2 img-fluid" />
+            {tweetPhotoUrl + tweetDetails.tweet_photo ? (
+              <img
+                src={tweetPhotoUrl + tweetDetails.tweet_photo}
+                alt=""
+                className="py-2 img-fluid"
+              />
             ) : null}
 
-            {authenticated && (
+            {/* {authenticated && (
               <div className="post__footer">
-                {/* <ChatBubbleOutlineIcon fontSize="small" /> */}
+
                 <Comment />
                 <Retweet fontSize="small" />
                 <div className="">
@@ -103,7 +128,7 @@ const TweetDetails = () => {
                 </div>
                 <i className="fas fa-share-alt"></i>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       )}

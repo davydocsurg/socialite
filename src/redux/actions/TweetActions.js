@@ -162,27 +162,35 @@ export const FetchTweet = (tweet) => (dispatch) => {
     "Content-type": "application/json",
   };
   axios
-    .get(`/tweets/${tweet}/show`, {
+    .get(http.url + `/tweet/${tweet}`, {
       headers,
     })
     .then((res) => {
-      if (res.data.hasOwnProperty("success") && res.data.success === false) {
-        dispatch({
-          type: ActionTypes.SET_ERRORS,
-          payload: res.data.message,
-        });
-      } else if (
-        res.data.hasOwnProperty("success") &&
-        res.data.success === true
-      ) {
-        dispatch({
-          type: ActionTypes.FETCH_TWEET,
-          payload: res.data,
-        });
-        console.log(res.data);
-        dispatch({ type: ActionTypes.STOP_LOADING_UI });
-      }
-      return res;
+      dispatch({
+        type: ActionTypes.FETCH_TWEET,
+        payload: res.data,
+      });
+      console.log(res.data);
+      dispatch({ type: ActionTypes.STOP_LOADING_UI });
+
+      // .then((res) => {
+      //   if (res.data.hasOwnProperty("success") && res.data.success === false) {
+      //     dispatch({
+      //       type: ActionTypes.SET_ERRORS,
+      //       payload: res.data.message,
+      //     });
+      //   } else if (
+      //     res.data.hasOwnProperty("success") &&
+      //     res.data.success === true
+      //   ) {
+      //     dispatch({
+      //       type: ActionTypes.FETCH_TWEET,
+      //       payload: res.data,
+      //     });
+      //     console.log(res.data);
+      //     dispatch({ type: ActionTypes.STOP_LOADING_UI });
+      //   }
+      // return res;
     })
     .catch((err) => {
       console.error("====================================");
