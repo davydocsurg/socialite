@@ -1,10 +1,22 @@
+import API, { Endpoints } from "../api/axios";
 import HttpService from "./HttpServices";
+
+export const SignUpService = async (credentials) => {
+  return await API.post(Endpoints.signUp, credentials);
+};
+
+export const SignInService = async (credentials) => {
+  return await API.post(Endpoints.signIn, credentials);
+};
+
+export const SignOutService = async () => {
+  return await API.post(Endpoints.signOut);
+};
 
 export const SignUpUserService = (credentials) => {
   const http = new HttpService();
-  let signUpUrl = "signup";
   return http
-    .postData(credentials, signUpUrl)
+    .postData(credentials, Endpoints.signUp)
     .then((data) => {
       console.log(data);
       return data;
@@ -16,9 +28,8 @@ export const SignUpUserService = (credentials) => {
 
 export const SignInUserService = (credentials) => {
   const http = new HttpService();
-  let signInUrl = "signin";
   return http
-    .postData(credentials, signInUrl)
+    .postData(credentials, Endpoints.signIn)
     .then((data) => {
       console.log(data);
       return data;
@@ -30,10 +41,9 @@ export const SignInUserService = (credentials) => {
 
 export const SignOutUserService = () => {
   const http = new HttpService();
-  let signOutUrl = "signout";
   const tokenId = "user-token";
   return http
-    .postData(tokenId, signOutUrl)
+    .postData(tokenId, Endpoints.signOut)
     .then((data) => {
       console.log(data);
       return data;

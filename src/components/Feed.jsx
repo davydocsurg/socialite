@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     "& .MuiTextField-root": {
       margin: theme.spacing(3),
-      width: "55ch",
+      // width: "55ch",
     },
   },
 }));
@@ -139,32 +139,11 @@ const Feed = (
   };
 
   useEffect(() => {
-    // fetchAuthUser();
     dispatch(getUserData());
     dispatch(FetchTweetsAction());
-    // console.log(allTweets);
-    // dispatch(FetchTweetsLikeAction());
+
     return () => {};
   }, []);
-
-  // const fetchAuthUser = () => {
-  //   let authUserUrl = "authUser";
-
-  //   axios
-  //     .get("http://localhost:8000/api/authUser", authUser, {
-  //       headers: headers,
-  //     })
-  //     .then((res) => {
-  //       setAuthUser({
-  //         ...authUser,
-  //         authUserDetails: res.data.credentials,
-  //       });
-  //       // console.log(res.data);
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //     });
-  // };
 
   const sendTweet = (e) => {
     e.preventDefault();
@@ -311,7 +290,7 @@ const Feed = (
                   error={tweetErrors.tweetErrorMsg.tweet_text ? true : false}
                   multiline
                   maxRows={5}
-                  className="ml-3 border-none"
+                  fullWidth
                   placeholder="What's happening?"
                   onChange={handleChange}
                 />

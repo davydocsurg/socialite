@@ -15,14 +15,14 @@ import { CloseTweetBox } from "../redux/actions/TweetActions";
 import { PropTypes } from "prop-types";
 import { FetchTweetsAction } from "../redux/actions/TweetActions";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    "& .MuiTextField-root": {
-      margin: theme.spacing(3),
-      width: "55ch",
-    },
-  },
-}));
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     "& .MuiTextField-root": {
+//       margin: theme.spacing(3),
+//       width: "55ch",
+//     },
+//   },
+// }));
 
 const TweetBox = (openTweetBox, closeTweetBox) => {
   const [tweets, setTweets] = useState([]);
@@ -247,8 +247,8 @@ const TweetBox = (openTweetBox, closeTweetBox) => {
                           tweetErrors.tweetErrorMsg.tweet_text ? true : false
                         }
                         multiline
+                        fullWidth
                         maxRows={5}
-                        className="ml-3 border-none"
                         placeholder="What's happening?"
                         onChange={handleChange}
                       />
@@ -323,17 +323,4 @@ const TweetBox = (openTweetBox, closeTweetBox) => {
   );
 };
 
-// TweetBox.propTypes = {
-//   user: PropTypes.object.isRequired,
-//   tweetReducer: PropTypes.object.isRequired,
-// };
-
-// const mapStateToProps = (state) => {
-//   return {
-//     user: state.user,
-//     tweetReducer: state.tweetReducer,
-//   };
-// };
-
-// export default connect(mapStateToProps)(TweetBox);
 export default TweetBox;

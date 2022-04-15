@@ -156,9 +156,6 @@ const Sidebar = () => {
   useEffect(() => {
     // fetchAuthUser();
     // fetchTweetsFromServer();
-    console.log("====================================");
-    console.log(user);
-    console.log("====================================");
   }, []);
 
   const closeTweetSuccessMessage = () => {
