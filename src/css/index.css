@@ -104,6 +104,15 @@
   color: #50b7f5 !important;
 }
 
+.sidebarOption:hover h2 {
+  font-weight: 600;
+}
+
+.sidebarOption:hover .customIcon {
+  font-weight: 600;
+  fill: #50b7f5 !important;
+}
+
 .sidebarOption > h2 {
   font-weight: 600;
   font-size: 20px;
@@ -117,6 +126,15 @@
 
 .active {
   color: #50b7f5 !important;
+  fill: #50b7f5;
+}
+
+.active .customIcon {
+  width: 1.78rem !important;
+}
+
+.customIcon {
+  width: 1.6rem !important;
 }
 
 @media screen and (max-width: 992px) {

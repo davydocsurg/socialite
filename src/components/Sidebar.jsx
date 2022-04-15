@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import SidebarOption from "./SidebarOption";
-import HomeIcon from "@material-ui/icons/Home";
-import SearchIcon from "@material-ui/icons/Search";
-import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
-import MailOutlineIcon from "@material-ui/icons/MailOutline";
-import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
-import ListAltIcon from "@material-ui/icons/ListAlt";
 import { Avatar, Button, Modal, TextField, Icon } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import PhotoOutlinedIcon from "@material-ui/icons/PhotoOutlined";
@@ -21,7 +15,7 @@ import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
 import axios from "axios";
 import HttpService from "../services/HttpServices";
 import { getUserData, SignOutAction } from "../redux/actions/AuthActions";
-import { useDispatch, connect } from "react-redux";
+import { useDispatch, connect, useSelector } from "react-redux";
 import { PropTypes } from "prop-types";
 import TweetBox from "./TweetBox";
 import {
@@ -31,6 +25,16 @@ import {
 } from "../redux/actions/TweetActions";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import {
+  Bookmarks,
+  Explore,
+  Home,
+  Lists,
+  Messages,
+  More,
+  Notifications,
+  Profile,
+} from "../utils/baseIcons/sideBarIcons";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -45,22 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Sidebar = ({
-  tweetReducer,
-  user: {
-    credentials: {
-      first_name,
-      last_name,
-      profile_picture,
-      email,
-      handle,
-      is_verified,
-      created_at,
-      bio,
-      website,
-    },
-  },
-}) => {
+const Sidebar = () => {
   let token = localStorage.getItem("user-token");
   let { path, url } = useRouteMatch();
   const http = new HttpService();
@@ -69,6 +58,9 @@ const Sidebar = ({
   const [tweetBoxVisibility, setTweetBoxVisibility] = useState(false);
   const classes = useStyles();
   const [openTweetSuccessMessage, setOpenTweetSuccessMessage] = useState(false);
+
+  const user = useSelector((state) => state.user.credentials);
+  const authenticated = useSelector((state) => state.user.authenticated);
 
   const [signOutDet, setSignOutDet] = useState("");
   const profilePicsUrl = "http://localhost:8000/profile/photos/";
@@ -164,6 +156,9 @@ const Sidebar = ({
   useEffect(() => {
     // fetchAuthUser();
     // fetchTweetsFromServer();
+    console.log("====================================");
+    console.log(user);
+    console.log("====================================");
   }, []);
 
   const closeTweetSuccessMessage = () => {
@@ -268,7 +263,7 @@ const Sidebar = ({
                     >
                       <div className="tweetBox__input">
                         <Avatar
-                          src={profilePicsUrl + profile_picture}
+                          src={profilePicsUrl + user.profile_picture}
                           className="shadow-sm mr-5 cursor-pointer"
                           onClick={goToProfile}
                         />
@@ -370,7 +365,7 @@ const Sidebar = ({
           }`}
           to="/home"
         >
-          <SidebarOption Icon={HomeIcon} text="Home" />
+          <SidebarOption Icon={Home} text="Home" />
         </Link>
 
         <Link
@@ -379,9 +374,9 @@ const Sidebar = ({
           }`}
           to={`/explore`}
         >
-          <SidebarOption Icon={SearchIcon} text="Explore" />
+          <SidebarOption Icon={Explore} text="Explore" />
         </Link>
-        {token !== null && token !== "" ? (
+        {authenticated !== null && authenticated !== "" ? (
           <div className="">
             <Link
               className={`side_text ${
@@ -389,14 +384,11 @@ const Sidebar = ({
               }`}
               to={`/notifications`}
             >
-              <SidebarOption
-                Icon={NotificationsNoneIcon}
-                text="Notifications"
-              />
+              <SidebarOption Icon={Notifications} text="Notifications" />
             </Link>
-            <SidebarOption Icon={MailOutlineIcon} text="Messages" />
-            <SidebarOption Icon={BookmarkBorderIcon} text="Bookmarks" />
-            <SidebarOption Icon={ListAltIcon} text="Lists" />
+            <SidebarOption Icon={Messages} text="Messages" />
+            <SidebarOption Icon={Bookmarks} text="Bookmarks" />
+            <SidebarOption Icon={Lists} text="Lists" />
             {/* <Link
             className={`side_text ${
               location.pathname.match(`/${handle}`) && "active"
@@ -405,13 +397,13 @@ const Sidebar = ({
           > */}
             <Link
               className={`side_text ${
-                location.pathname.match(`/${handle}`) && "active"
+                location.pathname.match(`/${user.handle}`) && "active"
               }`}
-              to={`/${handle}`}
+              to={`/${user.handle}`}
             >
-              <SidebarOption Icon={PermIdentityIcon} text="Profile" />
+              <SidebarOption Icon={Profile} text="Profile" />
             </Link>
-            <SidebarOption Icon={MoreHorizIcon} text="More" />
+            <SidebarOption Icon={More} text="More" />
             {/* Button -> Tweet */}
             <Button
               variant="outlined"
@@ -457,16 +449,4 @@ const Sidebar = ({
   );
 };
 
-Sidebar.propTypes = {
-  user: PropTypes.object.isRequired,
-  tweetReducer: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => {
-  return {
-    user: state.user,
-    tweetReducer: state.tweetReducer,
-  };
-};
-
-export default connect(mapStateToProps)(Sidebar);
+export default Sidebar;

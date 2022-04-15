@@ -100,6 +100,15 @@
     .side_text:hover {
       color: $tweet-color !important;
     }
+
+    h2 {
+      font-weight: 600;
+    }
+
+    .customIcon {
+      font-weight: 600;
+      fill: $tweet-color !important;
+    }
   }
 
   // &.MuiSvgIcon-root {
@@ -125,6 +134,15 @@
 
 .active {
   color: $tweet-color !important;
+  fill: $tweet-color;
+
+  .customIcon {
+    width: 1.78rem !important;
+  }
+}
+
+.customIcon {
+  width: 1.6rem !important;
 }
 
 @media screen and (max-width: 992px) {
