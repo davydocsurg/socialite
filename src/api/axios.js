@@ -8,7 +8,7 @@ const API = axios.create({
   baseURL,
 });
 
-API.interceptors.request.use((res) => {
+API.interceptors.request.use((request) => {
   const { auth } = store.getState();
   if (token) {
     request.headers.common.Authorization = `Bearer ${token}`;
@@ -26,7 +26,7 @@ API.interceptors.response.use(
       console.log("user cancelled the network request");
       return Promise.reject(error);
     } else {
-      const { status, data } = error.response;
+      const { status, data } = error;
       if (status === 401) {
         store.dispatch(SIGN_OUT());
         return Promise.reject("Session expired. Please login.");

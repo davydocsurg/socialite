@@ -3,6 +3,7 @@ import {
   SignUpUserService,
   SignInUserService,
   SignOutUserService,
+  SignUpService,
 } from "../../services/AuthServices";
 import HttpService from "../../services/HttpServices";
 import axios from "axios";
@@ -11,52 +12,61 @@ import { FetchTweetsAction } from "./TweetActions";
 // import { RouteHistory } from "./RouteActions";
 // import { Route } from "react-router-dom";
 
-export const SignUpAction = (credentials, history) => {
-  return (dispatch) => {
-    const http = new HttpService();
-    dispatch({ type: ActionTypes.LOADING_UI });
-
-    axios
-      .post(http.url + "/signup", credentials)
-      .then((res) => {
-        if (res.data.hasOwnProperty("success") && res.data.success === false) {
-          dispatch({
-            type: ActionTypes.SET_ERRORS,
-            payload: res.data.message,
-          });
-        } else if (
-          res.data.hasOwnProperty("success") &&
-          res.data.success === true
-        ) {
-          dispatch({
-            type: ActionTypes.CLEAR_ERRORS,
-          });
-          history.push("/signin");
-        }
-      })
-      .catch((err) => {
-        dispatch({
-          type: ActionTypes.SET_ERRORS,
-          payload: err,
-        });
-      });
-
-    // dispatch({ type: ActionTypes.RESTART_AUTH_RESPONSE });
-    // dispatch({ type: ActionTypes.LOADING });
-
-    // SignUpUserService(credentials).then(
-    //   (res) => {
-    //     if (res.hasOwnProperty("success") && res.success === true) {
-    //       dispatch({ type: ActionTypes.SIGNUP_SUCCESS, res });
-    //     } else if (res.hasOwnProperty("success") && res.success === false) {
-    //       dispatch({ type: ActionTypes.SIGNUP_ERROR, res });
-    //     }
-    //   },
-    //   (error) => {
-    //     dispatch({ type: ActionTypes.CODE_ERROR, error });
-    //   }
-    // );
-  };
+export const SignUpAction = (credentials, history) => (dispatch) => {
+  // dispatch({ type: ActionTypes.RESTART_AUTH_RESPONSE });
+  //     dispatch({ type: ActionTypes.LOADING_UI });
+  //     try {
+  //   const res=await SignUpService(credentials)
+  //   if (res.hasOwnProperty("success") && res.success === false) {
+  //     dispatch({ type: ActionTypes.SIGNUP_ERROR, res });
+  //   } else if (res.hasOwnProperty("success") && res.success === true) {
+  //     dispatch({ type: ActionTypes.SIGNUP_SUCCESS, res });
+  //     dispatch({ type: ActionTypes.STOP_LOADING_UI });
+  //     dispatch({
+  //       type: ActionTypes.CLEAR_ERRORS,
+  //     });
+  //         }else{
+  //         }
+  // } catch (error) {
+  // }
+  // const http = new HttpService();
+  // dispatch({ type: ActionTypes.LOADING_UI });
+  // axios
+  //   .post(http.url + "/signup", credentials)
+  //   .then((res) => {
+  //     if (res.data.hasOwnProperty("success") && res.data.success === false) {
+  //       dispatch({
+  //         type: ActionTypes.SET_ERRORS,
+  //         payload: res.data.message,
+  //       });
+  //     } else if (
+  //       res.data.hasOwnProperty("success") &&
+  //       res.data.success === true
+  //     ) {
+  // dispatch({
+  //   type: ActionTypes.CLEAR_ERRORS,
+  // });
+  //       history.push("/signin");
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     dispatch({
+  //       type: ActionTypes.SET_ERRORS,
+  //       payload: err,
+  //     });
+  //   });
+  // SignUpService(credentials).then(
+  //   (res) => {
+  //     if (res.hasOwnProperty("success") && res.success === true) {
+  //       dispatch({ type: ActionTypes.SIGNUP_SUCCESS, res });
+  //     } else if (res.hasOwnProperty("success") && res.success === false) {
+  //       dispatch({ type: ActionTypes.SIGNUP_ERROR, res });
+  //     }
+  //   },
+  //   (error) => {
+  //     dispatch({ type: ActionTypes.CODE_ERROR, error });
+  //   }
+  // );
 };
 
 // export const SignInAction = (credentials) => {

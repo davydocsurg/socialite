@@ -22,6 +22,7 @@ import Collapse from "@material-ui/core/Collapse";
 import CloseIcon from "@material-ui/icons/Close";
 import PropTypes from "prop-types";
 import Snackbar from "@material-ui/core/Snackbar";
+import { SignUpService } from "../services/AuthServices";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,8 +50,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignUp = ({ UI }) => {
-  const classes = useStyles();
+const SignUp = () => {
+  let classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -106,119 +107,66 @@ const SignUp = ({ UI }) => {
     });
   };
 
-  const RegisterUser = (e) => {
+  const closeSuccess = () => {
+    setShowSuccess(false);
+  };
+
+  const RegisterUser = async (e) => {
+    e.preventDefault();
     setErrors({
       ...errors,
       errorMsg: {},
     });
-    e.preventDefault();
     setSpinner(true);
-
-    dispatch(SignUpAction(fields, history));
-
-    if (UI.errors) {
-      setOpen(true);
+    try {
+      const res = await SignUpService(fields);
+      if (res.data.status == 400 && res.data.success === false) {
+        setErrors({
+          ...errors,
+          errorMsg: {
+            first_name: res.data.message.first_name,
+            last_name: res.data.message.last_name,
+            email: res.data.message.email,
+            handle: res.data.message.handle,
+            password: res.data.message.password,
+            password_confirmation: res.data.message.password_confirmation,
+          },
+        });
+      } else if (res.data.status == 200 && res.data.success === true) {
+        setSpinner(false);
+        setShowSuccess(true);
+        setTimeout(() => {
+          history.push("/signin");
+        }, 1800);
+      }
+    } catch (error) {
       setErrors({
         ...errors,
         errorMsg: {
-          first_name: UI.errors.first_name,
-          last_name: UI.errors.last_name,
-          email: UI.errors.email,
-          handle: UI.errors.handle,
-          password: UI.errors.password,
-          password_confirmation: UI.errors.password_confirmation,
+          first_name: errors.first_name,
+          last_name: errors.last_name,
+          email: errors.email,
+          handle: errors.handle,
+          password: errors.password,
+          password_confirmation: errors.password_confirmation,
         },
       });
-      console.log("====================================");
-      console.log(errors);
-      console.log("====================================");
-    } else {
-      setErrors({
-        ...errors,
-        errorMsg: {},
-      });
+      console.log(error);
+      setSpinner(false);
     }
-
-    // axios
-    //   .post("http://localhost:8000/api/signup", fields)
-    //   .then((res) => {
-    //     if (res.data.hasOwnProperty("success") && res.data.success === false) {
-    //       setOpen(true);
-    //       // console.log(res.data.message);
-    //       setErrors({ ...errors, errorMsg: res.data.message });
-    //     } else if (
-    //       res.data.hasOwnProperty("success") &&
-    //       res.data.success === true
-    //     ) {
-    //       // localStorage.setItem("user-token", res.data.access_token);
-    //       history.push("/signin");
-    //       // LoginAfterRegistration();
-    //       // console.log(res.data.message);
-    //       setOpen(false);
-    //       setShowSuccess(true);
-    //     }
-    //     return res;
-    //   })
-    //   .catch((err) => {
-    //     setOpen(true);
-    //     setErrors({ ...errors, errorMsg: err.response.data });
-    //   });
-
-    // console.log(fields);
-    // const passwordMatch = checkPasswordMatch(
-    //   fields.password,
-    //   fields.password_confirmation
-    // );
-
-    // if (passwordMatch === true) {
-    //   alert("passwords don't match. please check your password again");
-    //   return;
-    // }
-    // dispatch(SignUpAction(fields));
   };
-
-  // const LoginAfterRegistration = () => {
-  //   axios
-  //     .post("http://localhost:8000/api/signin", [fields.email, fields.password])
-  //     .then((res) => {
-  //       console.log(res);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-
-  // const checkPasswordMatch = (password, password_confirmation) => {
-  //   return password !== password_confirmation ? true : false;
-  // };
 
   return (
     <Container component="main" maxWidth="xs">
-      {showSuccess ? (
-        <div className={classes.root}>
-          <Collapse in={showSuccess}>
-            <Alert
-              action={
-                <IconButton
-                  aria-label="close"
-                  color="inherit"
-                  size="small"
-                  onClick={() => {
-                    setShowSuccess(false);
-                  }}
-                >
-                  <CloseIcon fontSize="inherit" />
-                </IconButton>
-              }
-              severity="success"
-            >
-              SignUp success.
-              <br />
-              <small className="">redirecting...</small>
-            </Alert>
-          </Collapse>
-        </div>
-      ) : null}
+      <Snackbar
+        open={showSuccess}
+        autoHideDuration={6000}
+        onClose={closeSuccess}
+      >
+        <Alert onClose={closeSuccess} severity="success">
+          SignUp was successful!
+        </Alert>
+      </Snackbar>
 
       {open && (
         <Snackbar open={open} autoHideDuration={2000} onClose={!open}>
@@ -337,9 +285,16 @@ const SignUp = ({ UI }) => {
             variant="contained"
             color="primary"
             className={classes.submit}
-            endIcon={spinner ? <CircularProgress color="white" /> : null}
           >
-            Sign Up
+            <span className="pr-3">Sign Up</span>{" "}
+            {spinner && (
+              <CircularProgress sx={{ ml: 3 }} color="inherit" size={20} />
+            )}
+            {/* {spinner ? (
+              <CircularProgress sx={{ ml: 1 }} color="inherit" size={20} />
+            ) : (
+              <EditIcon />
+            )} */}
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
@@ -355,26 +310,4 @@ const SignUp = ({ UI }) => {
   );
 };
 
-SignUp.propTypes = {
-  classes: PropTypes.object.isRequired,
-  SignInAction: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
-  UI: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => {
-  return {
-    user: state.user,
-    UI: state.UI,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    dispatch1: () => {
-      dispatch(SignInAction);
-    },
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+export default SignUp;

@@ -72,13 +72,13 @@ const App = ({}) => {
 
           <CssBaseline>
             <Container className="m-0 app" component="main" maxWidth="xl">
-              {!location.pathname.match(`/signin|/signup`) ? (
+              {!location.pathname.match(`/signin|/signup`) && (
                 <Sidebar></Sidebar>
-              ) : null}
+              )}
               <Routes></Routes>
-              {!location.pathname.match(`/signin|/signup`) ? (
+              {!location.pathname.match(`/signin|/signup`) && (
                 <Widgets></Widgets>
-              ) : null}
+              )}
             </Container>
           </CssBaseline>
         </ThemeProvider>
@@ -88,41 +88,3 @@ const App = ({}) => {
 };
 
 export default App;
-
-// App.propTypes = {
-//   user: PropTypes.object.isRequired,
-//   tweetReducer: PropTypes.object.isRequired,
-// };
-
-// const mapStateToProps = (state) => {
-//   return {
-//     user: state.user,
-//     tweetReducer: state.tweetReducer,
-//   };
-// };
-
-// export default connect(mapStateToProps)(App);
-{
-  /* return (
-  <React.Fragment>
-    <Route
-      render={({ location }) =>
-        location.pathname !== "/register" && currentUser ? (
-          <HeaderLogIn />
-        ) : (
-          <HeaderLogOut />
-        )
-      }
-    />
-    <Switch>
-      <Route exact path="/register" component={RegistrationPage} />
-      <Route
-        exact
-        path="/welcome"
-        render={() => (currentUser ? <Redirect to="/" /> : <WelcomePage />)}
-      />
-      ... other routes
-    </Switch>
-  </React.Fragment>
-); */
-}

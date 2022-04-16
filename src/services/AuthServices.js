@@ -2,6 +2,7 @@ import API, { Endpoints } from "../api/axios";
 import HttpService from "./HttpServices";
 
 export const SignUpService = async (credentials) => {
+  //console.log(credentials);
   return await API.post(Endpoints.signUp, credentials);
 };
 
