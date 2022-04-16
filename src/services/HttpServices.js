@@ -9,7 +9,7 @@ export default class HttpService {
     );
   };
 
-  getData = async (added_url, tokenId = "") => {
+  getData = async (added_url, tokenId) => {
     const token = await localStorage.getItem(tokenId);
     const requestOptions = this.getRequestOptions(token);
     return fetch(this.url + "/" + added_url, requestOptions).then((response) =>

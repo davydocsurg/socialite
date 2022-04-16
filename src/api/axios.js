@@ -12,7 +12,7 @@ API.interceptors.request.use((request) => {
   const token = localStorage.getItem("user-token");
   // const { auth } = store.getState();
   if (token) {
-    request.headers.common.Authorization = `Bearer ${token}`;
+    request.headers.common.Authorization = `${token}`;
   }
 
   return request;
@@ -27,12 +27,12 @@ API.interceptors.response.use(
       console.log("user cancelled the network request");
       return Promise.reject(error);
     } else {
-      const { status, data } = error.response;
+      const { status, data } = error;
       if (status === 401) {
         // store.dispatch(SignOutAction());
-        console.log("called");
-        localStorage.removeItem("user-token");
-        location.href = "/signin";
+        console.log("called................");
+        // localStorage.removeItem("user-token");
+        // location.href = "/signin";
 
         return Promise.reject("Session expired. Please login.");
       } else if (status === 503) {

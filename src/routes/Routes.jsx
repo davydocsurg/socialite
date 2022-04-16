@@ -44,22 +44,22 @@ const Routes = () => {
   const [tweetSlugs, setTweetSlugs] = useState([]);
 
   // decode token
-  if (token) {
-    const decodedToken = jwtDecode(token);
-    // console.log(decodedToken);
+  // if (token) {
+  //   const decodedToken = jwtDecode(token);
+  //   // console.log(decodedToken);
 
-    if (decodedToken.exp * 1000 < Date.now()) {
-      store.dispatch(SignOutAction());
-      history.push("/signin");
-    } else {
-      // authenticated = true;
-      store.dispatch({
-        type: SET_AUTHENTICATED,
-      });
-      axios.defaults.headers.common["Authorization"] = token;
-      // store.dispatch(getUserData());
-    }
-  }
+  //   if (decodedToken.exp * 1000 < Date.now()) {
+  //     store.dispatch(SignOutAction());
+  //     history.push("/signin");
+  //   } else {
+  //     // authenticated = true;
+  //     store.dispatch({
+  //       type: SET_AUTHENTICATED,
+  //     });
+  //     axios.defaults.headers.common["Authorization"] = token;
+  //     // store.dispatch(getUserData());
+  //   }
+  // }
 
   let { path, url } = useRouteMatch();
 

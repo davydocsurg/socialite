@@ -1,14 +1,20 @@
 import HttpService from "./HttpServices";
+import * as ActionTypes from "../redux/ActionTypes";
+import { Endpoints } from "../api/axios";
 
 export const LoadProfile = () => {
   const http = new HttpService();
-  let profileUrl = "{handle}";
-  const tokenId = "user-token";
+
+  const tokenId = localStorage.getItem("user-token");
   return http
-    .getData(profileUrl, tokenId)
+    .getData(Endpoints.authUser, tokenId)
     .then((data) => {
       console.log(data);
-      return data;
+      // return data;
+      // dispatch({
+      //   type: ActionTypes.SET_USER,
+      //   payload:data
+      // })
     })
     .catch((error) => {
       console.log(error);

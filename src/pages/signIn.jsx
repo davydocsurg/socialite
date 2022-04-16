@@ -69,15 +69,11 @@ const SignIn = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const [openErr, setOpenErr] = useState({
-    openErr: false,
-  });
+  const [openErr, setOpenErr] = useState(false);
 
   const [spinner, setSpinner] = useState(false);
 
-  const [showSuccess, setShowSuccess] = useState({
-    showSuccess: false,
-  });
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const [fields, setFields] = useState({
     login: "",
@@ -112,7 +108,6 @@ const SignIn = () => {
       [e.target.id]: e.target.value,
     });
 
-    // UI.errors = {};
     setSpinner(false);
 
     setErrors({

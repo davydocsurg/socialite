@@ -20,17 +20,16 @@ import { PropTypes } from "prop-types";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { store } from "./redux/store";
 import { checkAuthState } from "./redux/actions/AuthActions";
+import * as ActionTypes from "./redux/ActionTypes";
 
 const App = ({}) => {
   const dispatch = useDispatch();
-  const authenticated = useSelector((state) => state.user.authenticated);
+  const { user } = useSelector((state) => state.user);
 
-  useEffect(() => {
-    dispatch(checkAuthState());
-    // return () => {
-    //   dispatch(checkAuthState());
-    // };
-  }, []);
+  // useEffect(() => {
+  //   dispatch({ type: ActionTypes.SET_UNAUTHENTICATED });
+  //   console.log("unauth");
+  // }, [user.authenticated]);
 
   // Get OS-level preference for dark mode
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");

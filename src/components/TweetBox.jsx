@@ -25,6 +25,7 @@ import { FetchTweetsAction } from "../redux/actions/TweetActions";
 // }));
 
 const TweetBox = (openTweetBox, closeTweetBox) => {
+  const profilePicsUrl = "http://localhost:8000/profile/photos/";
   const [tweets, setTweets] = useState([]);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -50,17 +51,18 @@ const TweetBox = (openTweetBox, closeTweetBox) => {
 
   const [tweetImageF, setTweetImage] = useState("");
 
-  // auth user
-  const [authUser, setAuthUser] = useState({
-    authUserDetails: {},
-  });
-
   const [tweetErrors, setTweetErrors] = useState({
     tweetErrorMsg: {
       tweet_text: "",
       tweet_photo: "",
     },
   });
+
+  useEffect(() => {
+    console.log("================jifijrefierjfij====================");
+    console.log(profilePicsUrl + user.profile_picture);
+    console.log("====================================");
+  }, []);
 
   const [tweetImageRemover, setTweetImageRemover] = useState(false);
 
@@ -107,30 +109,6 @@ const TweetBox = (openTweetBox, closeTweetBox) => {
       tweetImageF: "",
     });
     setTweetImageRemover(false);
-  };
-
-  useEffect(() => {
-    fetchAuthUser();
-    fetchTweetsFromServer();
-  }, []);
-
-  const fetchAuthUser = () => {
-    let authUserUrl = "authUser";
-
-    axios
-      .get("http://localhost:8000/api/authUser", authUser, {
-        headers: headers,
-      })
-      .then((res) => {
-        setAuthUser({
-          ...authUser,
-          authUserDetails: res.data.credentials,
-        });
-        // console.log(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
   };
 
   const handleCloseTweetBox = () => {
@@ -232,10 +210,7 @@ const TweetBox = (openTweetBox, closeTweetBox) => {
                   >
                     <div className="tweetBox__input">
                       <Avatar
-                        src={
-                          "http://localhost:8000/storage/users/profile/" +
-                          authUser.authUserDetails.profile_picture
-                        }
+                        src={profilePicsUrl + user.profile_picture}
                         className="shadow-sm mr-5 cursor-pointer"
                         onClick={goToProfile}
                       />

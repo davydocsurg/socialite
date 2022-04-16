@@ -26,6 +26,8 @@ import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { getUserData } from "../redux/actions/AuthActions";
 import { GetAuthUserService } from "../redux/actions/UserService";
+import { LoadProfile } from "../services/ProfileServices";
+import * as ActionTypes from "../redux/ActionTypes";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -139,21 +141,21 @@ const Feed = () => {
     return () => {};
   }, []);
 
-  useEffect(() => {
-
-    dispatch({ type: ActionTypes.SET_UNAUTHENTICATED });
-
-  }, [user.authenticated])
+  // const fetchAuthUser = () => {
+  //   LoadProfile();
+  // };
 
   const fetchAuthUser = async () => {
     try {
       const res = await GetAuthUserService();
       if (res.data.status == 400 && res.data.success === false) {
-        console.log("====================================");
         console.log(res.data);
-        console.log("====================================");
       } else if (res.data.status == 200 && res.data.success === true) {
         console.log(res.data);
+        dispatch({
+          type: ActionTypes.SET_USER,
+          payload: res.data,
+        });
       }
     } catch (err) {
       console.error(err);
@@ -162,36 +164,6 @@ const Feed = () => {
 
   const sendTweet = (e) => {
     e.preventDefault();
-
-    // dispatch(CreateTweetAction(tweetText, tweetImageF));
-
-    // if ((tweetReducer.tweets = [])) {
-    //   setTweet("");
-    //   setTweetImage("");
-    // } else if (tweetReducer.tweets !== []) {
-    //   fetchTweetsFromServer();
-    // }
-
-    // if (UI.errors) {
-    //   setTweetErrors({
-    //     ...tweetErrors,
-    //     tweetErrorMsg: {
-    //       tweet_text: UI.errors.tweet_text,
-    //       tweet_photo: UI.errors.tweet_photo,
-    //     },
-    //   });
-
-    //   // document.getElementById("tweet_photo").value("");
-    //   console.log("====================================");
-    //   console.log(tweetErrors);
-    //   console.log("====================================");
-    // } else {
-    //   // clear error message
-    //   setTweetErrors({
-    //     ...tweetErrors,
-    //     tweetErrorMsg: {},
-    //   });
-    // }
 
     axios
       .post(
@@ -294,7 +266,7 @@ const Feed = () => {
             >
               <div className="tweetBox__input">
                 <Avatar
-                  src={profilePicsUrl + user.profile_picture}
+                  src={profilePicsUrl + user.credentials.profile_picture}
                   className="shadow-sm mr-5 cursor-pointer"
                   onClick={goToProfile}
                 />
