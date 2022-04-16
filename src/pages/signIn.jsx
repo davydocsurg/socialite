@@ -14,8 +14,8 @@ import Container from "@material-ui/core/Container";
 import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
 import { useDispatch, connect } from "react-redux";
 import { useHistory } from "react-router-dom";
-import axios from "axios";
-import { Alert, AlertTitle } from "@material-ui/lab";
+import MuiAlert from "@material-ui/lab/Alert";
+import { AlertTitle } from "@material-ui/lab";
 import IconButton from "@material-ui/core/IconButton";
 import Collapse from "@material-ui/core/Collapse";
 import CloseIcon from "@material-ui/icons/Close";
@@ -28,6 +28,9 @@ import { SignInAction } from "../redux/actions/AuthActions";
 import PropTypes from "prop-types";
 import { SignInService } from "../services/AuthServices";
 import { Snackbar } from "@material-ui/core";
+
+// services
+import * as ActionTypes from "../redux/ActionTypes";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -56,13 +59,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 const SignIn = () => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const [open, setOpen] = useState({
-    open: false,
+  const [openErr, setOpenErr] = useState({
+    openErr: false,
   });
 
   const [spinner, setSpinner] = useState(false);
@@ -98,11 +105,6 @@ const SignIn = () => {
     event.preventDefault();
   };
 
-  useEffect(() => {
-    setOpen();
-    setShowSuccess();
-  }, []);
-
   const handleFieldChange = (e) => {
     setFields({
       ...fields,
@@ -122,6 +124,10 @@ const SignIn = () => {
     setShowSuccess(false);
   };
 
+  const closeErr = () => {
+    setOpenErr(false);
+  };
+
   const SignInUser = async (e) => {
     e.preventDefault();
 
@@ -133,7 +139,7 @@ const SignIn = () => {
     try {
       const res = await SignInService(fields);
       if (res.data.status == 400 && res.data.success === false) {
-        setOpen(true);
+        setOpenErr(true);
         setErrors({
           ...errors,
           errorMsg: {
@@ -141,7 +147,13 @@ const SignIn = () => {
             password: res.data.message.password,
           },
         });
+        setSpinner(false);
       } else if (res.data.status == 200 && res.data.success === true) {
+        setErrors({
+          ...errors,
+          errorMsg: {},
+        });
+        dispatch({ type: ActionTypes.SET_AUTHENTICATED });
         setSpinner(false);
         setShowSuccess(true);
         setTimeout(() => {
@@ -149,13 +161,6 @@ const SignIn = () => {
         }, 1800);
       }
     } catch (err) {
-      // setErrors({
-      //   ...errors,
-      //   errorMsg: {
-      //     login: err.data.message.login,
-      //     password: err.data.message.password,
-      //   },
-      // });
       console.error(err);
       setSpinner(false);
     }
@@ -169,34 +174,17 @@ const SignIn = () => {
         onClose={closeSuccess}
       >
         <Alert onClose={closeSuccess} severity="success">
-          SignUp was successful!
+          Signed In!
         </Alert>
       </Snackbar>
 
-      {open ? (
-        <div className={classes.root}>
-          <Collapse in={open}>
-            <Alert
-              action={
-                <IconButton
-                  aria-label="close"
-                  color="inherit"
-                  size="small"
-                  onClick={() => {
-                    setOpen(false);
-                  }}
-                >
-                  <CloseIcon fontSize="inherit" />
-                </IconButton>
-              }
-              severity="error"
-            >
-              <AlertTitle>Invalid Credentials!</AlertTitle>
-              Please check your credentials and try again.
-            </Alert>
-          </Collapse>
-        </div>
-      ) : null}
+      <Snackbar open={openErr} autoHideDuration={6000} onClose={closeErr}>
+        <Alert onClose={closeErr} severity="error">
+          <AlertTitle>Invalid Credentials!</AlertTitle>
+          Please check your credentials and try again.
+        </Alert>
+      </Snackbar>
+
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -261,7 +249,7 @@ const SignIn = () => {
             className={classes.submit}
             startIcon={!spinner ? <ExitToAppOutlinedIcon /> : null}
           >
-            <span className="mr-3">Sign Up</span>{" "}
+            <span className="mr-3">Sign In</span>{" "}
             {spinner && (
               <CircularProgress sx={{ pl: 3 }} color="inherit" size={20} />
             )}

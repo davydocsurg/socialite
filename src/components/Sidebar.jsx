@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import SidebarOption from "./SidebarOption";
-import { Avatar, Button, Modal, TextField, Icon } from "@material-ui/core";
+import {
+  Avatar,
+  Button,
+  Modal,
+  TextField,
+  Icon,
+  CircularProgress,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import PhotoOutlinedIcon from "@material-ui/icons/PhotoOutlined";
 import GifOutlinedIcon from "@material-ui/icons/GifOutlined";
@@ -35,6 +42,8 @@ import {
   Notifications,
   Profile,
 } from "../utils/baseIcons/sideBarIcons";
+import { SignOutService } from "../services/AuthServices";
+import { Endpoints } from "../api/axios";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -61,8 +70,16 @@ const Sidebar = () => {
 
   const user = useSelector((state) => state.user.credentials);
   const authenticated = useSelector((state) => state.user.authenticated);
+  const [openErr, setOpenErr] = useState({
+    openErr: false,
+  });
 
-  const [signOutDet, setSignOutDet] = useState("");
+  const [spinner, setSpinner] = useState(false);
+
+  const [showSuccess, setShowSuccess] = useState({
+    showSuccess: false,
+  });
+
   const profilePicsUrl = "http://localhost:8000/profile/photos/";
 
   // authorization
@@ -83,10 +100,12 @@ const Sidebar = () => {
     // dispatch(CloseTweetBox());
   };
 
-  const signOut = (e) => {
-    e.preventDefault();
+  const closeSuccess = () => {
+    setShowSuccess(false);
+  };
 
-    dispatch(SignOutAction(history));
+  const closeErr = () => {
+    setOpenErr(false);
   };
 
   // ************** tweet box **************
@@ -218,6 +237,29 @@ const Sidebar = () => {
     location.href = "/home";
   };
 
+  const signOut = async (e) => {
+    e.preventDefault();
+
+    setSpinner(true);
+    // dispatch(SignOutAction(history));
+
+    try {
+      const res = await SignOutService();
+      if (res.data.status == 400 && res.data.success === false) {
+        setOpen(true);
+      } else if (res.data.status == 200 && res.data.success === true) {
+        setSpinner(false);
+        setShowSuccess(true);
+        // setTimeout(() => {
+        // }, 1800);
+        history.push(Endpoints.signIn);
+      }
+    } catch (err) {
+      console.error(err);
+      setSpinner(true);
+    }
+  };
+
   return (
     <>
       {/* tweet success message */}
@@ -230,6 +272,23 @@ const Sidebar = () => {
           Tweet sent!
         </Alert>
       </Snackbar>
+
+      <Snackbar
+        open={showSuccess || !authenticated}
+        autoHideDuration={6000}
+        onClose={closeSuccess}
+      >
+        <Alert onClose={closeSuccess} severity="success">
+          Signed Out!
+        </Alert>
+      </Snackbar>
+
+      <Snackbar open={openErr} autoHideDuration={6000} onClose={closeErr}>
+        <Alert onClose={closeErr} severity="error">
+          Oops! something went wrong. Try again.
+        </Alert>
+      </Snackbar>
+
       {/* {tweetBoxVisibility && ( */}
       {tweetBoxVisibility && (
         <>
@@ -421,7 +480,13 @@ const Sidebar = () => {
 
             <Button
               variant="contained"
-              startIcon={<ExitToAppOutlinedIcon />}
+              startIcon={
+                spinner ? (
+                  <CircularProgress sx={{ pl: 3 }} color="inherit" size={20} />
+                ) : (
+                  <ExitToAppOutlinedIcon />
+                )
+              }
               className="sidebar__signout d-none d-lg-inline-block"
               // fullWidth
               onClick={signOut}
@@ -435,7 +500,11 @@ const Sidebar = () => {
               // fullWidth
               onClick={signOut}
             >
-              <ExitToAppOutlinedIcon />
+              {spinner ? (
+                <CircularProgress sx={{ pl: 3 }} color="inherit" size={20} />
+              ) : (
+                <ExitToAppOutlinedIcon />
+              )}
             </Button>
           </div>
         ) : (

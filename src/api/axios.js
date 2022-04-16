@@ -1,4 +1,5 @@
 import axios from "axios";
+import { SignOutAction } from "../redux/actions/AuthActions";
 import { store } from "../redux/store";
 
 const baseURL = "http://localhost:8000/api";
@@ -9,7 +10,7 @@ const API = axios.create({
 });
 
 API.interceptors.request.use((request) => {
-  const { auth } = store.getState();
+  // const { auth } = store.getState();
   if (token) {
     request.headers.common.Authorization = `Bearer ${token}`;
   }
@@ -28,7 +29,7 @@ API.interceptors.response.use(
     } else {
       const { status, data } = error;
       if (status === 401) {
-        store.dispatch(SIGN_OUT());
+        store.dispatch(SignOutAction());
         return Promise.reject("Session expired. Please login.");
       } else if (status === 503) {
         return Promise.reject("Service unavailable. Please try again later");

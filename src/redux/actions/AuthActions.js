@@ -4,10 +4,14 @@ import {
   SignInUserService,
   SignOutUserService,
   SignUpService,
+  SignOutService,
 } from "../../services/AuthServices";
 import HttpService from "../../services/HttpServices";
 import axios from "axios";
 import { FetchTweetsAction } from "./TweetActions";
+import { Endpoints } from "../../api/axios";
+import { useHistory } from "react-router-dom";
+import { GetAuthUserService } from "./UserService";
 // import { useHistory } from "react-router-dom";
 // import { RouteHistory } from "./RouteActions";
 // import { Route } from "react-router-dom";
@@ -132,26 +136,40 @@ export const SignInAction = (fields, history) => {
   };
 };
 
-export const getUserData = () => (dispatch) => {
-  dispatch({ type: ActionTypes.LOADING_UI });
-  let token = localStorage.getItem("user-token");
-  const http = new HttpService();
-  const headers = {
-    Authorization: `${token}`,
-    "Content-type": "application/json",
-  };
-  axios
-    .get(http.url + "/authUser", { headers: headers })
-    .then((res) => {
-      dispatch({
-        type: ActionTypes.SET_USER,
-        payload: res.data,
-      });
-      dispatch({ type: ActionTypes.STOP_LOADING_UI });
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+export const getUserData = async () => {
+  // dispatch({ type: ActionTypes.LOADING_UI });
+
+  try {
+    const res = await GetAuthUserService(fields);
+    if (res.data.status == 400 && res.data.success === false) {
+      console.log("====================================");
+      console.log(res.data);
+      console.log("====================================");
+    } else if (res.data.status == 200 && res.data.success === true) {
+      console.log(res.data);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  // let token = localStorage.getItem("user-token");
+  // const http = new HttpService();
+  // const headers = {
+  //   Authorization: `${token}`,
+  //   "Content-type": "application/json",
+  // };
+  // axios
+  //   .get(http.url + "/authUser", { headers: headers })
+  //   .then((res) => {
+  //     dispatch({
+  //       type: ActionTypes.SET_USER,
+  //       payload: res.data,
+  //     });
+  //     dispatch({ type: ActionTypes.STOP_LOADING_UI });
+  //   })
+  //   .catch((err) => {
+  //     console.error(err);
+  //   });
 };
 
 export const checkAuthState = () => (dispatch) => {
@@ -161,72 +179,89 @@ export const checkAuthState = () => (dispatch) => {
   }
 };
 
-export const SignOutAction = (history) => {
-  return (dispatch) => {
-    // return (dispatch) => {
-    let token = localStorage.getItem("user-token");
-    const http = new HttpService();
-    const headers = {
-      Authorization: `${token}`,
-      "Content-type": "application/json",
-    };
-    axios
-      .post(http.url + "/signout", {
-        headers: headers,
-      })
-      .then(() => {
-        // localStorage.removeItem("user-token");
-        // delete axios.defaults.headers.common["Authorization"];
-        // dispatch({ type: ActionTypes.SET_UNAUTHENTICATED });
-        // history.push("/");
-        // dispatch({
-        //   type: ActionTypes.CLEAR_ERRORS,
-        // });
-        if (res.data.hasOwnProperty("success") && res.data.success === false) {
-          dispatch({
-            type: ActionTypes.SET_ERRORS,
-            payload: res.data.message,
-          });
-        } else if (
-          res.data.hasOwnProperty("success") &&
-          res.data.success === true
-        ) {
-          localStorage.removeItem("user-token");
-          delete axios.defaults.headers.common["Authorization"];
-          dispatch({ type: ActionTypes.SET_UNAUTHENTICATED });
-          dispatch({
-            type: ActionTypes.CLEAR_ERRORS,
-          });
-          history.push("/signin");
-        }
-      })
-      .catch((err) => {
-        dispatch({
-          type: ActionTypes.SET_ERRORS,
-          payload: err,
-        });
-      });
-  };
+export const SignOutAction = async () => {
+  console.log("called");
+  const history = useHistory();
+  localStorage.removeItem("user-token");
+  dispatch({ type: ActionTypes.SET_UNAUTHENTICATED });
+  history.push("/signin");
+  // location.href = "/signin";
+  // try {
+  //   const res = await SignOutService();
+  //   if (res.data.status == 401 && res.data.success === false) {
 
-  // dispatch({ type: ActionTypes.RESTART_AUTH_RESPONSE });
-
-  // SignOutUserService().then(
-  //   (res) => {
-  //     if (res.hasOwnProperty("success") && res.success === true) {
-  //       localStorage.removeItem("user_token");
-  //       // window.location.replace("/");
-
-  //       dispatch({ type: ActionTypes.SIGNOUT_SUCCESS, res });
-  //     } else if (res.hasOwnProperty("success") && res.success === false) {
-  //       dispatch({ type: ActionTypes.SIGNOUT_SUCCESS, res });
-  //     }
-  //   },
-  //   (error) => {
-  //     dispatch({ type: ActionTypes.CODE_ERROR, error });
+  //     console.log("====================================");
+  //     console.log(res);
+  //     console.log("====================================");
+  //   } else if (res.data.status == 200 && res.data.success === true) {
   //   }
-  // );
+  // } catch (err) {
+  //   console.error(err);
+  // }
+
+  // let token = localStorage.getItem("user-token");
+  // const http = new HttpService();
+  // const headers = {
+  //   Authorization: `${token}`,
+  //   "Content-type": "application/json",
   // };
+  // axios
+  //   .post(http.url + "/signout", {
+  //     headers: headers,
+  //   })
+  //   .then(() => {
+  //     // localStorage.removeItem("user-token");
+  //     // delete axios.defaults.headers.common["Authorization"];
+  //     // dispatch({ type: ActionTypes.SET_UNAUTHENTICATED });
+  //     // history.push("/");
+  //     // dispatch({
+  //     //   type: ActionTypes.CLEAR_ERRORS,
+  //     // });
+  //     if (res.data.hasOwnProperty("success") && res.data.success === false) {
+  //       dispatch({
+  //         type: ActionTypes.SET_ERRORS,
+  //         payload: res.data.message,
+  //       });
+  //     } else if (
+  //       res.data.hasOwnProperty("success") &&
+  //       res.data.success === true
+  //     ) {
+  //       localStorage.removeItem("user-token");
+  //       delete axios.defaults.headers.common["Authorization"];
+  //       dispatch({ type: ActionTypes.SET_UNAUTHENTICATED });
+  //       dispatch({
+  //         type: ActionTypes.CLEAR_ERRORS,
+  //       });
+  //       history.push("/signin");
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     dispatch({
+  //       type: ActionTypes.SET_ERRORS,
+  //       payload: err,
+  //     });
+  //   });
 };
+
+// dispatch({ type: ActionTypes.RESTART_AUTH_RESPONSE });
+
+// SignOutUserService().then(
+//   (res) => {
+//     if (res.hasOwnProperty("success") && res.success === true) {
+//       localStorage.removeItem("user_token");
+//       // window.location.replace("/");
+
+//       dispatch({ type: ActionTypes.SIGNOUT_SUCCESS, res });
+//     } else if (res.hasOwnProperty("success") && res.success === false) {
+//       dispatch({ type: ActionTypes.SIGNOUT_SUCCESS, res });
+//     }
+//   },
+//   (error) => {
+//     dispatch({ type: ActionTypes.CODE_ERROR, error });
+//   }
+// );
+// };
+// };
 
 const setAuthToken = (token) => {
   const authToken = `Bearer ${token}`;

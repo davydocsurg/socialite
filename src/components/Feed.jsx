@@ -39,15 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Feed = (
-  {
-    // UI,
-    // tweetReducer: { allTweets },
-    // user: {
-    //   credentials: { profile_picture, id, handle },
-    // },
-  }
-) => {
+const Feed = () => {
   const [tweets, setTweets] = useState([]);
   const dispatch = useDispatch();
   const history = useHistory();
