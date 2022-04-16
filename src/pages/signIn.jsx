@@ -26,6 +26,8 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 // redux
 import { SignInAction } from "../redux/actions/AuthActions";
 import PropTypes from "prop-types";
+import { SignInService } from "../services/AuthServices";
+import { Snackbar } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -52,20 +54,9 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: theme.spacing(2),
     },
   },
-
-  spinner: {
-    width: "10% !important",
-    height: "1% !important",
-    position: "absolute",
-    // zIndex: "10",
-    // backgroundColor: "black",
-    "& > * + *": {
-      marginLeft: theme.spacing(2),
-    },
-  },
 }));
 
-const SignIn = ({ UI }) => {
+const SignIn = () => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -110,13 +101,6 @@ const SignIn = ({ UI }) => {
   useEffect(() => {
     setOpen();
     setShowSuccess();
-
-    // setErrors({
-    //   ...errors,
-    //   errorMsg: {
-    //     UI.errors
-    //   },
-    // });
   }, []);
 
   const handleFieldChange = (e) => {
@@ -134,82 +118,60 @@ const SignIn = ({ UI }) => {
     });
   };
 
-  const SignInUser = (e) => {
+  const closeSuccess = () => {
+    setShowSuccess(false);
+  };
+
+  const SignInUser = async (e) => {
     e.preventDefault();
+
     setErrors({
       ...errors,
       errorMsg: {},
     });
-    dispatch(SignInAction(fields, history));
     setSpinner(true);
-    if (UI.errors) {
-      setOpen(true);
-      setErrors({
-        ...errors,
-        errorMsg: {
-          login: UI.errors.login,
-          password: UI.errors.password,
-        },
-      });
-    } else if ((UI.errors.length = 0)) {
-      setErrors({
-        ...errors,
-        errorMsg: {},
-      });
+    try {
+      const res = await SignInService(fields);
+      if (res.data.status == 400 && res.data.success === false) {
+        setOpen(true);
+        setErrors({
+          ...errors,
+          errorMsg: {
+            login: res.data.message.login,
+            password: res.data.message.password,
+          },
+        });
+      } else if (res.data.status == 200 && res.data.success === true) {
+        setSpinner(false);
+        setShowSuccess(true);
+        setTimeout(() => {
+          history.push("/home");
+        }, 1800);
+      }
+    } catch (err) {
+      // setErrors({
+      //   ...errors,
+      //   errorMsg: {
+      //     login: err.data.message.login,
+      //     password: err.data.message.password,
+      //   },
+      // });
+      console.error(err);
+      setSpinner(false);
     }
-
-    // axios
-    //   .post("http://localhost:8000/api/signin", fields)
-    //   .then((res) => {
-    //     if (res.data.hasOwnProperty("success") && res.data.success === false) {
-    //       setOpen(true);
-    //       // console.log(res.data.message);
-    //       setErrors({ ...errors, errorMsg: res.data.message });
-    //     } else if (
-    //       res.data.hasOwnProperty("success") &&
-    //       res.data.success === true
-    //     ) {
-    //       localStorage.setItem("user-token", res.data.access_token);
-    //       history.push("/home");
-    //       // console.log(res.data.message);
-    //       setOpen(false);
-    //       setShowSuccess(true);
-    //     }
-    //     return res;
-    //   })
-    //   .catch((err) => {
-    //     setOpen(true);
-    //     setErrors({ ...errors, errorMsg: err.response.data });
-    //   });
-    // dispatch(SignInAction(fields, history));
-    // console.log(authResponse);
   };
 
   return (
     <Container component="main" maxWidth="xs">
-      {showSuccess ? (
-        <div className={classes.root}>
-          <Collapse in={showSuccess}>
-            <Alert
-              action={
-                <IconButton
-                  aria-label="close"
-                  color="inherit"
-                  size="small"
-                  onClick={() => {
-                    setShowSuccess(false);
-                  }}
-                >
-                  <CloseIcon fontSize="inherit" />
-                </IconButton>
-              }
-              severity="success"
-            >
-              SignIn success.
-            </Alert>
-          </Collapse>
-        </div>
-      ) : null}
+      <Snackbar
+        open={showSuccess}
+        autoHideDuration={6000}
+        onClose={closeSuccess}
+      >
+        <Alert onClose={closeSuccess} severity="success">
+          SignUp was successful!
+        </Alert>
+      </Snackbar>
 
       {open ? (
         <div className={classes.root}>
@@ -229,7 +191,7 @@ const SignIn = ({ UI }) => {
               }
               severity="error"
             >
-              <AlertTitle>Error!</AlertTitle>
+              <AlertTitle>Invalid Credentials!</AlertTitle>
               Please check your credentials and try again.
             </Alert>
           </Collapse>
@@ -298,14 +260,11 @@ const SignIn = ({ UI }) => {
             color="primary"
             className={classes.submit}
             startIcon={!spinner ? <ExitToAppOutlinedIcon /> : null}
-            endIcon={spinner ? <CircularProgress color="white" /> : null}
           >
-            Sign In{" "}
-            {/* {spinner ? (
-              <div className={classes.spinner}>
-                <CircularProgress color="secondary" />
-              </div>
-            ) : null} */}
+            <span className="mr-3">Sign Up</span>{" "}
+            {spinner && (
+              <CircularProgress sx={{ pl: 3 }} color="inherit" size={20} />
+            )}
           </Button>
           <Grid container>
             <Grid item xs>
@@ -325,100 +284,4 @@ const SignIn = ({ UI }) => {
   );
 };
 
-SignIn.propTypes = {
-  classes: PropTypes.object.isRequired,
-  SignInAction: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
-  UI: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => {
-  return {
-    user: state.user,
-    UI: state.UI,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    dispatch1: () => {
-      dispatch(SignInAction);
-    },
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
-
-// import React from "react";
-// import { makeStyles } from "@material-ui/core/styles";
-// import Button from "@material-ui/core/Button";
-// import TextField from "@material-ui/core/TextField";
-// import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
-// import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     "& > *": {
-//       margin: theme.spacing(2),
-//       // width: "45ch",
-//     },
-//   },
-//   button: {
-//     margin: theme.spacing(1),
-//   },
-// }));
-
-// const SignIn = () => {
-//   const classes = useStyles();
-//   return (
-//     <div className="container mt-5">
-//       <h4 className="text-center">Sign In</h4>
-//       <div className="row justify-content-center text-center align-items-center">
-//         <div className="col-lg-6 col-12">
-//           <div className="card">
-//             <div className="card-body">
-//               <form className={classes.root} noValidate autoComplete="off">
-//                 <div className="form-group">
-//                   <TextField
-//                     id="standard-basic"
-//                     label="Email or Handle"
-//                     // variant="outlined"
-//                     className="form-control"
-//                   />
-//                 </div>
-//                 <div className="form-group">
-//                   <TextField
-//                     id="standard-password-input"
-//                     label="Password"
-//                     type="password"
-//                     autoComplete="current-password"
-//                     // variant="outlined"
-//                     className="form-control"
-//                   />{" "}
-//                 </div>
-//                 <div className="form-group">
-//                   <Button
-//                     variant="contained"
-//                     color="default"
-//                     className={classes.button}
-//                     startIcon={<ExitToAppOutlinedIcon />}
-//                     type="submit"
-//                   >
-//                     Sign In
-//                   </Button>
-//                 </div>
-//               </form>
-
-//               <div className="text-info">
-//                 <small className="text-dark">
-//                   Don't have an account? <Link to="/signup">Sign Up</Link>
-//                 </small>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-// export default SignIn;
+export default SignIn;
