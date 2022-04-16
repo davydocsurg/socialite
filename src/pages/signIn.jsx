@@ -24,13 +24,14 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import CircularProgress from "@material-ui/core/CircularProgress";
 // redux
-import { SignInAction } from "../redux/actions/AuthActions";
+import { SetAuthToken, SignInAction } from "../redux/actions/AuthActions";
 import PropTypes from "prop-types";
 import { SignInService } from "../services/AuthServices";
 import { Snackbar } from "@material-ui/core";
 
 // services
 import * as ActionTypes from "../redux/ActionTypes";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -153,17 +154,25 @@ const SignIn = () => {
           ...errors,
           errorMsg: {},
         });
+        // dispatch(SetAuthToken(res.data.access_token));
+        SetAuthToken(res.data.access_token);
         dispatch({ type: ActionTypes.SET_AUTHENTICATED });
         setSpinner(false);
         setShowSuccess(true);
         setTimeout(() => {
           history.push("/home");
-        }, 1800);
+        }, 1000);
       }
     } catch (err) {
       console.error(err);
       setSpinner(false);
     }
+  };
+
+  const SetAuthToken = (token) => {
+    const authToken = `Bearer ${token}`;
+    localStorage.setItem("user-token", authToken);
+    axios.defaults.headers.common["Authorization"] = authToken;
   };
 
   return (

@@ -25,6 +25,7 @@ import PropTypes from "prop-types";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { getUserData } from "../redux/actions/AuthActions";
+import { GetAuthUserService } from "../redux/actions/UserService";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -131,11 +132,33 @@ const Feed = () => {
   };
 
   useEffect(() => {
-    dispatch(getUserData());
+    // dispatch(getUserData());
+    fetchAuthUser();
     dispatch(FetchTweetsAction());
 
     return () => {};
   }, []);
+
+  useEffect(() => {
+
+    dispatch({ type: ActionTypes.SET_UNAUTHENTICATED });
+
+  }, [user.authenticated])
+
+  const fetchAuthUser = async () => {
+    try {
+      const res = await GetAuthUserService();
+      if (res.data.status == 400 && res.data.success === false) {
+        console.log("====================================");
+        console.log(res.data);
+        console.log("====================================");
+      } else if (res.data.status == 200 && res.data.success === true) {
+        console.log(res.data);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const sendTweet = (e) => {
     e.preventDefault();

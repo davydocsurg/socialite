@@ -32,7 +32,8 @@ const UserReducer = (state = initState, action) => {
 
     case ActionTypes.SET_UNAUTHENTICATED:
       return {
-        initState,
+        ...state,
+        authenticated: false,
       };
 
     case ActionTypes.SET_USER:

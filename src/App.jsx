@@ -17,18 +17,19 @@ import Sidebar from "./components/Sidebar";
 import Widgets from "./components/Widgets";
 // redux
 import { PropTypes } from "prop-types";
-import { Provider, useDispatch } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import { store } from "./redux/store";
 import { checkAuthState } from "./redux/actions/AuthActions";
 
 const App = ({}) => {
   const dispatch = useDispatch();
+  const authenticated = useSelector((state) => state.user.authenticated);
 
   useEffect(() => {
     dispatch(checkAuthState());
-    return () => {
-      dispatch(checkAuthState());
-    };
+    // return () => {
+    //   dispatch(checkAuthState());
+    // };
   }, []);
 
   // Get OS-level preference for dark mode

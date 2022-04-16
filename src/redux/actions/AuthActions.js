@@ -136,22 +136,20 @@ export const SignInAction = (fields, history) => {
   };
 };
 
-export const getUserData = async () => {
+export const getUserData = () => {
   // dispatch({ type: ActionTypes.LOADING_UI });
-
-  try {
-    const res = await GetAuthUserService(fields);
-    if (res.data.status == 400 && res.data.success === false) {
-      console.log("====================================");
-      console.log(res.data);
-      console.log("====================================");
-    } else if (res.data.status == 200 && res.data.success === true) {
-      console.log(res.data);
-    }
-  } catch (err) {
-    console.error(err);
-  }
-
+  // try {
+  //   const res = await GetAuthUserService();
+  //   if (res.data.status == 400 && res.data.success === false) {
+  //     console.log("====================================");
+  //     console.log(res.data);
+  //     console.log("====================================");
+  //   } else if (res.data.status == 200 && res.data.success === true) {
+  //     console.log(res.data);
+  //   }
+  // } catch (err) {
+  //   console.error(err);
+  // }
   // let token = localStorage.getItem("user-token");
   // const http = new HttpService();
   // const headers = {
@@ -177,9 +175,10 @@ export const checkAuthState = () => (dispatch) => {
   if (token) {
     dispatch({ type: ActionTypes.SET_AUTHENTICATED });
   }
+  dispatch({ type: ActionTypes.SET_UNAUTHENTICATED });
 };
 
-export const SignOutAction = async () => {
+export const SignOutAction = () => {
   console.log("called");
   const history = useHistory();
   localStorage.removeItem("user-token");
@@ -263,8 +262,8 @@ export const SignOutAction = async () => {
 // };
 // };
 
-const setAuthToken = (token) => {
+export const SetAuthToken = (token) => {
   const authToken = `Bearer ${token}`;
   localStorage.setItem("user-token", authToken);
-  axios.defaults.headers.common["Authorization"] = authToken;
+  // axios.defaults.headers.common["Authorization"] = authToken;
 };
