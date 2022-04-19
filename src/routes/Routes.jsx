@@ -38,39 +38,20 @@ const Routes = () => {
   const user = useSelector((state) => state.user.credentials);
   const allTweets = useSelector((state) => state.tweetReducer.allTweets);
 
-  const [tweepHandle, setTweepHandle] = useState("");
-  const [tweetDetails, setTweetDetails] = useState("");
-  const [tweets, setTweets] = useState([]);
-  const [tweetSlugs, setTweetSlugs] = useState([]);
-
-  // decode token
-  // if (token) {
-  //   const decodedToken = jwtDecode(token);
-  //   // console.log(decodedToken);
-
-  //   if (decodedToken.exp * 1000 < Date.now()) {
-  //     store.dispatch(SignOutAction());
-  //     history.push("/signin");
-  //   } else {
-  //     // authenticated = true;
-  //     store.dispatch({
-  //       type: SET_AUTHENTICATED,
-  //     });
-  //     axios.defaults.headers.common["Authorization"] = token;
-  //     // store.dispatch(getUserData());
-  //   }
-  // }
-
   let { path, url } = useRouteMatch();
 
   useEffect(() => {
     // getHandle();
     // fetchTweets();
-    console.log(tweetSlugs);
-    setTimeout(() => {
-      getTweetSlugs();
-    }, 3000);
-    return () => {};
+    // console.log(tweetSlugs);
+    const fetchTweets = () => {
+      setTimeout(() => {
+        getTweetSlugs();
+      }, 3000);
+    };
+    return () => {
+      clearTimeout(fetchTweets);
+    };
   }, []);
 
   const getTweetSlugs = () => {
@@ -104,7 +85,7 @@ const Routes = () => {
       <Route exact path="/home" component={Home}></Route>
       <Route exact path="/notifications" component={Notifications}></Route>
       <Route exact path="/explore" component={Explore}></Route>
-      <Route exact path={`/${user.handle}`} component={Profile}></Route>
+      <Route exact path={`/:handle`} component={Profile}></Route>
       <Route exact path={`/tweet/:slug`} component={TweetDetails}></Route>
       {/* <Route exact path={`/${allTweets.slug}`} component={TweetDetails}></Route> */}
     </Switch>

@@ -171,9 +171,11 @@ export const getUserData = () => {
 };
 
 export const checkAuthState = () => (dispatch) => {
-  let token = localStorage.getItem("user-token");
+  const token = localStorage.getItem("user-token");
   if (token) {
+    console.log(token);
     dispatch({ type: ActionTypes.SET_AUTHENTICATED });
+    // location.href = "/home";
   }
   dispatch({ type: ActionTypes.SET_UNAUTHENTICATED });
 };

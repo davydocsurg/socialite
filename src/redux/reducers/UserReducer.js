@@ -37,11 +37,13 @@ const UserReducer = (state = initState, action) => {
       };
 
     case ActionTypes.SET_USER:
+      console.log(state);
       return {
         ...state,
         authenticated: true,
         loading: false,
-        credentials: action.payload,
+        // credentials: action.payload,
+        ...action.payload,
       };
 
     case ActionTypes.LIKE_TWEET:
