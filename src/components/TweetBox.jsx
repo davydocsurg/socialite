@@ -8,13 +8,19 @@ import GifOutlinedIcon from "@material-ui/icons/GifOutlined";
 import PollOutlinedIcon from "@material-ui/icons/PollOutlined";
 import ScheduleOutlinedIcon from "@material-ui/icons/ScheduleOutlined";
 import EmojiEmotionsOutlinedIcon from "@material-ui/icons/EmojiEmotionsOutlined";
-import FlareOutlinedIcon from "@material-ui/icons/FlareOutlined";
 import HttpService from "../services/HttpServices";
-import axios from "axios";
-import { CloseTweetBox } from "../redux/actions/TweetActions";
-import { PropTypes } from "prop-types";
-import { FetchTweetsAction } from "../redux/actions/TweetActions";
 import SuccessMsg from "../utils/snackBars/SuccessMsg";
+import { RefreshTweetsAction } from "../redux/actions/TweetActions";
+import { SendTweetService } from "../services/TweetServices";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& .MuiTextField-root": {
+      margin: theme.spacing(3),
+      // width: "55ch",
+    },
+  },
+}));
 
 const TweetBox = (openTweetBox, closeTweetBox) => {
   const profilePicsUrl = "http://localhost:8000/profile/photos/";
@@ -24,6 +30,7 @@ const TweetBox = (openTweetBox, closeTweetBox) => {
   const user = useSelector((state) => state.user.credentials);
   const allTweets = useSelector((state) => state.tweetReducer.allTweets);
   const [tBtn, settBtn] = useState(false);
+  const classes = useStyles();
 
   // tweets
   const [tweetText, setTweetText] = useState("");
@@ -109,7 +116,11 @@ const TweetBox = (openTweetBox, closeTweetBox) => {
   const sendTweet = async (e) => {
     e.preventDefault();
     try {
-      const res = await SendTweetService(tweetText, tweetImageF);
+      let payload = {
+        tweet_text: tweetText,
+        tweet_photo: tweetImageF,
+      };
+      const res = await SendTweetService(payload);
       if (res.data.status == 400 && res.data.success === false) {
         console.log(res.data);
         setTweetErrors({
@@ -121,6 +132,7 @@ const TweetBox = (openTweetBox, closeTweetBox) => {
         console.log(res.data);
         clearTweetFields();
         setTweetSuccess(true);
+        dispatch(RefreshTweetsAction());
       }
     } catch (err) {
       console.error(err);
@@ -131,38 +143,21 @@ const TweetBox = (openTweetBox, closeTweetBox) => {
     history.push("/profile");
   };
 
-  // tweet box ends
-
-  const fetchTweetsFromServer = () => {
-    // dispatch(FetchTweetsAction());
-
-    // if (tweetReducer.tweets !== []) {
-    //   setTweets(tweetReducer.tweets);
-    // }
-
-    const http = new HttpService();
-    let tweetsUrl = "tweets";
-
-    return http
-      .getData(tweetsUrl)
-      .then((res) => {
-        setTweets(res);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
   return (
     <>
       <SuccessMsg tweetSuccess={tweetSuccess} tweetErr={tweetErr} />
       <div className="tweetBox">
-        <form noValidate autoComplete="off" onSubmit={sendTweet}>
+        <form
+          noValidate
+          autoComplete="off"
+          onSubmit={sendTweet}
+          className={classes.root}
+        >
           <div className="tweetBox__input">
             <Avatar
               src={profilePicsUrl + user.profile_picture}
-              sx={{ width: 45, height: 45 }}
-              className="shadow-sm mr-4 cursor-pointer"
+              // sx={{ width: 45, height: 45 }}
+              className="shadow-sm mr-5 cursor-pointer"
               onClick={visitProf}
             />
             <TextField
@@ -172,30 +167,29 @@ const TweetBox = (openTweetBox, closeTweetBox) => {
               error={tweetErr.tweet_text && true}
               multiline
               maxRows={5}
-              className="border-none pl-3"
-              sx={{ ml: 3, mt: 1 }}
               fullWidth
               placeholder="What's happening?"
               onChange={handleTweetTextChange}
-              variant="standard"
             />
           </div>
-          <div className="mb-3 col-10 mx-auto img-preview">
-            {tweetImageRemover && (
-              <button
-                className="btn shadow-lg position-absolute btn-remove-img"
-                onClick={removeImg}
-                type="button"
-              >
-                <i className="fas fa-times"></i>
-              </button>
-            )}
-            <img
-              src={tweetImageF}
-              alt=""
-              className="py-2 shadow-sm img-fluid"
-            />
-          </div>
+          {tweetImageF && (
+            <div className="mb-3 col-10 mx-auto img-preview">
+              {tweetImageRemover && (
+                <button
+                  className="btn shadow-lg position-absolute btn-remove-img"
+                  onClick={removeImg}
+                  type="button"
+                >
+                  <i className="fas fa-times"></i>
+                </button>
+              )}
+              <img
+                src={tweetImageF}
+                alt=""
+                className="py-2 shadow-sm img-fluid"
+              />
+            </div>
+          )}
           <input
             helpertext={tweetErrors.tweetErrorMsg.tweet_photo}
             error={tweetErrors.tweetErrorMsg.tweet_photo && true}

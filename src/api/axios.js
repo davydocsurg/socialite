@@ -31,8 +31,8 @@ API.interceptors.response.use(
       if (status === 401) {
         // store.dispatch(SignOutAction());
         console.log("called................");
-        // localStorage.removeItem("user-token");
-        // location.href = "/signin";
+        localStorage.removeItem("user-token");
+        location.href = "/signin";
 
         return Promise.reject("Session expired. Please login.");
       } else if (status === 503) {

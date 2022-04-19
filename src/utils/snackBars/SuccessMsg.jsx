@@ -10,6 +10,7 @@ export default function SuccessMsg({
   openProfSucMsg,
   tweetSuccess,
   closeProfDetUpdateSucMsg,
+  showSuccess,
   sucMsg,
 }) {
   return (

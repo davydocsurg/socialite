@@ -58,34 +58,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Profile = ({
-  UI,
-  user: {
-    credentials: {
-      id,
-      first_name,
-      last_name,
-      profile_picture,
-      cover_picture,
-      email,
-      handle,
-      is_verified,
-      created_at,
-      bio,
-      website,
-      location,
-    },
-    authUserTweets,
-    authUserTweetsCount,
-    loading,
-    authenticated,
-    tweeps,
-  },
-}) => {
+const Profile = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   // const history = useHistory();
   // authorization
+  const user = useSelector((state) => state.user);
+  const UI = useSelector((state) => state.UI);
+
   const token = localStorage.getItem("user-token");
   const [openModal, setOpenModal] = useState(false);
   const [openProfPicsModal, setOpenProfPicsModal] = useState(false);
@@ -145,8 +125,9 @@ const Profile = ({
 
   const profilePicsUrl = "http://localhost:8000/profile/photos/";
   const coverPicsUrl = "http://localhost:8000/profile/photos/";
-  // const coverPicsUrl = "http://localhost:8000/storage/users/profile/";
-  let fullName = first_name + " " + last_name + " ";
+
+  let fullName =
+    user.credentials.first_name + " " + user.credentials.last_name + " ";
 
   const openProfileModal = () => {
     // setErrors("");
@@ -155,13 +136,13 @@ const Profile = ({
     console.log("====================================");
     setProfileDetails({
       ...profileDetails,
-      first_name: first_name,
-      last_name: last_name,
-      bio: bio,
-      website: website,
-      location: location,
-      handle: handle,
-      profile_picture: profile_picture,
+      first_name: user.credentials.first_name,
+      last_name: user.credentials.last_name,
+      bio: user.credentials.bio,
+      website: user.credentials.website,
+      location: user.credentials.location,
+      handle: user.credentials.handle,
+      profile_picture: user.credentials.profile_picture,
     });
     setOpenModal(true);
   };
@@ -365,31 +346,6 @@ const Profile = ({
       errorMsg: {},
     });
   };
-
-  // const [authUserTweets, setAuthUserTweets] = useState([]);
-
-  // useEffect(() => {
-  //   fetchAuthUserTweets();
-  // }, []);
-
-  // const fetchAuthUserTweets = () => {
-  //   const http = new HttpService();
-  //   let authUserTweetsUrl = "authUserTweets";
-
-  //   return http
-  //     .getData(authUserTweetsUrl, {
-  //       headers: headers,
-  //     })
-  //     .then((res) => {
-  //       setAuthUserTweets(res);
-  //       console.log("====================================");
-  //       console.log(res);
-  //       console.log("====================================");
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //     });
-  // };
 
   return (
     <>
@@ -975,71 +931,4 @@ const Profile = ({
   );
 };
 
-Profile.propTypes = {
-  user: PropTypes.object.isRequired,
-  UI: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => {
-  return {
-    user: state.user,
-    UI: state.UI,
-  };
-};
-
-export default connect(mapStateToProps)(Profile);
-
-{
-  /* {let profileMarkUp = */
-}
-// {!loading ? (
-//   authenticated ? (
-//     <Paper className={classes.paper}>
-//       <div className="profile-pics">
-//         <Avatar
-//           src={profile_picture}
-//           alt={first_name + "" + last_name}
-//           srcset=""
-//         />
-//       </div>
-//       <div className="profile-details">
-//         <MUILink
-//           component={Link}
-//           to={`/${handle}`}
-//           color="primary"
-//           variant="h5"
-//         >
-//           @{handle}
-//         </MUILink>
-//       </div>
-//       {location && (
-//         <Fragment>
-//           <LocationOn color="primary" />
-//           {location}
-//         </Fragment>
-//       )}
-
-//       {bio && <Typography variant="body2">{bio}</Typography>}
-
-// {website && (
-//   <Fragment>
-//     <LinkIcon>
-//       <a href={website} target="_blank" rel="noopener noreferrer">
-//         {" "}
-//         {website}
-//       </a>
-//     </LinkIcon>
-//   </Fragment>
-// )}
-
-// <CalendarToday>
-//   {" "}
-//   <span>Joined {moment(created_at).format("MMM YYY")}</span>
-// </CalendarToday>
-//     </Paper>
-//   ) : (
-//     "login"
-//   )
-// ) : (
-//   <p>loading...</p>
-// )}
+export default Profile;

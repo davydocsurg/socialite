@@ -59,6 +59,13 @@ const Feed = () => {
     // };
   }, []);
 
+  // useEffect(() => {
+  //   // fetchAuthUser()
+  //   console.log("====================================");
+  //   console.log("check auth cont....");
+  //   console.log("====================================");
+  // }, [user.authenticated]);
+
   const user = useSelector((state) => state.user);
   const allTweets = useSelector((state) => state.tweetReducer.allTweets);
   const UI = useSelector((state) => state.UI);

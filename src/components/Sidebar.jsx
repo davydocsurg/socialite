@@ -21,6 +21,7 @@ import axios from "axios";
 import HttpService from "../services/HttpServices";
 import { getUserData, SignOutAction } from "../redux/actions/AuthActions";
 import { useDispatch, connect, useSelector } from "react-redux";
+import * as ActionTypes from "../redux/ActionTypes";
 import {
   Bookmarks,
   Explore,
@@ -34,6 +35,7 @@ import {
 import { SignOutService } from "../services/AuthServices";
 import { Endpoints } from "../api/axios";
 import { TweetModal } from "./tweets/TweetModal";
+import SuccessMsg from "../utils/snackBars/SuccessMsg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,6 +53,7 @@ const Sidebar = () => {
   const dispatch = useDispatch();
   const [openTweetModal, setOpenTweetModal] = useState(false);
   const [spinner, setSpinner] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const classes = useStyles();
 
   const user = useSelector((state) => state.user.credentials);
@@ -150,9 +153,11 @@ const Sidebar = () => {
       } else if (res.data.status == 200 && res.data.success === true) {
         setSpinner(false);
         setShowSuccess(true);
+        localStorage.removeItem("user-token");
+        dispatch({ type: ActionTypes.SET_UNAUTHENTICATED });
         // setTimeout(() => {
         // }, 1800);
-        history.push(Endpoints.signIn);
+        history.push("/signin");
       }
     } catch (err) {
       console.error(err);
@@ -162,6 +167,8 @@ const Sidebar = () => {
 
   return (
     <>
+      <SuccessMsg showSuccess={showSuccess} sucMsg={"You've signed out!"} />
+
       <TweetModal
         openTweetModal={openTweetModal}
         closeTweetBox={closeTweetBox}
