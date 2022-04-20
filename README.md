@@ -50,10 +50,9 @@ ithub forks" src="https://img.shields.io/github/forks/davydocsurg/socialite?colo
 Socialite is a twitter clone built with ReactJS, Redux and Vite. 
 
 Preview:
-![social-preview](https://user-images.githubusercontent.com/57722026/150946172-3e4c4e2f-1a98-4f89-88bb-4fe2c1fa9cba.png)
-![Screenshot from 2022-01-25 10-17-40](https://user-images.githubusercontent.com/57722026/150948095-494b2288-2475-4eaf-a958-62960925dc3d.png)
+![Screenshot from 2022-04-20 10-32-53](https://user-images.githubusercontent.com/57722026/164186529-848c1bc4-244f-4c16-afa5-b5a0e4eca493.png)
+![Screenshot from 2022-04-20 10-35-05](https://user-images.githubusercontent.com/57722026/164186809-bc95af14-ce5f-4473-926c-a6ac73129b5d.png)
 
-![Screenshot from 2022-01-25 10-17-56](https://user-images.githubusercontent.com/57722026/150948106-765d08f3-d671-4029-aa8c-d4fede4a56f0.png)
 ![Screenshot from 2022-01-25 10-15-29](https://user-images.githubusercontent.com/57722026/150948257-8f8e612e-6b7e-4158-b229-86e780a0dd6b.png)
 ![Screenshot from 2022-01-25 10-15-46](https://user-images.githubusercontent.com/57722026/150948281-41db4f47-3381-4250-a4b8-a785f9d89d91.png)
 ![Screenshot from 2022-01-25 10-16-51](https://user-images.githubusercontent.com/57722026/150948294-05fd3a89-1a0c-45ec-801d-1207eac4796d.png)
