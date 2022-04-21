@@ -143,9 +143,18 @@ const TweetBox = (openTweetBox, closeTweetBox) => {
     history.push("/profile");
   };
 
+  const handleClose = () => {
+    setTweetSuccess(false);
+  };
+
   return (
     <>
-      <SuccessMsg tweetSuccess={tweetSuccess} tweetErr={tweetErr} />
+      <SuccessMsg
+        tweetSuccess={tweetSuccess}
+        handleClose={handleClose}
+        sucMsg={"Tweet sent!"}
+        tweetErr={tweetErr}
+      />
       <div className="tweetBox">
         <form
           noValidate

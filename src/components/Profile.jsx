@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { connect, useDispatch } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { PropTypes } from "prop-types";
 import { Paper, TextField, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
@@ -95,10 +95,6 @@ const Profile = () => {
       handle: "",
     },
   });
-
-  useEffect(() => {
-    dispatch(getUserData());
-  }, []);
 
   const [
     openProfileDetailsUpdateSuccessMessage,
@@ -350,6 +346,7 @@ const Profile = () => {
   return (
     <>
       {/* profile details success message */}
+      Success
       <Snackbar
         open={openProfileDetailsUpdateSuccessMessage}
         autoHideDuration={6000}
