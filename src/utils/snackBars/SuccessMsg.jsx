@@ -10,10 +10,14 @@ export default function SuccessMsg({
   openProfSucMsg,
   tweetSuccess,
   closeProfDetUpdateSucMsg,
-  handleClose,
+  closeTS,
   showSuccess,
   sucMsg,
 }) {
+  const handleClose = () => {
+    console.log("close");
+  };
+
   return (
     <>
       <Snackbar

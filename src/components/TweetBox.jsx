@@ -143,7 +143,7 @@ const TweetBox = (openTweetBox, closeTweetBox) => {
     history.push("/profile");
   };
 
-  const handleClose = () => {
+  const closeTS = () => {
     setTweetSuccess(false);
   };
 
@@ -151,7 +151,7 @@ const TweetBox = (openTweetBox, closeTweetBox) => {
     <>
       <SuccessMsg
         tweetSuccess={tweetSuccess}
-        handleClose={handleClose}
+        closeTS={handleClose}
         sucMsg={"Tweet sent!"}
         tweetErr={tweetErr}
       />
