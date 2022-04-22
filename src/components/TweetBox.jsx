@@ -12,6 +12,7 @@ import HttpService from "../services/HttpServices";
 import SuccessMsg from "../utils/snackBars/SuccessMsg";
 import { RefreshTweetsAction } from "../redux/actions/TweetActions";
 import { SendTweetService } from "../services/TweetServices";
+import ErrorMsg from "../utils/snackBars/ErrorMsg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -122,6 +123,7 @@ const TweetBox = (openTweetBox, closeTweetBox) => {
       };
       const res = await SendTweetService(payload);
       if (res.data.status == 400 && res.data.success === false) {
+        setTweetErr(true);
         console.log(res.data);
         setTweetErrors({
           ...tweetErrors,
@@ -135,6 +137,7 @@ const TweetBox = (openTweetBox, closeTweetBox) => {
         dispatch(RefreshTweetsAction());
       }
     } catch (err) {
+      setTweetErr(true);
       console.error(err);
     }
   };
@@ -147,13 +150,22 @@ const TweetBox = (openTweetBox, closeTweetBox) => {
     setTweetSuccess(false);
   };
 
+  const closeTE = () => {
+    setTweetErr(false);
+  };
+
   return (
     <>
+      <ErrorMsg
+        errMsg={"Oops! Something went wrong."}
+        closeSnackBar={closeTE}
+        visible={tweetErr}
+      />
       <SuccessMsg
-        tweetSuccess={tweetSuccess}
-        closeTS={handleClose}
-        sucMsg={"Tweet sent!"}
+        sucMsg={"tweet sent"}
         tweetErr={tweetErr}
+        closeSnackBar={closeTS}
+        visible={tweetSuccess}
       />
       <div className="tweetBox">
         <form

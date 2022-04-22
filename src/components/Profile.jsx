@@ -66,6 +66,10 @@ const Profile = () => {
   const user = useSelector((state) => state.user);
   const UI = useSelector((state) => state.UI);
 
+  useEffect(() => {
+    console.log(user);
+  }, []);
+
   const token = localStorage.getItem("user-token");
   const [openModal, setOpenModal] = useState(false);
   const [openProfPicsModal, setOpenProfPicsModal] = useState(false);
@@ -77,7 +81,7 @@ const Profile = () => {
     website: "",
     location: "",
     profile_picture: "",
-    cover_picture,
+    cover_picture: "",
   });
 
   const [profPics, setProfPics] = useState("");
@@ -289,22 +293,6 @@ const Profile = () => {
     handleCoverFileChange();
   };
 
-  const closeProfileDetailsUpdateSuccessMessage = () => {
-    setOpenProfileDetailsUpdateSuccessMessage(false);
-  };
-
-  const closeProfilePicsUpdateSuccessMessage = () => {
-    setOpenProfilePicsUpdateSuccessMessage(false);
-  };
-
-  const closeCoverPhotoUpdateSuccessMessage = () => {
-    setOpenCoverPhotoUpdateSuccessMessage(false);
-  };
-
-  const closeProfileUpdateErrorMessage = () => {
-    setOpenProfileUpdateErrorMessage(false);
-  };
-
   const handleDetailsSubmit = (e) => {
     e.preventDefault();
     // if (UI.errors.length > 1) {
@@ -346,60 +334,7 @@ const Profile = () => {
   return (
     <>
       {/* profile details success message */}
-      Success
-      <Snackbar
-        open={openProfileDetailsUpdateSuccessMessage}
-        autoHideDuration={6000}
-        onClose={closeProfileDetailsUpdateSuccessMessage}
-      >
-        <Alert
-          onClose={closeProfileDetailsUpdateSuccessMessage}
-          severity="success"
-        >
-          Profile Updated Successfully!
-        </Alert>
-      </Snackbar>
-
-      {/* profile pics success message */}
-      <Snackbar
-        open={openProfilePicsUpdateSuccessMessage}
-        autoHideDuration={6000}
-        onClose={closeProfilePicsUpdateSuccessMessage}
-      >
-        <Alert
-          onClose={closeProfilePicsUpdateSuccessMessage}
-          severity="success"
-        >
-          Profile Picture Updated Successfully!
-        </Alert>
-      </Snackbar>
-
-      {/* cover photo success message */}
-      <Snackbar
-        open={openCoverPhotoUpdateSuccessMessage}
-        autoHideDuration={6000}
-        onClose={closeCoverPhotoUpdateSuccessMessage}
-      >
-        <Alert onClose={closeCoverPhotoUpdateSuccessMessage} severity="success">
-          Cover Photo Updated Successfully!
-        </Alert>
-      </Snackbar>
-
-      {/* profile update error message */}
-      <Snackbar
-        open={openProfileUpdateErrorMessage}
-        autoHideDuration={6000}
-        onClose={closeProfileUpdateErrorMessage}
-        // anchorOrigin={"top right"}
-        // key={top right}
-        // key={transition ? transition.name : "TransitionRight"}
-        // TransitionComponent={transition}
-      >
-        <Alert onClose={closeProfileUpdateErrorMessage} severity="error">
-          Oops, something went wrong. Please, check your credentials and try
-          again.
-        </Alert>
-      </Snackbar>
+      {/* <SuccessMsg /> */}
 
       <div className="mx-auto">
         <Modal open={openModal} onClose={closeProfileModal} className="">
@@ -502,7 +437,7 @@ const Profile = () => {
                         className="bg-holder rounded-soft rounded-bottom-0"
                         style={{
                           backgroundImage: `url(${
-                            coverPicsUrl + cover_picture
+                            coverPicsUrl + user.credentials.cover_picture
                           })`,
                         }}
                       ></div>
@@ -588,7 +523,9 @@ const Profile = () => {
                         </div>
                         <Avatar
                           alt={fullName}
-                          src={profilePicsUrl + profile_picture}
+                          src={
+                            profilePicsUrl + user.credentials.profile_picture
+                          }
                           className={`rounded-circle  transform-o avatar-img  img-fluid shadow-sm`}
                         ></Avatar>
                       </div>
@@ -601,8 +538,7 @@ const Profile = () => {
                             required
                             id="first_name"
                             label="First Name"
-                            defaultValue={first_name}
-                            // value={profileDetails.first_name}
+                            value={profileDetails.first_name}
                             variant="standard"
                             onChange={handleChange}
                             helperText={errors.errorMsg.first_name}
@@ -616,8 +552,7 @@ const Profile = () => {
                             required
                             id="last_name"
                             label="Last Name"
-                            defaultValue={last_name}
-                            // value={profileDetails.last_name}
+                            value={profileDetails.last_name}
                             variant="standard"
                             onChange={handleChange}
                             helperText={errors.errorMsg.last_name}
@@ -631,8 +566,7 @@ const Profile = () => {
                         <TextField
                           id="handle"
                           label="Handle"
-                          defaultValue={handle && handle}
-                          // value={profileDetails.handle}
+                          value={profileDetails.handle}
                           variant="standard"
                           fullWidth
                           onChange={handleChange}
@@ -645,8 +579,7 @@ const Profile = () => {
                         <TextField
                           id="email"
                           label="Email"
-                          defaultValue={email && email}
-                          // value={profileDetails.email}
+                          value={profileDetails.email}
                           variant="standard"
                           fullWidth
                           onChange={handleChange}
@@ -662,8 +595,7 @@ const Profile = () => {
                           label="Bio"
                           multiline
                           maxRows={4}
-                          defaultValue={bio && bio}
-                          // value={profileDetails.bio}
+                          value={profileDetails.bio}
                           fullWidth
                           onChange={handleChange}
                           helperText={errors.errorMsg.bio}
@@ -675,8 +607,7 @@ const Profile = () => {
                         <TextField
                           id="website"
                           label="Website"
-                          defaultValue={website && website}
-                          // value={profileDetails.website}
+                          value={profileDetails.website}
                           variant="standard"
                           fullWidth
                           onChange={handleChange}
@@ -689,8 +620,7 @@ const Profile = () => {
                         <TextField
                           id="location"
                           label="Location"
-                          defaultValue={location && location}
-                          // value={profileDetails.location}
+                          value={profileDetails.location}
                           variant="standard"
                           fullWidth
                           onChange={handleChange}
