@@ -64,6 +64,9 @@ const Profile = () => {
   // const history = useHistory();
   // authorization
   const user = useSelector((state) => state.user);
+  const authUserTweetsCount = useSelector(
+    (state) => state.user.authUserTweetCount
+  );
   const UI = useSelector((state) => state.UI);
 
   useEffect(() => {
@@ -541,8 +544,14 @@ const Profile = () => {
                             value={profileDetails.first_name}
                             variant="standard"
                             onChange={handleChange}
-                            helperText={errors.errorMsg.first_name}
-                            error={errors.errorMsg.first_name ? true : false}
+                            helperText={
+                              errors.errorMsg && errors.errorMsg.first_name
+                            }
+                            error={
+                              errors.errorMsg && errors.errorMsg.first_name
+                                ? true
+                                : false
+                            }
                             fullWidth
                           />
                         </div>
@@ -555,8 +564,14 @@ const Profile = () => {
                             value={profileDetails.last_name}
                             variant="standard"
                             onChange={handleChange}
-                            helperText={errors.errorMsg.last_name}
-                            error={errors.errorMsg.last_name ? true : false}
+                            helperText={
+                              errors.errorMsg && errors.errorMsg.last_name
+                            }
+                            error={
+                              errors.errorMsg && errors.errorMsg.last_name
+                                ? true
+                                : false
+                            }
                             fullWidth
                           />
                         </div>
@@ -570,8 +585,12 @@ const Profile = () => {
                           variant="standard"
                           fullWidth
                           onChange={handleChange}
-                          helperText={errors.errorMsg.handle}
-                          error={errors.errorMsg.handle ? true : false}
+                          helperText={errors.errorMsg && errors.errorMsg.handle}
+                          error={
+                            errors.errorMsg && errors.errorMsg.handle
+                              ? true
+                              : false
+                          }
                         />
                       </div>
 
@@ -583,8 +602,12 @@ const Profile = () => {
                           variant="standard"
                           fullWidth
                           onChange={handleChange}
-                          helperText={errors.errorMsg.email}
-                          error={errors.errorMsg.email ? true : false}
+                          helperText={errors.errorMsg && errors.errorMsg.email}
+                          error={
+                            errors.errorMsg && errors.errorMsg.email
+                              ? true
+                              : false
+                          }
                         />
                       </div>
 
@@ -598,8 +621,12 @@ const Profile = () => {
                           value={profileDetails.bio}
                           fullWidth
                           onChange={handleChange}
-                          helperText={errors.errorMsg.bio}
-                          error={errors.errorMsg.bio ? true : false}
+                          helperText={errors.errorMsg && errors.errorMsg.bio}
+                          error={
+                            errors.errorMsg && errors.errorMsg.bio
+                              ? true
+                              : false
+                          }
                         />
                       </div>
 
@@ -611,8 +638,14 @@ const Profile = () => {
                           variant="standard"
                           fullWidth
                           onChange={handleChange}
-                          helperText={errors.errorMsg.website}
-                          error={errors.errorMsg.website ? true : false}
+                          helperText={
+                            errors.errorMsg && errors.errorMsg.website
+                          }
+                          error={
+                            errors.errorMsg && errors.errorMsg.website
+                              ? true
+                              : false
+                          }
                         />
                       </div>
 
@@ -624,8 +657,14 @@ const Profile = () => {
                           variant="standard"
                           fullWidth
                           onChange={handleChange}
-                          helperText={errors.errorMsg.location}
-                          error={errors.errorMsg.location ? true : false}
+                          helperText={
+                            errors.errorMsg && errors.errorMsg.location
+                          }
+                          error={
+                            errors.errorMsg && errors.errorMsg.location
+                              ? true
+                              : false
+                          }
                         />
                       </div>
                     </div>
@@ -676,13 +715,15 @@ const Profile = () => {
             <div
               className={"bg-holder rounded-soft rounded-bottom-0"}
               style={{
-                backgroundImage: `url(${coverPicsUrl + cover_picture})`,
+                backgroundImage: `url(${
+                  coverPicsUrl + user.credentials.cover_picture
+                })`,
               }}
             ></div>
             <div className="avatar avatar-5xl avatar-profile">
               <Avatar
                 alt={fullName}
-                src={profilePicsUrl + profile_picture}
+                src={profilePicsUrl + user.credentials.profile_picture}
                 className={
                   // classes.large +
                   `rounded-circle  transform-o avatar-img  img-fluid shadow-sm`
@@ -704,7 +745,7 @@ const Profile = () => {
               <div className="col-8">
                 <h4 className="mb-1 mt-5">
                   {fullName}
-                  {is_verified ? (
+                  {user.credentials.is_verified ? (
                     <small
                       className="fas fa-check-circle text-twitter-color ml-5"
                       data-toggle="tooltip"
@@ -714,13 +755,13 @@ const Profile = () => {
                     ></small>
                   ) : null}
                 </h4>
-                <b className="text-muted">@{handle}</b>
+                <b className="text-muted">@{user.credentials.handle}</b>
                 <br />
               </div>
 
               <div className="col-4  pl-2 pl-lg-3">
                 <div className="row">
-                  {id && (
+                  {user.credentials.id && (
                     <>
                       <div className="col-4"></div>
                       <div className="col-8">
@@ -735,7 +776,7 @@ const Profile = () => {
                     </>
                   )}
 
-                  {!id && (
+                  {!user.credentials.id && (
                     <>
                       <div className="col-6">
                         <button
@@ -760,34 +801,39 @@ const Profile = () => {
                 <hr className="border-dashed my-4 d-md-none d-lg-none" />
               </div>
               <div className="col-10 my-3">
-                {bio && <Typography variant="body2"> {bio}</Typography>}
+                {user.credentials.bio && (
+                  <Typography variant="body2">
+                    {" "}
+                    {user.credentials.bio}
+                  </Typography>
+                )}
               </div>
               <div className="row mr-auto">
-                {location && (
+                {user.credentials.location && (
                   <div className="col-lg-3 col-md-4 col-sm-6">
                     <p className="text-500">
                       <Fragment>
                         {/* <LocationOn color="primary" /> */}
                         <i className="fas fa-map-marker-alt profile-icons"> </i>
-                        {" " + location}
+                        {" " + user.credentials.location}
                       </Fragment>
                     </p>
                   </div>
                 )}
-                {website && (
+                {user.credentials.website && (
                   <div className="col-lg-5 col-md-7 col-sm-6">
                     <Fragment>
                       {/* <LinkIcon></LinkIcon> */}
                       <div className="d-flex">
                         <i className="fas fa-link profile-icons"> </i>
                         <a
-                          href={website}
+                          href={user.credentials.website}
                           target="_blank"
                           rel="noopener noreferrer"
                           className=""
                         >
                           {" "}
-                          {website}
+                          {user.credentials.website}
                         </a>
                       </div>
                     </Fragment>
@@ -799,7 +845,8 @@ const Profile = () => {
                   <i className="far fa-calendar-alt profile-icons"></i>
                   <b className="mt-">
                     {" "}
-                    Joined {moment(created_at).format("MMMM YYYY")}
+                    Joined{" "}
+                    {moment(user.credentials.created_at).format("MMMM YYYY")}
                   </b>
                 </div>
               </div>
@@ -825,17 +872,17 @@ const Profile = () => {
         )}
 
         <FlipMove>
-          {authUserTweets.length > 0 ? (
-            authUserTweets.map((authUserTweet) => (
+          {user.authUserTweets.length > 0 ? (
+            user.authUserTweets.map((authUserTweet) => (
               <AuthUserTweet
                 key={authUserTweet.slug}
                 slug={authUserTweet.slug}
-                tweepName={first_name + " " + last_name}
-                username={handle}
+                tweepName={fullName}
+                username={user.credentials.handle}
                 verified={true}
                 text={authUserTweet.tweet_text}
                 tweetTime={authUserTweet.created_at}
-                avatar={profilePicsUrl + profile_picture}
+                avatar={profilePicsUrl + user.credentials.profile_picture}
                 tweetImage={
                   authUserTweet.tweet_photo
                     ? "http://localhost:8000/tweets/photos/" +
@@ -843,7 +890,7 @@ const Profile = () => {
                     : null
                 }
                 likesCount={authUserTweet.likes.length}
-                authUserId={id}
+                authUserId={user.credentials.id}
                 tweepLikeId={authUserTweet.likes.map((l) => l.user_id)}
               ></AuthUserTweet>
             ))
