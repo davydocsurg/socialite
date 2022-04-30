@@ -124,12 +124,12 @@ const TweetBox = (openTweetBox, closeTweetBox) => {
       const res = await SendTweetService(payload);
       if (res.data.status == 400 && res.data.success === false) {
         setTweetErr(true);
-        console.log(res.data);
         setTweetErrors({
           ...tweetErrors,
           tweet_text: res.data.message.tweet_text,
           tweet_photo: res.data.message.tweet_photo,
         });
+        console.log(tweetErrors.tweet_text[0]);
       } else if (res.data.status == 200 && res.data.success === true) {
         console.log(res.data);
         clearTweetFields();
@@ -157,7 +157,12 @@ const TweetBox = (openTweetBox, closeTweetBox) => {
   return (
     <>
       <ErrorMsg
-        errMsg={"Oops! Something went wrong."}
+        errMsg={
+          tweetErrors.tweet_text
+            ? tweetErrors.tweet_text[0]
+            : "Oops! Something went wrong."
+        }
+        // errMsg={"Oops! Something went wrong."}
         closeSnackBar={closeTE}
         visible={tweetErr}
       />
@@ -184,8 +189,8 @@ const TweetBox = (openTweetBox, closeTweetBox) => {
             <TextField
               id="tweet_text"
               value={tweetText}
-              helpertext={tweetErr.tweet_text}
-              error={tweetErr.tweet_text && true}
+              helpertext={tweetErrors.tweet_text && tweetErrors.tweet_text[0]}
+              error={tweetErrors.tweet_text && true}
               multiline
               maxRows={5}
               fullWidth

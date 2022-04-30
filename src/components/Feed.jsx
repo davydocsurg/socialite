@@ -26,7 +26,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { getUserData } from "../redux/actions/AuthActions";
 import { GetAuthUserService } from "../redux/actions/UserService";
-import { LoadProfile } from "../services/ProfileServices";
+// import { LoadProfile } from "../services/ProfileServices";
 import * as ActionTypes from "../redux/ActionTypes";
 
 function Alert(props) {

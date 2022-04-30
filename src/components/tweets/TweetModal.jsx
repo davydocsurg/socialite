@@ -27,7 +27,7 @@ export const TweetModal = ({ openTweetModal, closeTweetBox }) => {
                   </button>
                 </div>
 
-                <div className="container">
+                <div className="container profile-modal-body">
                   <TweetBox closeTweetBox={closeTweetBox} />
                 </div>
               </div>

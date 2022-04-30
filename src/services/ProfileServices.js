@@ -2,6 +2,11 @@ import HttpService from "./HttpServices";
 import * as ActionTypes from "../redux/ActionTypes";
 import { Endpoints } from "../api/axios";
 
+export const UpdateProfileDetails = async (payload) => {
+  // console.log(tweet_text, tweetFile);
+  return await API.post(Endpoints.updateProfile, payload);
+};
+
 export const LoadProfile = () => {
   const http = new HttpService();
 

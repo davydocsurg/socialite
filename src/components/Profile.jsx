@@ -23,6 +23,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import Slide from "@material-ui/core/Slide";
 import axios from "axios";
+import ErrorMsg from "../utils/snackBars/ErrorMsg";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -75,6 +76,8 @@ const Profile = () => {
 
   const token = localStorage.getItem("user-token");
   const [openModal, setOpenModal] = useState(false);
+  const [profileDetErr, setProfileDetErr] = useState(false);
+
   const [openProfPicsModal, setOpenProfPicsModal] = useState(false);
   const [openCoverPhotoModal, setOpenCoverPhotoModal] = useState(false);
   const [profileDetails, setProfileDetails] = useState({
@@ -296,34 +299,56 @@ const Profile = () => {
     handleCoverFileChange();
   };
 
-  const handleDetailsSubmit = (e) => {
+  const handleDetailsSubmit = async (e) => {
     e.preventDefault();
-    // if (UI.errors.length > 1) {
-    clearAllErrors();
-    // }
-    dispatch(UpdateProfileInfo(profileDetails));
 
-    if (UI.errors) {
-      setOpenModal(true);
-      setOpenProfileUpdateErrorMessage(true);
-      setErrors({
-        ...errors,
-        errorMsg: {
-          handle: UI.errors.handle,
-          email: UI.errors.email,
-          first_name: UI.errors.first_name,
-          last_name: UI.errors.last_name,
-          bio: UI.errors.bio,
-          website: UI.errors.website,
-          location: UI.errors.location,
-          profile_picture: UI.errors.profile_picture,
-        },
-      });
-    } else if (!UI.errors) {
-      // clearAllErrors();
-      setOpenModal(false);
-      setOpenProfileDetailsUpdateSuccessMessage(true);
+    try {
+      const res = await SendTweetService(profileDetails);
+      if (res.data.status == 400 && res.data.success === false) {
+        setTweetErr(true);
+        console.log(res.data);
+        setTweetErrors({
+          ...tweetErrors,
+          tweet_text: res.data.message.tweet_text,
+          tweet_photo: res.data.message.tweet_photo,
+        });
+      } else if (res.data.status == 200 && res.data.success === true) {
+        console.log(res.data);
+        clearTweetFields();
+        setTweetSuccess(true);
+        dispatch(RefreshTweetsAction());
+      }
+    } catch (err) {
+      setTweetErr(true);
+      console.error(err);
     }
+
+    // if (UI.errors.length > 1) {
+    // clearAllErrors();
+    // // }
+    // dispatch(UpdateProfileInfo(profileDetails));
+
+    // if (UI.errors) {
+    //   setOpenModal(true);
+    //   setOpenProfileUpdateErrorMessage(true);
+    //   setErrors({
+    //     ...errors,
+    //     errorMsg: {
+    //       handle: UI.errors.handle,
+    //       email: UI.errors.email,
+    //       first_name: UI.errors.first_name,
+    //       last_name: UI.errors.last_name,
+    //       bio: UI.errors.bio,
+    //       website: UI.errors.website,
+    //       location: UI.errors.location,
+    //       profile_picture: UI.errors.profile_picture,
+    //     },
+    //   });
+    // } else if (!UI.errors) {
+    //   // clearAllErrors();
+    //   setOpenModal(false);
+    //   setOpenProfileDetailsUpdateSuccessMessage(true);
+    // }
     // setOpenModal(false);
   };
 
@@ -336,9 +361,11 @@ const Profile = () => {
 
   return (
     <>
-      {/* profile details success message */}
-      {/* <SuccessMsg /> */}
-
+      {/* <ErrorMsg
+        errMsg={"Oops! Something went wrong."}
+        closeSnackBar={closeTE}
+        visible={profileDetErr}
+      /> */}
       <div className="mx-auto">
         <Modal open={openModal} onClose={closeProfileModal} className="">
           <div id="exampleModal" role="dialog">
