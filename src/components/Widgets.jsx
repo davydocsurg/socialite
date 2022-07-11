@@ -62,37 +62,34 @@ const Widgets = ({
                         <div className="ml-7">
                             <FlipMove className="">
                                 <div className="card-group cursor-pointer">
-                                    {authUserTweets
-                                        .slice(0, 3)
-                                        .map((authUserTweet) => (
-                                            <div
-                                                className="card bg-twitter-bg text-white"
-                                                //  style={{ maxWidth: "30rem" }}
-                                            >
-                                                <div className="card-img-top">
-                                                    <img
-                                                        className="img-fluid justify-content-space-between"
-                                                        loading="lazy"
-                                                        src={
-                                                            "http://localhost:8000/tweets/photos/" +
-                                                            authUserTweet.tweet_photo
-                                                        }
-                                                        alt={
-                                                            handle + " 's media"
-                                                        }
-                                                    />
+                                    {authUserTweets.slice(0, 3).map(
+                                        (authUserTweet) =>
+                                            authUserTweet.tweet_photo !==
+                                                null && (
+                                                <div className="card bg-twitter-bg text-white">
+                                                    <div className="card-img-top">
+                                                        <img
+                                                            className="img-fluid justify-content-space-between"
+                                                            loading="lazy"
+                                                            src={
+                                                                "http://localhost:8000/tweets/photos/" +
+                                                                authUserTweet.tweet_photo
+                                                            }
+                                                            alt={
+                                                                handle +
+                                                                " 's media"
+                                                            }
+                                                        />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        ))}
+                                            )
+                                    )}
                                 </div>
                                 <div className="card-group cursor-pointer">
                                     {authUserTweets
                                         .slice(3, 6)
                                         .map((authUserTweet) => (
-                                            <div
-                                                className="card bg-twitter-bg text-white"
-                                                //  style={{ maxWidth: "30rem" }}
-                                            >
+                                            <div className="card bg-twitter-bg text-white">
                                                 <div className="card-img-top">
                                                     <img
                                                         className="img-fluid justify-content-space-between"
@@ -173,17 +170,7 @@ const Widgets = ({
     ))} */}{" "}
             <div className="widgets__widgetContainer mt-3">
                 <h2 className="mb-2">What's happening</h2>
-                <blockquote className="twitter-tweet">
-                    <p lang="en" dir="ltr">
-                        No one knows when they begin, ideas don&#39;t come out
-                        fully formed, they only become clearer as you work on
-                        them. You just have to get started.
-                    </p>
-                    &mdash; David Chibueze 👨🏻‍💻 (@davydocsurg){" "}
-                    <a href="https://twitter.com/davydocsurg/status/1374156837323481092?ref_src=twsrc%5Etfw">
-                        March 23, 2021
-                    </a>
-                </blockquote>{" "}
+
                 <script
                     async
                     src="https://platform.twitter.com/widgets.js"
