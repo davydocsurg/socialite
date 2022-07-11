@@ -8,18 +8,20 @@ import UIReducer from "./reducers/UIReducer";
 const initialState = {};
 const middleware = [thunk];
 const reducers = combineReducers({
-  user: UserReducer,
-  tweetReducer: TweetReducer,
-  // data: DataReducer,
-  UI: UIReducer,
+    user: UserReducer,
+    tweetReducer: TweetReducer,
+    // data: DataReducer,
+    UI: UIReducer,
 });
 
 export const store = createStore(
-  // RootReducer,
-  reducers,
-  initialState,
-  compose(
-    applyMiddleware(...middleware),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  )
+    // RootReducer,
+    reducers,
+    initialState,
+    compose(
+        applyMiddleware(...middleware),
+        window.__REDUX_DEVTOOLS_EXTENSION__
+            ? window.__REDUX_DEVTOOLS_EXTENSION__()
+            : (f) => f
+    )
 );
