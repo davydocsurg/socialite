@@ -47,13 +47,8 @@ const Feed = () => {
     const history = useHistory();
 
     useEffect(() => {
-        // dispatch(getUserData());
         fetchAuthUser();
         dispatch(FetchTweetsAction());
-
-        // return () => {
-        //   fetchAuthUser();
-        // };
     }, []);
 
     const user = useSelector((state) => state.user);
@@ -61,10 +56,8 @@ const Feed = () => {
     const UI = useSelector((state) => state.UI);
 
     // tweet box begins
-    const classes = useStyles();
-
     const profilePicsUrl = "http://localhost:8000/profile/photos/";
-    const tweetPhotoUrl = "http://localhost:8000/tweets/photos/";
+    const tweetPhotoUrl = "http://localhost:8000/storage/";
 
     // auth user
     const [authUser, setAuthUser] = useState({
@@ -72,13 +65,10 @@ const Feed = () => {
     });
 
     const fetchAuthUser = async () => {
-        console.log("..........");
         try {
             const res = await GetAuthUserService();
             if (res.data.status == 400 && res.data.success === false) {
-                console.log(res.data);
             } else if (res.data.status == 200 && res.data.success === true) {
-                console.log(res.data);
                 dispatch({
                     type: ActionTypes.SET_USER,
                     payload: res.data,
@@ -125,10 +115,11 @@ const Feed = () => {
                     </div>
                 )}
 
-                {allTweets !== null && UI.loading === false ? (
+                {allTweets.length > 0 && UI.loading === false ? (
                     <FlipMove>
                         {allTweets.map((tweet) => (
                             <Tweet
+                                tweetId={tweet.id}
                                 key={tweet.slug}
                                 slug={tweet.slug}
                                 tweepName={
@@ -144,8 +135,9 @@ const Feed = () => {
                                     profilePicsUrl + tweet.tweep.profile_picture
                                 }
                                 tweetImage={
-                                    tweet.tweet_photo
-                                        ? tweetPhotoUrl + tweet.tweet_photo
+                                    tweet.images.length > 0
+                                        ? tweetPhotoUrl +
+                                          tweet.images[tweet.id - 1].url
                                         : null
                                 }
                                 likesCount={tweet.likes.length}
@@ -155,12 +147,9 @@ const Feed = () => {
                         ))}
                     </FlipMove>
                 ) : (
-                    allTweets == null &&
-                    UI.loading === false && (
-                        <div className="text-center mt-5">
-                            <h2>No Tweets Found</h2>
-                        </div>
-                    )
+                    <div className="text-center mt-5">
+                        <h2>No Tweets Found</h2>
+                    </div>
                 )}
             </div>
         </>

@@ -2,11 +2,11 @@ import * as ActionTypes from "../ActionTypes";
 // import { createReducer } from "@reduxjs/toolkit";
 
 const initState = {
-  credentials: {},
-  authenticated: false,
-  loading: false,
-  likes: [],
-  notifications: [],
+    credentials: {},
+    authenticated: false,
+    loading: false,
+    likes: [],
+    notifications: [],
 };
 
 // const AuthReducer = createReducer(initState, (builder) => {
@@ -23,90 +23,91 @@ const initState = {
 // });
 
 const UserReducer = (state = initState, action) => {
-  switch (action.type) {
-    case ActionTypes.SET_AUTHENTICATED:
-      return {
-        ...state,
-        authenticated: true,
-      };
+    switch (action.type) {
+        case ActionTypes.SET_AUTHENTICATED:
+            return {
+                ...state,
+                authenticated: true,
+            };
 
-    case ActionTypes.SET_UNAUTHENTICATED:
-      return {
-        ...state,
-        authenticated: false,
-      };
+        case ActionTypes.SET_UNAUTHENTICATED:
+            return {
+                ...state,
+                authenticated: false,
+            };
 
-    case ActionTypes.SET_USER:
-      console.log(state);
-      return {
-        ...state,
-        authenticated: true,
-        loading: false,
-        // credentials: action.payload,
-        ...action.payload,
-      };
+        case ActionTypes.SET_USER:
+            return {
+                ...state,
+                authenticated: true,
+                loading: false,
+                // credentials: action.payload,
+                ...action.payload,
+            };
 
-    case ActionTypes.LIKE_TWEET:
-      return {
-        ...state,
-        likes: [
-          // ...state.likes,
-          {
-            tweepHandle: state.credentials.handle,
-            slug: action.payload.slug,
-          },
-        ],
-      };
+        case ActionTypes.LIKE_TWEET:
+            return {
+                ...state,
+                likes: [
+                    // ...state.likes,
+                    {
+                        tweepHandle: state.credentials.handle,
+                        slug: action.payload.slug,
+                    },
+                ],
+            };
 
-    case ActionTypes.UNLIKE_TWEET:
-      return {
-        ...state,
-        likes: state.likes.filter((like) => like.slug === action.payload.slug),
-      };
+        case ActionTypes.UNLIKE_TWEET:
+            return {
+                ...state,
+                likes: state.likes.filter(
+                    (like) => like.slug === action.payload.slug
+                ),
+            };
 
-    // case ActionTypes.LOADING:
-    //   return {
-    //     ...state,
-    //     authResponse: "loading...",
-    //   };
-    // case ActionTypes.SIGNUP_SUCCESS:
-    //   return {
-    //     ...state,
-    //     authResponse: action.res,
-    //   };
-    // case ActionTypes.SIGNUP_ERROR:
-    //   return {
-    //     ...state,
-    //     authResponse: action.res,
-    //   };
-    // case ActionTypes.SIGNIN_SUCCESS:
-    //   return {
-    //     ...state,
-    //     authResponse: "redirecting to home...",
-    //   };
-    // case ActionTypes.SIGNIN_ERROR:
-    //   return {
-    //     ...state,
-    //     authResponse: action.error,
-    //   };
-    // case ActionTypes.SIGNOUT_SUCCESS:
-    //   return {
-    //     ...state,
-    //     authResponse: action.res,
-    //   };
-    // case ActionTypes.SIGNOUT_ERROR:
-    //   return {
-    //     ...state,
-    //     authResponse: action.res,
-    //   };
-    // case ActionTypes.CODE_ERROR:
-    //   return {
-    //     ...state,
-    //     authResponse:
-    //       "There seems to be a problem, please refresh your browser",
-    //   };
-    default:
-      return state;
-  }
+        // case ActionTypes.LOADING:
+        //   return {
+        //     ...state,
+        //     authResponse: "loading...",
+        //   };
+        // case ActionTypes.SIGNUP_SUCCESS:
+        //   return {
+        //     ...state,
+        //     authResponse: action.res,
+        //   };
+        // case ActionTypes.SIGNUP_ERROR:
+        //   return {
+        //     ...state,
+        //     authResponse: action.res,
+        //   };
+        // case ActionTypes.SIGNIN_SUCCESS:
+        //   return {
+        //     ...state,
+        //     authResponse: "redirecting to home...",
+        //   };
+        // case ActionTypes.SIGNIN_ERROR:
+        //   return {
+        //     ...state,
+        //     authResponse: action.error,
+        //   };
+        // case ActionTypes.SIGNOUT_SUCCESS:
+        //   return {
+        //     ...state,
+        //     authResponse: action.res,
+        //   };
+        // case ActionTypes.SIGNOUT_ERROR:
+        //   return {
+        //     ...state,
+        //     authResponse: action.res,
+        //   };
+        // case ActionTypes.CODE_ERROR:
+        //   return {
+        //     ...state,
+        //     authResponse:
+        //       "There seems to be a problem, please refresh your browser",
+        //   };
+        default:
+            return state;
+    }
 };
 export default UserReducer;

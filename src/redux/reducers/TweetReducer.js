@@ -3,7 +3,7 @@ import * as ActionTypes from "../ActionTypes";
 const initState = {
     tweetText: "",
     tweetPhoto: "",
-    allTweets: null,
+    allTweets: [],
     tweetDetails: [],
     tweetLikes: [],
     tweetBoxVisibity: false,
