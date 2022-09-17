@@ -59,10 +59,6 @@ export const FetchTweetsAction = () => {
         axios
             .get(http.url + "/tweets")
             .then((res) => {
-                console.log(
-                    res.data[0]
-                    // "http://localhost:8000/storage/" + res.data[0].images[0].url
-                );
                 dispatch({
                     type: ActionTypes.SET_TWEET_DATA,
                     payload: res.data,

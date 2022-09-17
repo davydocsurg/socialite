@@ -78,26 +78,20 @@ const TweetBox = (openTweetBox, closeTweetBox) => {
     const handleFileChange = (e) => {
         let file = e.target.files[0];
         let reader = new FileReader();
-
         let limit = 1024 * 1024 * 2;
-        if (file["size"] > limit) {
-            setTweetImage({
-                ...tweetImageF,
-                tweetImageF: "",
-            });
-            alert("File is too large! It must be less than 2MB.");
 
-            return false;
+        if (file["size"] > limit) {
+            return checkFileSize();
         }
 
         reader.onloadend = (file) => {
+            console.log(reader.result);
             setTweetImage(reader.result);
         };
         reader.readAsDataURL(file);
+
+        // setTweetImage(file);
         setTweetImageRemover(true);
-        console.log("====================================");
-        console.log(tweetImageF);
-        console.log("====================================");
     };
 
     const removeImg = () => {
@@ -108,6 +102,16 @@ const TweetBox = (openTweetBox, closeTweetBox) => {
         setTweetImageRemover(false);
     };
 
+    const checkFileSize = () => {
+        setTweetImage({
+            ...tweetImageF,
+            tweetImageF: "",
+        });
+        alert("File is too large! It must be less than 2MB.");
+
+        return false;
+    };
+
     const sendTweet = async (e) => {
         e.preventDefault();
         try {
@@ -116,16 +120,17 @@ const TweetBox = (openTweetBox, closeTweetBox) => {
                 tweet_photo: tweetImageF,
             };
             const res = await SendTweetService(payload);
+            console.log(res.data);
             if (res.data.status == 400 && res.data.success === false) {
+                console.log("400 response");
                 setTweetErr(true);
                 setTweetErrors({
                     ...tweetErrors,
                     tweet_text: res.data.message.tweet_text,
                     tweet_photo: res.data.message.tweet_photo,
                 });
-                console.log(tweetErrors.tweet_text[0]);
-            } else if (res.data.status == 200 && res.data.success === true) {
-                console.log(res.data);
+            } else if (res.data.status == 201 && res.data.success === true) {
+                console.log("tweeted");
                 clearTweetFields();
                 setTweetSuccess(true);
                 dispatch(RefreshTweetsAction());
